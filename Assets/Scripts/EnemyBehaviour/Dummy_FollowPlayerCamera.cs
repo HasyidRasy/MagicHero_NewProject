@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FollowPlayerCamera : MonoBehaviour
+public class Dummy_FollowPlayerCamera : MonoBehaviour
 {
     public Transform target;     // Transform pemain yang akan diikuti
     public float smoothSpeed = 10f; // Kecepatan smoothing kamera
