@@ -16,15 +16,18 @@ public class CameraBoundary : MonoBehaviour
 
     [Header("Camera center and Next camera center")]
     [SerializeField] private Transform centerMov; // Maximum Z coordinate of the boundary
-    [SerializeField] private Transform nextCenterMov; // Maximum Z coordinate of the boundary
-    [SerializeField] private float offsetCenter; // Maximum Z coordinate of the boundary
-
+    [SerializeField] private Transform frontTrigger; // Maximum Z coordinate of the boundary
+    [SerializeField] private Transform BackTrigger; // Maximum Z coordinate of the boundary
+    [SerializeField] private float offsetCenterFront; // Maximum Z coordinate of the boundary
+    [SerializeField] private float offsetCenterBack;
     private Vector3 _offset;
     private Vector3 _currentVelocity = Vector3.zero;
 
     [Header("Turn on/off visual")]
     [Tooltip("Min/Max Visual")]
     public bool enableFeature = true;
+
+    private bool rotated = false;
 
     private void Awake()
     {
@@ -35,6 +38,7 @@ public class CameraBoundary : MonoBehaviour
     {
         CameraMovement();
         TurnOffVisual();
+
     }
 
     private void CameraMovement()
@@ -44,25 +48,37 @@ public class CameraBoundary : MonoBehaviour
         float maxX = maxXPosition.transform.position.x;
         float minZ = minZPosition.transform.position.z;
         float maxZ = maxZPosition.transform.position.z;
-        Vector3 nextCM = nextCenterMov.transform.position;
+        Vector3 nextCM = frontTrigger.transform.position;
+        Vector3 backCM = BackTrigger.transform.position;
+
+        if (target.position.z < BackTrigger.transform.position.z)
+        {
+            centerMov.transform.position = new Vector3(
+                centerMov.transform.position.x,
+                centerMov.transform.position.y,
+                backCM.z + offsetCenterBack
+            );
+        }
+     
 
         // Check if the Z position of target is greater than the Z position of nextCM
-        if (targetPosition.z > nextCM.z)
+        if (targetPosition.z > nextCM.z && !rotated)
         {
             // Update the Z position of centerMov by adding offsetCenter
             centerMov.transform.position = new Vector3(
                 centerMov.transform.position.x,
                 centerMov.transform.position.y,
-                nextCM.z + offsetCenter
+                nextCM.z + offsetCenterFront
             );
-        }
+        }        
 
         // Clamp camera position based on the specified boundary coordinates
         targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
         targetPosition.z = Mathf.Clamp(targetPosition.z, minZ, maxZ);
-
+        Debug.Log("minX: " + minX + ", maxX: " + maxX + ", minZ: " + minZ + ", maxZ: " + maxZ);
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition + _offset, ref _currentVelocity, smoothTime);
     }
+
 
     private void TurnOffVisual()
     {
@@ -72,7 +88,7 @@ public class CameraBoundary : MonoBehaviour
             maxXPosition.GetComponent<MeshRenderer>().enabled = false;
             minZPosition.GetComponent<MeshRenderer>().enabled = false;
             maxZPosition.GetComponent<MeshRenderer>().enabled = false;
-            nextCenterMov.GetComponent<MeshRenderer>().enabled = false;
+            frontTrigger.GetComponent<MeshRenderer>().enabled = false;
             centerMov.GetComponent<MeshRenderer>().enabled = false; 
         }
         else
@@ -81,15 +97,18 @@ public class CameraBoundary : MonoBehaviour
             maxXPosition.GetComponent<MeshRenderer>().enabled = true;
             minZPosition.GetComponent<MeshRenderer>().enabled = true;
             maxZPosition.GetComponent<MeshRenderer>().enabled = true;
-            nextCenterMov.GetComponent <MeshRenderer>().enabled = true;
+            frontTrigger.GetComponent <MeshRenderer>().enabled = true;
             centerMov.GetComponent<MeshRenderer>().enabled = true;
         }
     }
 
     private void OnDrawGizmos()
     {
-        // Draw a line from nextCenterMov to the offset position
+        // Draw a line from frontTrigger to the offset position
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(nextCenterMov.transform.position, nextCenterMov.transform.position + new Vector3(0f, 0f, offsetCenter));
+        Gizmos.DrawLine(frontTrigger.transform.position, frontTrigger.transform.position + new Vector3(0f, 0f, offsetCenterFront));
+        // Draw a line from BackTrigger to the offset position (red)
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(BackTrigger.transform.position, BackTrigger.transform.position + new Vector3(0f, 0f, offsetCenterBack));
     }
 }
