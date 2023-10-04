@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class ProceduralLevelGenerator : MonoBehaviour
 {
+    [Header("Prefabs Assign")]
     [SerializeField] private GameObject[] playerSpawnAreas;      // Array prefab area spawn pemain
     [SerializeField] private GameObject[] challengeAreaPrefabs;  // Array prefab area tantangan
+    [SerializeField] private GameObject corridorPrefab;          // Prefab lorong
     [SerializeField] private GameObject lastAreaPrefab;
 
     //public GameObject[] obstaclePrefabs; // Array prefab rintangan
     //public int maxObstaclesPerArea = 5; // Jumlah maksimum rintangan per area
     //public Vector3 areaSize = new Vector3(20f, 0f, 20f); // Ganti dengan ukuran yang sesuai
 
+    [Header("Stage Properties")]
     [SerializeField] private int minChallengeAreas = 3;          // Jumlah minimum area tantangan
     [SerializeField] private int maxChallengeAreas = 5;          // Jumlah maksimum area tantangan
     [SerializeField] private float roomSpacing = 40f;            // Jarak antara area
 
+    [Header("Corridor Properties")]
+    [SerializeField] private float corridorWidth = 5f;           // Lebar lorong
+    [SerializeField] private float corridorLenght = 20f;         // Panjang lorong
+
+    [Header("Current Area Id")]
     [SerializeField] private int currentAreaID = 1;
 
     private void Start()
@@ -52,6 +60,12 @@ public class ProceduralLevelGenerator : MonoBehaviour
 
             // Update ID area saat ini
             currentAreaID++;
+
+            // Membuat lorong antara area sebelumnya dan area saat ini
+            Vector3 corridorPosition = (spawnPosition + Vector3.back * roomSpacing/2);
+            GameObject corridor = Instantiate(corridorPrefab, corridorPosition, Quaternion.identity);
+            corridor.transform.localScale = new Vector3(corridorWidth, 0.1f, corridorLenght);
+
 
             // Update posisi spawn untuk area berikutnya
             spawnPosition += Vector3.forward * (roomSpacing);

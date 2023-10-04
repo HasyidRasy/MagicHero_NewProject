@@ -439,16 +439,13 @@ MonoBehaviour:
   - {fileID: 6540329306619729754, guid: f570d787ecde8374c87b7f7af9c65779, type: 3}
   - {fileID: 6540329306619729754, guid: 5ec699adfbc09a8468b4f65ba952b248, type: 3}
   - {fileID: 6540329306619729754, guid: bc14dcc12d7c96642b1b29e39f3572ff, type: 3}
+  corridorPrefab: {fileID: 8615632486034306209, guid: 53b3499271f8a7d4a82ce06b7b9f857e, type: 3}
   lastAreaPrefab: {fileID: 7709996749247063922, guid: 35be1c843b2f72041b337bced1e0c6f5, type: 3}
-  obstaclePrefabs:
-  - {fileID: 3508005132691245435, guid: 39b5a1a50c91d934fbc6c5e54da47f00, type: 3}
-  - {fileID: 1587735855181078939, guid: 13ca5820d326b3c469d2f9572f57757b, type: 3}
-  - {fileID: 8302062706038569354, guid: cc823b9021048504aafe3153c509c701, type: 3}
-  maxObstaclesPerArea: 5
-  areaSize: {x: 5, y: 1, z: 5}
   minChallengeAreas: 5
   maxChallengeAreas: 15
-  roomSpacing: 40
+  roomSpacing: 60
+  corridorWidth: 5
+  corridorLenght: 20
   currentAreaID: 1
 --- !u!4 &1527380131
 Transform:
