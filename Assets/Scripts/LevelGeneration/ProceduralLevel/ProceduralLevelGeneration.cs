@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class ProceduralLevelGenerator : MonoBehaviour
 {
-    public GameObject[] playerSpawnAreas;      // Array prefab area spawn pemain
-    public GameObject[] challengeAreaPrefabs;  // Array prefab area tantangan
-    public GameObject lastAreaPrefab;
+    [SerializeField] private GameObject[] playerSpawnAreas;      // Array prefab area spawn pemain
+    [SerializeField] private GameObject[] challengeAreaPrefabs;  // Array prefab area tantangan
+    [SerializeField] private GameObject lastAreaPrefab;
 
-    public GameObject[] obstaclePrefabs; // Array prefab rintangan
-    public int maxObstaclesPerArea = 5; // Jumlah maksimum rintangan per area
-    public Vector3 areaSize = new Vector3(20f, 0f, 20f); // Ganti dengan ukuran yang sesuai
+    //public GameObject[] obstaclePrefabs; // Array prefab rintangan
+    //public int maxObstaclesPerArea = 5; // Jumlah maksimum rintangan per area
+    //public Vector3 areaSize = new Vector3(20f, 0f, 20f); // Ganti dengan ukuran yang sesuai
 
-    public int minChallengeAreas = 3;          // Jumlah minimum area tantangan
-    public int maxChallengeAreas = 5;          // Jumlah maksimum area tantangan
-    public float roomSpacing = 40f;            // Jarak antara area
+    [SerializeField] private int minChallengeAreas = 3;          // Jumlah minimum area tantangan
+    [SerializeField] private int maxChallengeAreas = 5;          // Jumlah maksimum area tantangan
+    [SerializeField] private float roomSpacing = 40f;            // Jarak antara area
 
-    public int currentAreaID = 1;
+    [SerializeField] private int currentAreaID = 1;
 
     private void Start()
     {
@@ -57,7 +57,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
             spawnPosition += Vector3.forward * (roomSpacing);
 
             // Panggil GenerateObstacles untuk menambahkan rintangan
-            GenerateObstacles(challengeArea);
+            //GenerateObstacles(challengeArea);
 
             // Mengatur area saat ini sebagai area sebelumnya untuk lorong berikutnya
             previousArea = challengeArea;
@@ -69,6 +69,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
         }
     }
 
+    /*
     void GenerateObstacles(GameObject area)
     {
         // Jumlah rintangan yang akan dihasilkan
@@ -89,4 +90,5 @@ public class ProceduralLevelGenerator : MonoBehaviour
             Instantiate(obstaclePrefab, area.transform.position + randomPosition, Quaternion.identity);
         }
     }
+    */
 }

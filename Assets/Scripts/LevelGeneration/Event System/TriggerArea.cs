@@ -8,9 +8,9 @@ public class TriggerArea : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K)) //untuk membuka pintu selama testing
         {
-            GameEvents.current.DoorwayTriggerEnter(id);
+            GameEvents.current.DoorwayTriggerEnter(id); 
         }
     }
 
@@ -18,6 +18,4 @@ public class TriggerArea : MonoBehaviour
     {
         GameEvents.current.DoorwayTriggerExit(id);
     }
-
-    
 }

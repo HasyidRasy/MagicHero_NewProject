@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class AreaProperties : MonoBehaviour
 {
-    public string areaTag; // Tag yang digunakan untuk mengidentifikasi perilaku area
-    public GameObject[] enemyPrefabs; // Array prefab musuh yang akan di-generate
-
-    public Collider trigger;
-
+    [SerializeField] private string areaTag; // Tag yang digunakan untuk mengidentifikasi perilaku area
+    [SerializeField] private Collider trigger;
     public int id = 1;
-
-    private bool isAreaCompleted; // Status area selesai atau belum
 
     private void GenerateAreaBehavior()
     {
@@ -23,20 +18,19 @@ public class AreaProperties : MonoBehaviour
         }
         if (areaTag == "WaterArea")
         {
-            // Jika tag adalah "Api", maka spawn musuh tipe api
+            // Jika tag adalah "Water", maka spawn musuh tipe Water
             SpawnWaterEnemies();
         }
         if (areaTag == "WindArea")
         {
-            // Jika tag adalah "Air", maka spawn musuh tipe udara
+            // Jika tag adalah "Wind", maka spawn musuh tipe wind
             SpawnWindEnemies();
         }
         if (areaTag == "LastArea")
         {
-            // Jika tag adalah "Air", maka spawn musuh tipe udara
+            // Jika tag adalah "Last Area", maka spawn teleport buat next level
             Debug.Log("Anda Telah sampai pada Area Terakhir");
         }
-        // Tambahkan kondisi lain berdasarkan tag yang diinginkan
     }
 
     private void OnCollisionEnter(Collision collision)
