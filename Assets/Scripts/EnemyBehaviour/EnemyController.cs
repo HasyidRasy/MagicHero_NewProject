@@ -12,6 +12,6 @@ public class EnemyController : MonoBehaviour
 
     private void Attack()
     {
-        Debug.Log("Olayer terkena DMG");
+        Debug.Log("Player terkena DMG");
     }
 }

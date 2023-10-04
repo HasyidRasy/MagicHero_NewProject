@@ -5,7 +5,7 @@ public class EnemyAI : MonoBehaviour
 {
     private Transform target; // Transform pemain yang akan dikejar
     private NavMeshAgent navMeshAgent;
-    public float speedChase = 5f;
+    [SerializeField] private float speedChase = 5f;
 
     private void Start()
     {
@@ -19,7 +19,6 @@ public class EnemyAI : MonoBehaviour
         {
             navMeshAgent.speed = speedChase;
             // Set target pemain untuk dikejar
-            //navMeshAgent.SetDestination(target.position);
             navMeshAgent.destination = target.position;
         }
     }
