@@ -915,12 +915,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpawnAreas:
   - {fileID: 8963501471895819801, guid: 6b4e0d1d262ef4142a2500c4f0d113ba, type: 3}
-  - {fileID: 3952501958403671358, guid: 2e72ee74a85de5e4d9266287465239a2, type: 3}
-  - {fileID: 3372832882965730329, guid: d1dc3a52b5a22b7488e9099ba66454f3, type: 3}
   challengeAreaPrefabs:
-  - {fileID: 3952501958403671358, guid: 2e72ee74a85de5e4d9266287465239a2, type: 3}
   - {fileID: 8960153858026264103, guid: c2cb57f0b9e584e4895130b4de4251ca, type: 3}
   - {fileID: 3372832882965730329, guid: d1dc3a52b5a22b7488e9099ba66454f3, type: 3}
+  - {fileID: 3952501958403671358, guid: 2e72ee74a85de5e4d9266287465239a2, type: 3}
   corridorPrefab: {fileID: 8615632486034306209, guid: 53b3499271f8a7d4a82ce06b7b9f857e, type: 3}
   lastAreaPrefab: {fileID: 5399160249351253660, guid: 77013af77ae6a794682d90528ee2a4ab, type: 3}
   minChallengeAreas: 5
@@ -1252,7 +1250,7 @@ GameObject:
   - component: {fileID: 1228064678}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1269,8 +1267,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88621778bf1734a4aa2cba93bab5c2dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoint: 0
+  healthPoint: 100
+  defence: 0
+  attackSpeed: 0
   moveSpeed: 10
+  attack: 0
+  elementalBonus: 0
+  move: 0
   rotationSpeed: 500
   dashSpeed: 100
   dashDuration: 0.1
@@ -1289,6 +1292,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rb: {fileID: 1228064678}
   _model: {fileID: 1228064677}
+  elementalSlots: 01000000000000000200000000000000
+  projectileSpawnPoint: {fileID: 398592867}
+  magicProjectilePrefab: {fileID: 5823638608141224870, guid: b95e9efe65ef8fc4a8598efc1b19e376, type: 3}
+  magicProSpeed: 90
+  timeBetweenAttacks: 0
 --- !u!4 &1228064677
 Transform:
   m_ObjectHideFlags: 0
@@ -1298,7 +1306,7 @@ Transform:
   m_GameObject: {fileID: 1228064674}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.73, z: 0}
+  m_LocalPosition: {x: 0, y: -0.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1330,9 +1338,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1 &1365725441
 GameObject:
   m_ObjectHideFlags: 0
