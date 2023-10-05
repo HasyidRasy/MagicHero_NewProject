@@ -27,7 +27,7 @@ public class CameraBoundary : MonoBehaviour
     [Tooltip("Min/Max Visual")]
     public bool enableFeature = true;
 
-    private bool rotated = false;
+    private bool blankArea = false;
 
     private void Awake()
     {
@@ -57,12 +57,9 @@ public class CameraBoundary : MonoBehaviour
                 centerMov.transform.position.x,
                 centerMov.transform.position.y,
                 backCM.z + offsetCenterBack
-            );
+            );          
         }
-     
-
-        // Check if the Z position of target is greater than the Z position of nextCM
-        if (targetPosition.z > nextCM.z && !rotated)
+        else if (targetPosition.z > nextCM.z && !blankArea)
         {
             // Update the Z position of centerMov by adding offsetCenter
             centerMov.transform.position = new Vector3(
@@ -70,10 +67,17 @@ public class CameraBoundary : MonoBehaviour
                 centerMov.transform.position.y,
                 nextCM.z + offsetCenterFront
             );
-        }        
+            blankArea = true;
+        }
+        else if (target.position.z > BackTrigger.transform.position.z)
+        {
+            blankArea = false;
+        }
 
-        // Clamp camera position based on the specified boundary coordinates
-        targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
+
+
+            // Clamp camera position based on the specified boundary coordinates
+            targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
         targetPosition.z = Mathf.Clamp(targetPosition.z, minZ, maxZ);
         Debug.Log("minX: " + minX + ", maxX: " + maxX + ", minZ: " + minZ + ", maxZ: " + maxZ);
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition + _offset, ref _currentVelocity, smoothTime);
@@ -90,6 +94,7 @@ public class CameraBoundary : MonoBehaviour
             maxZPosition.GetComponent<MeshRenderer>().enabled = false;
             frontTrigger.GetComponent<MeshRenderer>().enabled = false;
             centerMov.GetComponent<MeshRenderer>().enabled = false; 
+            BackTrigger.GetComponent<MeshRenderer>().enabled = false;
         }
         else
         {
@@ -99,6 +104,7 @@ public class CameraBoundary : MonoBehaviour
             maxZPosition.GetComponent<MeshRenderer>().enabled = true;
             frontTrigger.GetComponent <MeshRenderer>().enabled = true;
             centerMov.GetComponent<MeshRenderer>().enabled = true;
+            BackTrigger.GetComponent<MeshRenderer>().enabled = true;
         }
     }
 
