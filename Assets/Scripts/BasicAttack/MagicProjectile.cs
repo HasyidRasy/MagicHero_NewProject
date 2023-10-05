@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ElementalType
+{
+    Water,
+    Fire,
+    Wind
+}
 public class MagicProjectile : MonoBehaviour
 {
     [SerializeField] private ElementalType element; // Elemen proyektil
