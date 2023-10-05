@@ -11,6 +11,24 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _model;
 
+    [Header("Attack Pattern")]
+    [SerializeField] private ElementalType[] elementalSlots = new ElementalType[4]; // Set Attack Pattern
+    private int currentSlotIndex = 0;
+
+    private ElementalType[] attackPattern = new ElementalType[4];
+    private int currentAttackIndex = 0;
+
+    [Space(5)]
+    [SerializeField] private Transform projectileSpawnPoint;    // Titik spawn proyektil
+    [SerializeField] private GameObject magicProjectilePrefab;  // Prefab untuk sihir
+
+    [Header("Magic Speed")]
+    [SerializeField] private float magicProSpeed = 10f;         // Kecepatan proyektil
+
+    [Header("Casting Speed")]
+    [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
+    private float attackCooldown = 0f;
+
     private void Start() {
         //get component from character model
         characterModel = GetComponent<CharacterModel>();
@@ -20,6 +38,16 @@ public class PlayerController : MonoBehaviour {
         //Call Function
         CharaMove();
         PlayerStat();
+
+        attackCooldown -= Time.deltaTime;
+        if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f)
+        {
+            ShootMagic(attackPattern[currentAttackIndex]);          // Menembakkan sihir sesuai dengan pola serangan saat ini
+            attackCooldown = timeBetweenAttacks;
+            currentAttackIndex = (currentAttackIndex + 1) % 4;      // Pindah ke elemen berikutnya dalam pola serangan
+            ChangeActiveElement();
+            CheckElementalReaction();
+        }
     }
 
     private void CharaMove() {
@@ -73,6 +101,76 @@ public class PlayerController : MonoBehaviour {
     private void PlayerStat() {
         float playerHp = characterModel.HealthPoint;
         float playerDef = characterModel.Defence;
+    }
+
+    private void ShootMagic(ElementalType element)
+    {
+        // Raycast dari kursor mouse ke dunia 3D
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            Vector3 targetDirection = hit.point - projectileSpawnPoint.position;    // Menghitung vektor arah ke target
+            targetDirection.Normalize(); // Normalisasi agar memiliki panjang 1
+
+            // Instansiasi proyektil di titik spawn
+            GameObject magic = Instantiate(magicProjectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
+
+            // Implementasi logika menembakkan sihir sesuai elemen
+            MagicProjectile magicProjectile = magic.GetComponent<MagicProjectile>();
+            if (magicProjectile != null)
+            {
+                magicProjectile.SetElement(element);
+            }
+            // Mengatur kecepatan proyektil sesuai arah target
+            Rigidbody rb = magic.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.velocity = targetDirection * magicProSpeed;
+            }
+        }
+    }
+
+    private void ChangeActiveElement()
+    {
+        // Mengganti elemen aktif ke slot berikutnya
+        currentSlotIndex = (currentSlotIndex + 1) % 4;
+        // Memperbarui pola serangan berdasarkan elemen yang baru aktif
+        attackPattern[currentAttackIndex] = elementalSlots[currentSlotIndex];
+    }
+
+    private void CheckElementalReaction()
+    {
+        // Mengecek apakah ada 2 elemen berturut-turut dalam pola serangan
+        if (currentAttackIndex >= 2)
+        {
+            ElementalType firstElement = attackPattern[currentAttackIndex - 2];
+            ElementalType secondElement = attackPattern[currentAttackIndex - 1];
+
+            // Melakukan pengecekan elemen reaksi
+            ElementalReaction(firstElement, secondElement);
+        }
+    }
+
+    private void ElementalReaction(ElementalType element1, ElementalType element2)
+    {
+        // Implementasi efek-efek elemen reaksi
+        if ((element1 == ElementalType.Fire && element2 == ElementalType.Wind) ||
+            (element1 == ElementalType.Wind && element2 == ElementalType.Fire))
+        {
+            Debug.Log("Combustion!");
+        }
+        else if ((element1 == ElementalType.Fire && element2 == ElementalType.Water) ||
+                 (element1 == ElementalType.Water && element2 == ElementalType.Fire))
+        {
+            Debug.Log("Steam!");
+        }
+        else if ((element1 == ElementalType.Wind && element2 == ElementalType.Water) ||
+                 (element1 == ElementalType.Water && element2 == ElementalType.Wind))
+        {
+            Debug.Log("Freeze!");
+        }
     }
 }
 
