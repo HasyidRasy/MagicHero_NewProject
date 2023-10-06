@@ -4,19 +4,34 @@ using UnityEngine;
 
 public class CharacterModel : MonoBehaviour
 {
+    public static CharacterModel Instance {get; private set;}
+
     // Private fields to store character properties
     public float healthPoint;
-    private float defence;
-    private float attackSpeed;
+    public float defence;
+    public float attackSpeed;
     public float moveSpeed = 5.0f;
-    private float attack;
-    private float elementalBonus;
+    public float attack;
+    public float elementalBonus;
 
     //Dashing
     public float rotationSpeed = 10.0f;
     public float dashSpeed = 10.0f;
     public float dashDuration = 0.5f;
     public float dashCooldown = 2.0f;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Getter and setter for healthPoint
     public float HealthPoint {
@@ -78,5 +93,36 @@ public class CharacterModel : MonoBehaviour
     public float DashCooldown {
         get { return dashCooldown; }
         set { dashCooldown = value; }
+    }
+
+    //Apply Upgrades (Avin)
+    public void ApplyUpgrade(UpgradeData upgrade)
+    {
+        switch (upgrade.upgradeType)
+        {
+        case UpgradeType.ElementalAttack:
+            elementalBonus += upgrade.upgradeValue;
+            Debug.Log("Elemental Bonus: "+elementalBonus);
+            break;
+        case UpgradeType.BasicAttack:
+            attack += upgrade.upgradeValue;
+            Debug.Log("Attack: "+Attack);
+            break;
+        case UpgradeType.HealthPoint:
+            healthPoint += upgrade.upgradeValue;
+            Debug.Log("Health Point: "+healthPoint);
+            break;
+        case UpgradeType.AttackSpeed:
+            attackSpeed += upgrade.upgradeValue;Debug.Log("Elemental Bonus: "+elementalBonus);
+            Debug.Log("Attack Speed :"+AttackSpeed);
+            break;
+        case UpgradeType.Defense:
+            defence += upgrade.upgradeValue;
+            Debug.Log("Defense: "+defence);
+            break;
+        default:
+            Debug.LogError("Unknown upgrade type: " + upgrade.upgradeType);
+            break;
+        }
     }
 }

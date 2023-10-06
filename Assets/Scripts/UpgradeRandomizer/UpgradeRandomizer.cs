@@ -3,28 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
 
 public class UpgradeRandomizer : MonoBehaviour
 {
     public UpgradeDatabase upgradeDatabase;
+    public UpgradeManager upgradeManager;
     public TMP_Text[] upgradeNameText;
     public TMP_Text[] upgradeDescText;
     public Image[] upgradeImage;
-    public Button upgradeButtons;
-    
+    public Button[] upgradeButtons;
+    public Button upgradeSkip;
+
+
+    public UnityEvent onUITrigger;
 
     private List<UpgradeData> availableUpgrades = new List<UpgradeData>();
     private UpgradeData[] randomizedUpgrades = new UpgradeData[3];
+    private CharacterModel upgradedCharacter;
 
     // Start is called before the first frame update
     void Start()
     {
+        upgradedCharacter = FindObjectOfType<CharacterModel>();
+
+        if(upgradedCharacter == null)
+        {
+            Debug.Log("Characracter not found");
+            return;
+        }
+
+        //gameObject.SetActive(false);
+
         availableUpgrades.AddRange(upgradeDatabase.upgrades);
         RandomizeUpgrades();
         UpdateUI();
     }
 
-    private void RandomizeUpgrades()
+    public void RandomizeUpgrades()
     {   
         if (availableUpgrades.Count < 3)
         {
@@ -40,6 +56,13 @@ public class UpgradeRandomizer : MonoBehaviour
         {
             randomizedUpgrades[i] = availableUpgrades[i];
         }
+
+        foreach (var upgrade in randomizedUpgrades)
+        {
+            upgradedCharacter.ApplyUpgrade(upgrade);
+        }
+
+        onUITrigger.Invoke();
     }
 
     private void ShuffleList<T>(List<T> list)
@@ -56,13 +79,25 @@ public class UpgradeRandomizer : MonoBehaviour
 
 
     // Update is called once per frame
-    void UpdateUI()
+    public void UpdateUI()
     {
         for(int i = 0; i < 3;i++)
         {
             upgradeNameText[i].text = randomizedUpgrades[i].upgradeName;
             upgradeDescText[i].text = randomizedUpgrades[i].upgradeType.ToString() + " +" + randomizedUpgrades[i].upgradeValue;
             upgradeImage[i].sprite = randomizedUpgrades[i].upgradeIcon;
+        
+            UpgradeButton upgradeButton = upgradeButtons[i].GetComponent<UpgradeButton>();
+            upgradeButton.SetUpgrade(randomizedUpgrades[i]);
+
+            upgradeButtons[i].interactable = true;
+            
+            onUITrigger.Invoke();
+
+            foreach(var upgrade in randomizedUpgrades)
+            {
+                upgradeManager.AddSelectedUpgrade(upgrade);
+            }
         }
     }
 }
