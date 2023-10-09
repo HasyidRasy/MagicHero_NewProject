@@ -55,6 +55,6 @@ public class MagicProjectile : MonoBehaviour
             enemyController.TakeDamage(damageAmount);            
             Destroy(gameObject); // Hancurkan proyektil setelah bertabrakan
             Debug.Log("Menyerang Musuh");
-        }
+        }        
     }
 }

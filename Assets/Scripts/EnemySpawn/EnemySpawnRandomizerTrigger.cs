@@ -40,7 +40,7 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
         if (id == this.id)
         {
             if (!isEnemySpawned)
-                isEnemySpawned = true;
+                isEnemySpawned = false;
         }
     }
     private void SpawnEnemyTriggerOn(int id)
@@ -138,7 +138,7 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
             if (enemies.Length == 0 && enemiesPresent)
             {
                 GameEvents.current.DoorwayTriggerEnter(id); // Ganti 0 dengan ID yang sesuai
-                enemiesPresent = false; // Setel tanda agar salah
+                enemiesPresent = false; // Setel tanda agar false
             }
             else if (enemies.Length > 0 && !enemiesPresent)
             {

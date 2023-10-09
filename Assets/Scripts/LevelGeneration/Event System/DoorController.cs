@@ -4,33 +4,50 @@ using UnityEngine;
 
 public class DoorController : MonoBehaviour
 {
-    public float openHeight = 4f;
+    public float openHeight = -4f;
     private bool isDoorOpen = true;
     private bool isAreaCleared = true;
+    private Vector3 targetPosition; // The target position for smooth movement.
 
     public int id;
+
     private void Start()
     {
-        GameEvents.current.onDoorwayTriggerEnter += OnDoorwayClose;
-        GameEvents.current.onDoorwayTriggerExit += OnDoorwayOpen;
+        GameEvents.current.onDoorwayTriggerEnter += OnDoorwayOpen;
+        GameEvents.current.onDoorwayTriggerExit += OnDoorwayClose;
+
+        // Initialize the target position to the current position.
+        targetPosition = transform.position;
     }
+
+    private void Update()
+    {
+        // Use Lerp to smoothly transition the door's position.
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 5f); // Adjust the speed (5f) as needed.
+    }
+
     private void OnDoorwayOpen(int id)
-    { 
-        if(id == this.id)
+    {
+        if (id == this.id)
         {
             if (!isDoorOpen && !isAreaCleared)
-                transform.position = transform.position - new Vector3(0f, openHeight, 0f);
+            {
+                targetPosition = transform.position - new Vector3(0f, openHeight, 0f);
                 isDoorOpen = true;
+            }
         }
     }
+
     private void OnDoorwayClose(int id)
     {
-        if(id == this.id)
+        if (id == this.id)
         {
             if (isDoorOpen && isAreaCleared)
-                transform.position = transform.position + new Vector3(0f, openHeight, 0f);
+            {
+                targetPosition = transform.position + new Vector3(0f, openHeight, 0f);
                 isDoorOpen = false;
                 isAreaCleared = false;
+            }
         }
     }
 }
