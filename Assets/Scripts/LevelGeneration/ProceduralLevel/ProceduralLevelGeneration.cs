@@ -80,6 +80,10 @@ public class ProceduralLevelGenerator : MonoBehaviour
             if (i == numChallengeAreas-1)
             {
                 GameObject _lastArea = Instantiate(lastAreaPrefab, spawnPosition, Quaternion.identity);
+
+                Vector3 lastCorridorPosition = (spawnPosition + Vector3.back * roomSpacing / 2);
+                GameObject lastCorridor = Instantiate(corridorPrefab, lastCorridorPosition, Quaternion.identity);
+                lastCorridor.transform.localScale = new Vector3(corridorWidth, 0.1f, corridorLenght);
             }
         }
     }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -192,6 +192,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4368760147629057053, guid: 7fa3122562dad6d4fb7a179af379500d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9066187220535931738, guid: 7fa3122562dad6d4fb7a179af379500d, type: 3}
       propertyPath: moveSpeed
       value: 10
@@ -248,8 +252,16 @@ PrefabInstance:
     - {fileID: 9066187220535931738, guid: 7fa3122562dad6d4fb7a179af379500d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4368760147629057053, guid: 7fa3122562dad6d4fb7a179af379500d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1820307828}
   m_SourcePrefab: {fileID: 100100000, guid: 7fa3122562dad6d4fb7a179af379500d, type: 3}
+--- !u!1 &640657322 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4368760147629057053, guid: 7fa3122562dad6d4fb7a179af379500d, type: 3}
+  m_PrefabInstance: {fileID: 419229426}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,12 +526,12 @@ MonoBehaviour:
   - {fileID: 7709996749247063922, guid: 88ec15450d531b043aafee5b29452eae, type: 3}
   challengeAreaPrefabs:
   - {fileID: 6540329306619729754, guid: f570d787ecde8374c87b7f7af9c65779, type: 3}
-  - {fileID: 6540329306619729754, guid: 5ec699adfbc09a8468b4f65ba952b248, type: 3}
-  - {fileID: 6540329306619729754, guid: bc14dcc12d7c96642b1b29e39f3572ff, type: 3}
+  - {fileID: 6540329306619729754, guid: 5e17eba7ec1640546bfd6a5abc7bd2a7, type: 3}
+  - {fileID: 6540329306619729754, guid: c6392afe2ab89854ba614e71304810b1, type: 3}
   corridorPrefab: {fileID: 8615632486034306209, guid: 53b3499271f8a7d4a82ce06b7b9f857e, type: 3}
   lastAreaPrefab: {fileID: 7709996749247063922, guid: 35be1c843b2f72041b337bced1e0c6f5, type: 3}
   minChallengeAreas: 5
-  maxChallengeAreas: 15
+  maxChallengeAreas: 7
   roomSpacing: 60
   corridorWidth: 5
   corridorLenght: 20
@@ -544,6 +556,29 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9185965364045581176, guid: 7fa3122562dad6d4fb7a179af379500d, type: 3}
   m_PrefabInstance: {fileID: 419229426}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1820307828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640657322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88621778bf1734a4aa2cba93bab5c2dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPoint: 0
+  defence: 0
+  attackSpeed: 0
+  moveSpeed: 5
+  attack: 0
+  elementalBonus: 0
+  move: 0
+  rotationSpeed: 10
+  dashSpeed: 10
+  dashDuration: 0.5
+  dashCooldown: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
