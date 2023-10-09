@@ -337,7 +337,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   areaTag: WindArea
-  enemyPrefabs: []
   trigger: {fileID: 8657627768783512535}
   id: 0
 --- !u!1 &7045304876908509255
@@ -768,13 +767,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8339317741716092690}
     m_Modifications:
+    - target: {fileID: 2751491688317321374, guid: 717db995a3f9cd140832c1994eb12d26, type: 3}
+      propertyPath: openHeight
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3832038619038160554, guid: 717db995a3f9cd140832c1994eb12d26, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3832038619038160554, guid: 717db995a3f9cd140832c1994eb12d26, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 3832038619038160554, guid: 717db995a3f9cd140832c1994eb12d26, type: 3}
       propertyPath: m_LocalPosition.z

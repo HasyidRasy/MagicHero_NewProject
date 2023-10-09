@@ -2,18 +2,19 @@ using UnityEngine;
 
 public class EnemyModel : MonoBehaviour{
 
-    private int healthPoint = 70;
-    private int defence = 5;
-    private float attackSpeed = 2f;
-    private float moveSpeed = 3f;
-    private int attack = 20;
-    private int elementalBonus = 10;
+    public int healthPoint = 100;
+    public int defence = 5;
+    public float attackSpeed = 2f;
+    public float moveSpeed = 3f;
+    public int attack = 20;
+    public int elementalBonus = 10;
+    public int currentHealth;
 
     public int HealthPoint{
 
         get { return healthPoint; }
         //set hp to min 0 max 100
-        set { healthPoint = Mathf.Clamp(value, 0, 100); ; }
+        set { healthPoint = Mathf.Clamp(value, 0, 100); }
     }
     public int Defence{
         get { return defence; }
@@ -39,6 +40,13 @@ public class EnemyModel : MonoBehaviour{
 
         get { return elementalBonus; }
         set { elementalBonus = value; }
+    }
+
+    public int CurrentHealth
+    {
+
+        get { return currentHealth; }
+        set { currentHealth = value; }
     }
 
 }

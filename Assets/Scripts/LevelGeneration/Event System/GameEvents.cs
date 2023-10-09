@@ -14,7 +14,7 @@ public class GameEvents : MonoBehaviour
     public event Action<int> onDoorwayTriggerEnter;
     public void DoorwayTriggerEnter(int id)
     {
-        if(onDoorwayTriggerEnter != null)
+        if (onDoorwayTriggerEnter != null)
         {
             onDoorwayTriggerEnter(id);
         }
@@ -22,7 +22,7 @@ public class GameEvents : MonoBehaviour
     public event Action<int> onDoorwayTriggerExit;
     public void DoorwayTriggerExit(int id)
     {
-        if(onDoorwayTriggerExit != null)
+        if (onDoorwayTriggerExit != null)
         {
             onDoorwayTriggerExit(id);
         }
