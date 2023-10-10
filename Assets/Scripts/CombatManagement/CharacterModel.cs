@@ -13,6 +13,7 @@ public class CharacterModel : MonoBehaviour
     public float moveSpeed = 5.0f;
     public float attack;
     public float elementalBonus;
+    public float move;
 
     //Dashing
     public float rotationSpeed = 10.0f;

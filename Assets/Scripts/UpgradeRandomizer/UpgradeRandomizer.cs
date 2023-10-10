@@ -33,7 +33,7 @@ public class UpgradeRandomizer : MonoBehaviour
             return;
         }
 
-        //gameObject.SetActive(false);
+        gameObject.SetActive(false);
 
         availableUpgrades.AddRange(upgradeDatabase.upgrades);
         RandomizeUpgrades();
