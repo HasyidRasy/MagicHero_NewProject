@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 public class UpgradeRandomizer : MonoBehaviour
 {
+    public static UpgradeRandomizer Instance {get; private set;}
     public UpgradeDatabase upgradeDatabase;
     public UpgradeManager upgradeManager;
     public TMP_Text[] upgradeNameText;

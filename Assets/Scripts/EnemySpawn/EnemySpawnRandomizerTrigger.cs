@@ -27,10 +27,12 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
     private bool enemiesPresent = true; // Awalnya anggap ada musuh
 
     //Membuat koneksi dengan Upgrade Randomizer
-    public UpgradeRandomizer upgradeRandomizer;
+    private UpgradeRandomizer upgradeRandomizer;
 
     private void Start()
     {
+        upgradeRandomizer = FindObjectOfType<UpgradeRandomizer>();
+
         GameEvents.current.onDoorwayTriggerEnter += SpawnEnemyTriggerOff;
         GameEvents.current.onDoorwayTriggerExit += SpawnEnemyTriggerOn;
 
