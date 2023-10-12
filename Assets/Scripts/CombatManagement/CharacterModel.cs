@@ -6,11 +6,12 @@ public class CharacterModel : MonoBehaviour
 {
     // Private fields to store character properties
     public float healthPoint;
-    private float defence;
-    private float attackSpeed;
+    public float defence;
+    public float attackSpeed;
     public float moveSpeed = 5.0f;
-    private float attack;
-    private float elementalBonus;
+    public float attack;
+    public float elementalBonus;
+    public float move;
 
     //Dashing
     public float rotationSpeed = 10.0f;
@@ -79,4 +80,5 @@ public class CharacterModel : MonoBehaviour
         get { return dashCooldown; }
         set { dashCooldown = value; }
     }
+   
 }

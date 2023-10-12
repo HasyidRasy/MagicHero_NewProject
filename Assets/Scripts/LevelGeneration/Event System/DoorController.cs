@@ -6,19 +6,20 @@ public class DoorController : MonoBehaviour
 {
     public float openHeight = 4f;
     private bool isDoorOpen = true;
+    private bool isAreaCleared = true;
 
     public int id;
     private void Start()
     {
-        GameEvents.current.onDoorwayTriggerEnter += OnDoorwayOpen;
-        GameEvents.current.onDoorwayTriggerExit += OnDoorwayClose;
+        GameEvents.current.onDoorwayTriggerEnter += OnDoorwayClose;
+        GameEvents.current.onDoorwayTriggerExit += OnDoorwayOpen;
     }
     private void OnDoorwayOpen(int id)
     { 
         if(id == this.id)
         {
-            if (!isDoorOpen)
-                transform.position = transform.position + new Vector3(0f, openHeight, 0f);
+            if (!isDoorOpen && !isAreaCleared)
+                transform.position = transform.position - new Vector3(0f, openHeight, 0f);
                 isDoorOpen = true;
         }
     }
@@ -26,9 +27,10 @@ public class DoorController : MonoBehaviour
     {
         if(id == this.id)
         {
-            if (isDoorOpen)
-                transform.position = transform.position - new Vector3(0f, openHeight, 0f);
+            if (isDoorOpen && isAreaCleared)
+                transform.position = transform.position + new Vector3(0f, openHeight, 0f);
                 isDoorOpen = false;
+                isAreaCleared = false;
         }
     }
 }
