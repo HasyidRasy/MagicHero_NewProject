@@ -1060,8 +1060,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 11, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 11, y: 1.3954142, z: 1.1641973}
+  m_Center: {x: 0, y: -0.1977087, z: -0.035141423}
 --- !u!114 &524157162747576420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1120,14 +1120,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefabs:
-  - {fileID: 8693549782459797256, guid: eaa1426e5ad86f34e828276656203ed9, type: 3}
+  - {fileID: 8693549782459797256, guid: 0f2f4cacb6692034286c062fdc0d77f0, type: 3}
   spawnPoints:
   - {fileID: 5806660117956682035}
   safeZones: []
   spawnInterval: 20
   minY: 3
-  maxDistanceFromSpawnPoint: 30
-  maxEnemies: 10
+  maxDistanceFromSpawnPoint: 50
+  maxEnemies: 5
   id: 0
   checkInterval: 1
 --- !u!1 &1775607138828689095

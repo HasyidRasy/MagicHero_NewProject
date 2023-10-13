@@ -150,14 +150,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefabs:
-  - {fileID: 8693549782459797256, guid: eaa1426e5ad86f34e828276656203ed9, type: 3}
+  - {fileID: 8693549782459797256, guid: 38802fde60458ab43b1baa560194c4cb, type: 3}
   spawnPoints:
   - {fileID: 8328319730860114874}
   safeZones: []
   spawnInterval: 20
   minY: 3
-  maxDistanceFromSpawnPoint: 30
-  maxEnemies: 10
+  maxDistanceFromSpawnPoint: 50
+  maxEnemies: 5
   id: 0
   checkInterval: 1
 --- !u!1 &802490040384832865
@@ -2006,7 +2006,7 @@ Transform:
   m_GameObject: {fileID: 4396088619066392536}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.24, z: -58}
+  m_LocalPosition: {x: 0, y: 2.8, z: -58}
   m_LocalScale: {x: 8, y: 1, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2081,8 +2081,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 11, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 11, y: 2.9598167, z: 1.419782}
+  m_Center: {x: 0, y: -0.6458448, z: -0.20868048}
 --- !u!114 &5791583133399998377
 MonoBehaviour:
   m_ObjectHideFlags: 0

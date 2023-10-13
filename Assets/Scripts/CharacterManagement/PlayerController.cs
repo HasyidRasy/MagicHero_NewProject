@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     private float attackCooldown = 0f;
 
-    [SerializeField] GameObject mousePos;
+    //[SerializeField] GameObject mousePos;
 
     public static event Action OnPlayerDeath;
 
@@ -155,7 +155,7 @@ public class PlayerController : MonoBehaviour {
             {
                 rb.velocity = targetDirection * magicProSpeed;
             }
-            mousePos.transform.position = hit.point;
+            //mousePos.transform.position = hit.point;
         }
     }
 
