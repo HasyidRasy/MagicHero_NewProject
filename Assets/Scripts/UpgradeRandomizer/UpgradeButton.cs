@@ -38,11 +38,8 @@ public class UpgradeButton : MonoBehaviour
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
             Debug.Log("Upgrade Description: " + upgrade.upgradeType.ToString() + " " + upgrade.upgradeValue);
         
-            if(upgradeRandomizer != null)
-            {
-                upgradeRandomizer.gameObject.SetActive(false);
-                Time.timeScale = 1f;
-            }
+            upgradeRandomizer.gameObject.SetActive(false);
+            Time.timeScale = 1f;
         }
     }
 }

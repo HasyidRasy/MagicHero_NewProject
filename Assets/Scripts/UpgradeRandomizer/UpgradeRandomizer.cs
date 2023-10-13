@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 public class UpgradeRandomizer : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class UpgradeRandomizer : MonoBehaviour
     private List<UpgradeData> availableUpgrades = new List<UpgradeData>();
     private UpgradeData[] randomizedUpgrades = new UpgradeData[3];
     private CharacterModel upgradedCharacter;
+        
 
     // Start is called before the first frame update
     void Start()
@@ -34,9 +36,23 @@ public class UpgradeRandomizer : MonoBehaviour
             return;
         }
 
-        gameObject.SetActive(false);
+        StartUpgrade();
 
+        this.gameObject.SetActive(false);        
+    }
+
+    public void TestTrigger()
+    {
+        if(Input.GetKeyDown("space"))
+        {
+            StartUpgrade();
+        }
+    }
+
+    public void StartUpgrade()
+    {
         availableUpgrades.AddRange(upgradeDatabase.upgrades);
+        
         RandomizeUpgrades();
         UpdateUI();
     }

@@ -40,19 +40,22 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Update() {
-        //Call Function
-        CharaMove();
-        PlayerStat();
+        
+        
+            //Call Function
+            CharaMove();
+            PlayerStat();
 
-        attackCooldown -= Time.deltaTime;
-        if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f)
-        {
-            ShootMagic(attackPattern[currentAttackIndex]);          // Menembakkan sihir sesuai dengan pola serangan saat ini
-            attackCooldown = timeBetweenAttacks;
-            currentAttackIndex = (currentAttackIndex + 1) % 4;      // Pindah ke elemen berikutnya dalam pola serangan
-            ChangeActiveElement();
-            CheckElementalReaction();
-        }
+            attackCooldown -= Time.deltaTime;
+            if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f)
+            {
+                ShootMagic(attackPattern[currentAttackIndex]);          // Menembakkan sihir sesuai dengan pola serangan saat ini
+                attackCooldown = timeBetweenAttacks;
+                currentAttackIndex = (currentAttackIndex + 1) % 4;      // Pindah ke elemen berikutnya dalam pola serangan
+                ChangeActiveElement();
+                CheckElementalReaction();
+            }
+        
     }
 
     private void CharaMove() {

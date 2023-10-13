@@ -475,7 +475,7 @@ GameObject:
   - component: {fileID: 398592868}
   m_Layer: 0
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -897,7 +897,7 @@ GameObject:
   m_Layer: 0
   m_Name: Procedural Level Generation
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -921,8 +921,8 @@ MonoBehaviour:
   - {fileID: 3952501958403671358, guid: 2e72ee74a85de5e4d9266287465239a2, type: 3}
   corridorPrefab: {fileID: 8615632486034306209, guid: 53b3499271f8a7d4a82ce06b7b9f857e, type: 3}
   lastAreaPrefab: {fileID: 5399160249351253660, guid: 77013af77ae6a794682d90528ee2a4ab, type: 3}
-  minChallengeAreas: 5
-  maxChallengeAreas: 5
+  minChallengeAreas: 1
+  maxChallengeAreas: 1
   roomSpacing: 165
   corridorWidth: 20
   corridorLenght: 40
@@ -1296,7 +1296,7 @@ MonoBehaviour:
   elementalSlots: 01000000000000000200000000000000
   projectileSpawnPoint: {fileID: 398592867}
   magicProjectilePrefab: {fileID: 5823638608141224870, guid: b95e9efe65ef8fc4a8598efc1b19e376, type: 3}
-  magicProSpeed: 90
+  magicProSpeed: 200
   timeBetweenAttacks: 0
 --- !u!4 &1228064677
 Transform:
@@ -1684,7 +1684,7 @@ GameObject:
   - component: {fileID: 1805147116}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1973,12 +1973,12 @@ MeshFilter:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 876597934}
+  - {fileID: 1769733678}
+  - {fileID: 1019291132}
+  - {fileID: 980354186}
   - {fileID: 1365725444}
   - {fileID: 1831281712}
   - {fileID: 1228064677}
-  - {fileID: 1769733678}
-  - {fileID: 1019291132}
   - {fileID: 1011660891}
   - {fileID: 840562772}
-  - {fileID: 980354186}
-  - {fileID: 876597934}
