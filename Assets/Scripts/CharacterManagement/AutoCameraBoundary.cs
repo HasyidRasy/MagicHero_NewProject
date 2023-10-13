@@ -61,6 +61,14 @@ public class AutoCameraBoundary : MonoBehaviour
 
     private void CameraMovement()
     {
+        if (target == null || backTrigger == null || frontTrigger == null || centerMov == null ||
+        minXPosition == null || maxXPosition == null || minZPosition == null || maxZPosition == null)
+        {
+            // Handle null references here, or return early if necessary
+            Debug.Log("Game object null");
+            return;
+        }
+
         Vector3 targetPosition = target.position;
 
         if (target.position.z < backTrigger.position.z)
