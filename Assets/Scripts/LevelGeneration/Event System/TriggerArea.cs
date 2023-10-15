@@ -10,12 +10,15 @@ public class TriggerArea : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.K)) //untuk membuka pintu selama testing
         {
-            GameEvents.current.DoorwayTriggerExit(id); 
+            GameEvents.current.DoorwayTriggerEnter(id); 
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        GameEvents.current.DoorwayTriggerEnter(id);
+        if (other.CompareTag("Player"))
+        {          
+            GameEvents.current.DoorwayTriggerExit(id);
+        }
     }
 }

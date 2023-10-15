@@ -7,11 +7,14 @@ public class EnemyController : MonoBehaviour
 {
     private EnemyModel enemyModel;
     private Transform target; // Transform pemain yang akan dikejar
-    private NavMeshAgent navMeshAgent;
-    [SerializeField] private float speedChase = 5f;
+    private NavMeshAgent navMeshAgent;    
     private Renderer enemyRenderer;
     private Material originalMaterial;
     private Color originalColor;
+    private float speedChase;
+
+    public float minSpeed = 3f;
+    public float maxSpeed = 10f;
 
     public float damageAmount;
 
@@ -23,6 +26,8 @@ public class EnemyController : MonoBehaviour
         enemyRenderer = GetComponentInChildren<Renderer>();
         originalMaterial = enemyRenderer.material;
         originalColor = originalMaterial.color;
+
+        speedChase = Random.Range(minSpeed, maxSpeed);
     }
 
     private void Start()
