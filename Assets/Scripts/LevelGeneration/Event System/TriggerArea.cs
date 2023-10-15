@@ -16,6 +16,9 @@ public class TriggerArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GameEvents.current.DoorwayTriggerExit(id);
+        if (other.CompareTag("Player"))
+        {          
+            GameEvents.current.DoorwayTriggerExit(id);
+        }
     }
 }

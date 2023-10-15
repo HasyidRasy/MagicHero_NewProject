@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 135071921764927630}
   - component: {fileID: 1657687681640978611}
   - component: {fileID: 1988670560202616659}
+  - component: {fileID: 3411600930524984232}
   - component: {fileID: 391569849032127248}
   - component: {fileID: 4425454995608835221}
   m_Layer: 0
@@ -31,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -107,6 +108,25 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3411600930524984232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8693549782459797256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70214e600bf37af44a587e09452e19ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPoint: 100
+  defence: 5
+  attackSpeed: 2
+  moveSpeed: 3
+  attack: 20
+  elementalBonus: 10
+  currentHealth: 0
 --- !u!114 &391569849032127248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,6 +139,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 134d8ad108d4a9a4e8f58cc6a29c7bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minSpeed: 3
+  maxSpeed: 10
+  damageAmount: 20
 --- !u!195 &4425454995608835221
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,9 +30,18 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     private float attackCooldown = 0f;
 
-    private void Start() {
-        //get component from character model
+    //[SerializeField] GameObject mousePos;
+
+    public static event Action OnPlayerDeath;
+
+
+    private void Awake()
+    {
         characterModel = GetComponent<CharacterModel>();
+    }
+    private void Start() 
+    {       
+        
     }
 
     private void Update() {
@@ -103,6 +113,22 @@ public class PlayerController : MonoBehaviour {
         float playerDef = characterModel.Defence;
     }
 
+    public void TakeDamage(float damageAmount)
+    {
+        characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
+
+        if (characterModel.HealthPoint <= 0)
+        {
+            Death(); // If health drops to or below zero, call a method to handle enemy death
+            OnPlayerDeath?.Invoke();
+        }
+    }
+
+    private void Death()
+    {
+        Destroy(gameObject);
+    }
+
     private void ShootMagic(ElementalType element)
     {
         // Raycast dari kursor mouse ke dunia 3D
@@ -129,6 +155,7 @@ public class PlayerController : MonoBehaviour {
             {
                 rb.velocity = targetDirection * magicProSpeed;
             }
+            //mousePos.transform.position = hit.point;
         }
     }
 
