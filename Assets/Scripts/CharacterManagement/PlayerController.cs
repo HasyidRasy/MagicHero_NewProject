@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f)
             {
                 ShootMagic(attackPattern[currentAttackIndex]);          // Menembakkan sihir sesuai dengan pola serangan saat ini
-                attackCooldown = timeBetweenAttacks;
+                attackCooldown = timeBetweenAttacks * characterModel.attackSpeed;
                 currentAttackIndex = (currentAttackIndex + 1) % 4;      // Pindah ke elemen berikutnya dalam pola serangan
                 ChangeActiveElement();
                 CheckElementalReaction();
@@ -113,6 +113,8 @@ public class PlayerController : MonoBehaviour {
 
     public void TakeDamage(float damageAmount)
     {
+        damageAmount -= characterModel.defence;
+
         characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
 
         if (characterModel.HealthPoint <= 0)

@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    private CharacterModel characterModel;
     private EnemyPool enemyPool;
     private EnemySpawnManagerTrigger enemySpawnManagerTrigger;
     private EnemyModel enemyModel;
@@ -17,6 +18,8 @@ public class EnemyController : MonoBehaviour
 
     public float minSpeed = 3f;
     public float maxSpeed = 10f;
+
+    public float defense;
 
     public float damageAmount;
 
@@ -69,9 +72,11 @@ public class EnemyController : MonoBehaviour
         Debug.Log("Player terkena DMG");
     }
 
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(float damageAmount)
     {
-        enemyModel.CurrentHealth -= damageAmount; // Reduce current health by the damage amount
+        float damageTaken = (damageAmount - defense) + characterModel.elementalBonus;
+
+        enemyModel.CurrentHealth -= damageTaken; // Reduce current health by the damage amount
 
         if (enemyModel.CurrentHealth <= 0)
         {
