@@ -9,12 +9,14 @@ public class CameraController : MonoBehaviour {
     private Vector3 _currentVelocity = Vector3.zero;
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private AudioEvent audioEvent;
+    [SerializeField] private string _audioCategory;
 
     private void Start() {
         //subs audioEvent
         audioEvent.onBattleStart += OnBattle;
         //audioManager.PlayBgmBattle();
-        audioEvent.BattleStart();
+        audioEvent.BattleStart(_audioCategory);
+        audioEvent.MainMenu(_audioCategory);
     }
 
     private void Awake() {
@@ -27,9 +29,12 @@ public class CameraController : MonoBehaviour {
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _currentVelocity, smoothTime);
     }
 
-    private void OnBattle() {
+    private void OnBattle(string audioCategory) {
         //play audio
-        audioManager.PlayBgmBattle();
+        if (audioCategory == _audioCategory) {
+            audioManager.PlayBgmBattle(_audioCategory);
+            audioManager.PlayBgmMainMenu(_audioCategory);
+        }
     }
 
     private void OnDestroy() {
