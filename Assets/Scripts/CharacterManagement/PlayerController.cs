@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour {
             attackCooldown = timeBetweenAttacks;
             currentAttackIndex = (currentAttackIndex + 1) % 4;      // Pindah ke elemen berikutnya dalam pola serangan
             ChangeActiveElement();
-            CheckElementalReaction();
+            //CheckElementalReaction();
         }
     }
 
@@ -160,6 +160,7 @@ public class PlayerController : MonoBehaviour {
         attackPattern[currentAttackIndex] = elementalSlots[currentSlotIndex];
     }
 
+    /*
     private void CheckElementalReaction()
     {
         // Mengecek apakah ada 2 elemen berturut-turut dalam pola serangan
@@ -180,6 +181,7 @@ public class PlayerController : MonoBehaviour {
             (element1 == ElementalType.Wind && element2 == ElementalType.Fire))
         {
             Debug.Log("Combustion!");
+            
         }
         else if ((element1 == ElementalType.Fire && element2 == ElementalType.Water) ||
                  (element1 == ElementalType.Water && element2 == ElementalType.Fire))
@@ -192,6 +194,7 @@ public class PlayerController : MonoBehaviour {
             Debug.Log("Freeze!");
         }
     }
+    */
 }
 
 //helpers

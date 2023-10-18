@@ -13,6 +13,11 @@ public class EnemyController : MonoBehaviour
     private Color originalColor;
     private float speedChase;
 
+    //elemental system
+    public ElementalType elementNature;
+    private ElementalType elementStatus;
+    
+    
     public float minSpeed = 3f;
     public float maxSpeed = 10f;
 
@@ -76,6 +81,34 @@ public class EnemyController : MonoBehaviour
 
         // Update enemy color based on current health
         UpdateEnemyColor();
+    }
+
+    public void ApplyElementalStatus(ElementalType elementType)
+    {   
+        elementStatus = elementType;
+        Debug.Log("Applied Status "+ elementStatus);
+        HandleElementalInteraction(elementNature, elementStatus);
+    }
+
+    // Function to handle elemental interactions
+    public void HandleElementalInteraction(ElementalType currentElement, ElementalType otherElement)
+    {
+        // Check for an elemental reaction between the player's element and the other element
+        ElementalReaction reaction = ElementalReactionController.Instance.CheckElementalReaction(currentElement, otherElement);
+
+        if (reaction != null)
+        {
+            // Handle the reaction, e.g., apply damage, change visuals, etc.
+            // You can define specific logic for each reaction in this function.
+            HandleReaction(reaction.resultReaction);
+        }
+    }
+
+    // Function to handle the reaction result
+    private void HandleReaction(string resultReaction)
+    {
+        // Implement logic for the reaction, e.g., change player's appearance, apply effects, etc.
+        Debug.Log("Terjadi Reaksi " + resultReaction);
     }
 
     private void Death()

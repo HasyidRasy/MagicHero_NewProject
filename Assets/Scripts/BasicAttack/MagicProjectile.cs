@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ElementalType
-{
-    Water,
-    Fire,
-    Wind
-}
 public class MagicProjectile : MonoBehaviour
 {
-    [SerializeField] private ElementalType element; // Elemen proyektil
+    [SerializeField] public ElementalType element; // Elemen proyektil
     [SerializeField] private float lifeTime;
     [SerializeField] private int damageAmount = 20;
+
+    public List<ElementalReaction> elementalReactions = new List<ElementalReaction>();
 
     //untuk menghancurkan projectile dalam kurun waktu tertentu
     private void Awake()
@@ -52,7 +48,8 @@ public class MagicProjectile : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             EnemyController enemyController = other.GetComponent<EnemyController>();
-            enemyController.TakeDamage(damageAmount);            
+            enemyController.TakeDamage(damageAmount);
+            enemyController.ApplyElementalStatus(element);          
             Destroy(gameObject); // Hancurkan proyektil setelah bertabrakan
             Debug.Log("Menyerang Musuh");
         }        
