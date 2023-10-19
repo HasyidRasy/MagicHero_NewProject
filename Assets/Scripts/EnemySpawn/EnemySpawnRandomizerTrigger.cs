@@ -151,7 +151,6 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
             {
                 GameEvents.current.DoorwayTriggerEnter(id); // Ganti 0 dengan ID yang sesuai
                 enemiesPresent = false; // Setel tanda agar false
-
                 //Memunculkan Upgrade UI
                 /*if(!upgradeRandomizer.gameObject.activeSelf)
                 {

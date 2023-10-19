@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,10 @@ public class PlayerController : MonoBehaviour {
     [Header("Casting Speed")]
     [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     private float attackCooldown = 0f;
+
+    //[SerializeField] GameObject mousePos;
+
+    public static event Action OnPlayerDeath;
 
 
     private void Awake()
@@ -120,6 +125,7 @@ public class PlayerController : MonoBehaviour {
         if (characterModel.HealthPoint <= 0)
         {
             Death(); // If health drops to or below zero, call a method to handle enemy death
+            OnPlayerDeath?.Invoke();
         }
     }
 
@@ -154,6 +160,7 @@ public class PlayerController : MonoBehaviour {
             {
                 rb.velocity = targetDirection * magicProSpeed;
             }
+            //mousePos.transform.position = hit.point;
         }
     }
 
