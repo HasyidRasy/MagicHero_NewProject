@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,6 +19,7 @@ public class EnemyController : MonoBehaviour
     private bool isDeath = false;
     private bool isAttacking;
     private bool canAttack = true;
+    private bool freezing;
 
     [SerializeField] private float attackRange;
     [SerializeField] private float attackCooldown = 2.0f; // Adjust the cooldown time as needed
@@ -52,7 +54,7 @@ public class EnemyController : MonoBehaviour
             }
             else
             {
-                if (!isAttacking)
+                if (!isAttacking && !freezing)
                 {
                     ChasePlayer();
                 }
@@ -125,4 +127,20 @@ public class EnemyController : MonoBehaviour
         Destroy(this.gameObject, 3f);
         animator.SetBool("Death", true);
     }
+
+    public void FreezeChara(bool _freeze)
+    {
+        if (!freezing == _freeze)
+        {
+            navMeshAgent.speed = 0;
+            Debug.Log("freezed");
+            freezing = _freeze;
+        }
+        else if(freezing == _freeze) {           
+            navMeshAgent.speed = speedChase;
+            Debug.Log("unfreezed");
+        }
+    }
+
+
 }
