@@ -25,6 +25,7 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
+        characterModel = FindObjectOfType<CharacterModel>();
         enemyPool = FindObjectOfType<EnemyPool>();
         enemySpawnManagerTrigger = FindObjectOfType<EnemySpawnManagerTrigger>();
         enemyModel = GetComponent<EnemyModel>();

@@ -20,8 +20,6 @@ public class UpgradeUIManager : MonoBehaviour
         upgradeRandomizer.StartUpgrade();
         
         Time.timeScale = 0f;
-
-        
     
     }
 }

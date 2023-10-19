@@ -41,7 +41,20 @@ public class UpgradeManager : MonoBehaviour
     public void LoadSelectedUpgrades()
     {
         selectedUpgrades.Clear();
-        foreach (UpgradeData upgrade in upgradeDatabase.upgrades)
+        foreach (UpgradeData upgrade in upgradeDatabase.commonUpgrades)
+        {
+            if (PlayerPrefs.HasKey(upgrade.upgradeID.ToString()))
+            {
+                int upgradeID = PlayerPrefs.GetInt(upgrade.upgradeID.ToString());
+                UpgradeData selectedUpgrade = upgradeDatabase.GetUpgradeByID(upgradeID);
+                if (selectedUpgrade != null)
+                {
+                    selectedUpgrades.Add(upgradeID, selectedUpgrade);
+                }
+            }
+        }
+
+         foreach (UpgradeData upgrade in upgradeDatabase.rareUpgrades)
         {
             if (PlayerPrefs.HasKey(upgrade.upgradeID.ToString()))
             {

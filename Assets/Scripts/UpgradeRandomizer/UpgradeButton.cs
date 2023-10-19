@@ -5,13 +5,14 @@ using UnityEngine;
 public class UpgradeButton : MonoBehaviour
 {
     public UpgradeRandomizer upgradeRandomizer;
-
+    private UpgradeManager upgradeManager;
     private CharacterModel upgradedCharacter;
 
     private UpgradeData upgrade;
 
     void Start()
     {
+        upgradeManager = FindObjectOfType<UpgradeManager>();
         upgradedCharacter = FindObjectOfType<CharacterModel>();
 
         if(upgradedCharacter == null)
@@ -19,7 +20,12 @@ public class UpgradeButton : MonoBehaviour
             Debug.Log("Characracter not found");
             return;
         }
-
+        
+        if(upgradeManager == null)
+        {
+            Debug.Log("Upgrade not found");
+            return;
+        }
     }
 
     public void SetUpgrade(UpgradeData upgradeData)

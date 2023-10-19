@@ -11,7 +11,7 @@ public class UpgradeData : ScriptableObject
    public Sprite upgradeIcon;
    public int upgradeValue;
    public UpgradeType upgradeType;
-   
+   public UpgradeRarity rarity;
 }
 
 public enum UpgradeType
@@ -21,4 +21,10 @@ public enum UpgradeType
     HealthPoint,
     AttackSpeed,
     Defense
+}
+
+public enum UpgradeRarity
+{
+    Common,
+    Rare
 }
