@@ -6,14 +6,20 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    private CharacterModel characterModel;
+    private EnemyPool enemyPool;
+    private EnemySpawnManagerTrigger enemySpawnManagerTrigger;
     private EnemyModel enemyModel;
-    private Transform target;
-    private NavMeshAgent navMeshAgent;
+
+    private Transform target; // Transform pemain yang akan dikejar
+    private NavMeshAgent navMeshAgent;    
+    public float defense;
     private Collider enemyCollider;
     private float speedChase;
     private Animator animator;
     public float minSpeed = 3f;
     public float maxSpeed = 10f;
+
 
     public float damageAmount;
     private bool isDeath = false;
@@ -26,6 +32,9 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
+        characterModel = FindObjectOfType<CharacterModel>();
+        enemyPool = FindObjectOfType<EnemyPool>();
+        enemySpawnManagerTrigger = FindObjectOfType<EnemySpawnManagerTrigger>();
         enemyModel = GetComponent<EnemyModel>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
@@ -78,6 +87,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+
     private IEnumerator AttackPlayer()
     {
         canAttack = false;
@@ -109,7 +119,8 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage(int damageAmount)
     {       
-        enemyModel.CurrentHealth -= damageAmount;
+        float damageTaken = (damageAmount - defense) + characterModel.elementalBonus;
+        enemyModel.CurrentHealth -= damageTaken; // Reduce current health by the damage amount
         int randomHurtPattern = Random.Range(0, 3);
         animator.SetInteger("hurtPattern", randomHurtPattern);
         animator.SetTrigger("isHurt");
@@ -121,6 +132,8 @@ public class EnemyController : MonoBehaviour
 
     private void Death()
     {
+
+        enemyPool.NotifyEnemyDied();
         enemyCollider.enabled = false;
         navMeshAgent.speed = speedChase/2;
         isDeath = true;
