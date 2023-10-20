@@ -23,6 +23,9 @@ public class LoadLevelOnCollision : MonoBehaviour
         {
             if (!isFading)
             {
+                //play sfx teleport
+                NewAudioManager.Instance.bgmSource.Stop();
+                NewAudioManager.Instance.PlaySFX("Teleport");
                 StartCoroutine(FadeAndLoadScene());
             }
         }

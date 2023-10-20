@@ -10,6 +10,11 @@ public class UIManager : MonoBehaviour
     public GameObject controlPanel;
     public GameObject confirmPanel;
     private bool isConfirmPanelActive = false;
+
+    private void Start() {
+        NewAudioManager.Instance.PlayBGM("MainMenu");
+    }
+
     private void OnEnable()
     {
         PlayerController.OnPlayerDeath += EnableDeathPanel;
@@ -32,6 +37,8 @@ public class UIManager : MonoBehaviour
         if (deathPanel != null)
         {
             deathPanel.SetActive(true);
+            NewAudioManager.Instance.bgmSource.Stop();
+            NewAudioManager.Instance.PlaySFX("Death");
         }
     }
 
