@@ -117,7 +117,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(float damageAmount)
     {       
         float damageTaken = (damageAmount - defense) + characterModel.elementalBonus;
         enemyModel.CurrentHealth -= damageTaken; // Reduce current health by the damage amount
