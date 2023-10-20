@@ -27,17 +27,9 @@ public class AutoCameraBoundary : MonoBehaviour
 
     private bool blankArea = false;
 
-    //Audio
-    [Header("Audio")]
-    [SerializeField] private AudioManager audioManager;
-    [SerializeField] private AudioEvent audioEvent;
-    [SerializeField] private string _audioCategory;
-
     private void Start() {
-        //Subs Audio Event
-        audioEvent.onBattleStart += OnBattle;
         //play audio
-        audioEvent.BattleStart(_audioCategory);
+        NewAudioManager.Instance.PlayBGM("Safezone");
     }
 
     private void Awake()
@@ -121,17 +113,5 @@ public class AutoCameraBoundary : MonoBehaviour
         {
             renderer.enabled = enableFeature;
         }
-    }
-
-    //Audio Event
-    private void OnBattle(string audioCategory) {
-        if (audioCategory == _audioCategory) {
-            audioManager.PlayBgmBattle(_audioCategory);
-        }
-    }
-
-    //unsub audio event
-    private void OnDestroy() {
-        audioEvent.onBattleStart -= OnBattle;
     }
 }

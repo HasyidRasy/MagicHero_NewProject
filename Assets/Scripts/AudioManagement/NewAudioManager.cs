@@ -25,6 +25,7 @@ public class NewAudioManager : MonoBehaviour {
         } else {
             bgmSource.clip = bgm.clip;
             bgmSource.loop = true;
+            bgmSource.volume = 0.3f;
             bgmSource.Play();
         }
     }
@@ -34,7 +35,10 @@ public class NewAudioManager : MonoBehaviour {
         if (sfx == null) {
             Debug.Log("SFX Not Found!");
         } else {
-            sfxSource.PlayOneShot(sfx.clip);
+            sfxSource.volume = 0.1f;
+            //sfxSource.PlayOneShot(sfx.clip);
+            sfxSource.clip = sfx.clip;
+            sfxSource.Play();
         }
     }
 }

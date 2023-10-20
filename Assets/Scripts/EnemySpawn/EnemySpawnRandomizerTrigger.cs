@@ -60,7 +60,7 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
         {
             if (isEnemySpawned)
             {
-                SpawnEnemy();              
+                SpawnEnemy();
             }
                 
             isEnemySpawned = false;
@@ -151,15 +151,11 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
             {
                 GameEvents.current.DoorwayTriggerEnter(id); // Ganti 0 dengan ID yang sesuai
                 enemiesPresent = false; // Setel tanda agar false
-                //Memunculkan Upgrade UI
-                /*if(!upgradeRandomizer.gameObject.activeSelf)
-                {
-                    upgradeRandomizer.gameObject.SetActive(true);
-                    Time.timeScale = 0;
 
-                    upgradeRandomizer.RandomizeUpgrades();
-                    upgradeRandomizer.UpdateUI();
-                }*/
+                NewAudioManager.Instance.bgmSource.Stop();
+                NewAudioManager.Instance.PlayBGM("Safezone"); // Play BGM Safezone
+                //NewAudioManager.Instance.PlaySFX("DoorOpen"); // Play sfx door open
+
             }
             else if (enemies.Length > 0 && !enemiesPresent)
             {
