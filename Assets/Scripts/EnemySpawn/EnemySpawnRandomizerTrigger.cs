@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemySpawnManagerTrigger : MonoBehaviour
 {
+    [SerializeField]private EnemyPool enemyPool;
+    
     //Prefabs yang akan dimunculkan
     public List<GameObject> enemyPrefabs;
     //Dimana titik prefab dimunculkan
@@ -21,14 +23,23 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
     public int maxEnemies = 10;
 
     public int id;
+    
     private bool isEnemySpawned = true;
 
     public float checkInterval = 5f; // Sesuaikan interval sesuai kebutuhan
     private bool enemiesPresent = true; // Awalnya anggap ada musuh
 
+    //Membuat koneksi dengan Upgrade Randomizer
+    //[SerializeField]private UpgradeRandomizer upgradeRandomizer;
+
+    private void Awake()
+    {
+        enemyPool = FindObjectOfType<EnemyPool>(); 
+    }
 
     private void Start()
     {
+
         GameEvents.current.onDoorwayTriggerEnter += SpawnEnemyTriggerOff;
         GameEvents.current.onDoorwayTriggerExit += SpawnEnemyTriggerOn;
 
@@ -125,6 +136,7 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
             }
 
             Instantiate(randomEnemyPrefab, spawnPos, Quaternion.identity);
+            enemyPool.spawnedEnemies++;
         }
     }
     private IEnumerator CheckForEnemiesPeriodically()
@@ -139,9 +151,11 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
             {
                 GameEvents.current.DoorwayTriggerEnter(id); // Ganti 0 dengan ID yang sesuai
                 enemiesPresent = false; // Setel tanda agar false
+
                 NewAudioManager.Instance.bgmSource.Stop();
                 NewAudioManager.Instance.PlayBGM("Safezone"); // Play BGM Safezone
                 //NewAudioManager.Instance.PlaySFX("DoorOpen"); // Play sfx door open
+
             }
             else if (enemies.Length > 0 && !enemiesPresent)
             {
@@ -152,5 +166,4 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
             yield return new WaitForSeconds(checkInterval);
         }
     }
-
 }
