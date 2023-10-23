@@ -37,8 +37,6 @@ public class UpgradeRandomizer : MonoBehaviour
         RandomizeUpgrades();
         UpdateUI();
         StartUpgrade();
-
-        this.gameObject.SetActive(false);
     }
 
     public void TestTrigger()
