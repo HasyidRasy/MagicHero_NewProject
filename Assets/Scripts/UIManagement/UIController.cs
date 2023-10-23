@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour {
     public Slider _bgmSlider;
     public Slider _sfxSlider;
+    public Toggle _bgmToggle;
+    public Toggle _sfxToggle;
 
     public void ToggleBgm() {
         NewAudioManager.Instance.ToggleBGM();
