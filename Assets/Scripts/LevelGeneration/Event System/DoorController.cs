@@ -8,7 +8,7 @@ public class DoorController : MonoBehaviour
     private bool isDoorOpen = true;
     private bool isAreaCleared = true;
     private Vector3 targetPosition; // The target position for smooth movement.
-
+    [SerializeField] private float doorSpeed = 5f;
     public int id;
 
     private void Start()
@@ -23,7 +23,7 @@ public class DoorController : MonoBehaviour
     private void Update()
     {
         // Use Lerp to smoothly transition the door's position.
-        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 5f); // Adjust the speed (5f) as needed.
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * doorSpeed); // Adjust the speed (5f) as needed.
     }
 
     private void OnDoorwayOpen(int id)
