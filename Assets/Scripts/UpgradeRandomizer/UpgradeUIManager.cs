@@ -16,9 +16,7 @@ public class UpgradeUIManager : MonoBehaviour
     {   
         // Activate the UpgradeRandomizer UI
         upgradeRandomizer.gameObject.SetActive(true);
-
-        upgradeRandomizer.StartUpgrade();
-        
+        upgradeRandomizer.StartUpgrade();    
         Time.timeScale = 0f;
     
     }

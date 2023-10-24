@@ -25,8 +25,13 @@ public class EnemyPool : MonoBehaviour
         spawnedEnemies--;
         if (spawnedEnemies <= 0)
         {
-            upgradeUIManager.TriggerUI();
-            trigger.EnemyCleared(id);
+            Invoke("TriggerUpgradeUI", 3f);
         }
     }
+
+    private void TriggerUpgradeUI()
+    {
+        upgradeUIManager.TriggerUI();
+    }
+
 }

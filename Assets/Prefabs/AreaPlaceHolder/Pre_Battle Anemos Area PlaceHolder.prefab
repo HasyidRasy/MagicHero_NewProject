@@ -2898,16 +2898,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c032fed1f9898f46835a3e9415770ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPool: {fileID: 0}
   enemyPrefabs:
-  - {fileID: 8693549782459797256, guid: eaa1426e5ad86f34e828276656203ed9, type: 3}
+  - {fileID: 8693549782459797256, guid: 064e3b5974392a44abef4d458e837424, type: 3}
   spawnPoints:
   - {fileID: 3433528049534543612}
   safeZones: []
   spawnInterval: 20
   minY: 3
-  maxDistanceFromSpawnPoint: 50
-  maxEnemies: 5
+  maxDistanceFromSpawnPoint: 70
+  maxEnemies: 7
   id: 0
+  spawnEnemy: 0
   checkInterval: 1
 --- !u!1 &4727959470068076422
 GameObject:
