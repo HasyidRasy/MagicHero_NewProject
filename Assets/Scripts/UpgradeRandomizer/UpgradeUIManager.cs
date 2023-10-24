@@ -18,6 +18,9 @@ public class UpgradeUIManager : MonoBehaviour
         upgradeRandomizer.gameObject.SetActive(true);
         upgradeRandomizer.StartUpgrade();    
         Time.timeScale = 0f;
-    
+
+        NewAudioManager.Instance.bgmSource.Stop();
+        NewAudioManager.Instance.PlayBGM("Safezone"); // Play BGM Safezone
+
     }
 }
