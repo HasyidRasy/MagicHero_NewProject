@@ -45,7 +45,6 @@ public class UpgradeButton : MonoBehaviour
         
             upgradeRandomizer.gameObject.SetActive(false);
             Time.timeScale = 1f;
-
             GameEvents.current.DoorwayTriggerEnter(id);
             id++;
         }

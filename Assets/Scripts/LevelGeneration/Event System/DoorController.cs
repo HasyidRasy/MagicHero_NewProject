@@ -34,6 +34,7 @@ public class DoorController : MonoBehaviour
             {
                 targetPosition = transform.position - new Vector3(0f, openHeight, 0f);
                 isDoorOpen = true;
+                NewAudioManager.Instance.PlaySFX("DoorOpen");
             }
         }
     }
@@ -47,6 +48,9 @@ public class DoorController : MonoBehaviour
                 targetPosition = transform.position + new Vector3(0f, openHeight, 0f);
                 isDoorOpen = false;
                 isAreaCleared = false;
+                NewAudioManager.Instance.bgmSource.Stop();
+                NewAudioManager.Instance.PlaySFX("DoorClose"); // Play sfx door close
+                NewAudioManager.Instance.PlayBGM("Battle"); //Play bgm battle
             }
         }
     }
