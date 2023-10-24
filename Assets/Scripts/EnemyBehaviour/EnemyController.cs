@@ -124,6 +124,7 @@ public class EnemyController : MonoBehaviour
         int randomHurtPattern = Random.Range(0, 3);
         animator.SetInteger("hurtPattern", randomHurtPattern);
         animator.SetTrigger("isHurt");
+        NewAudioManager.Instance.PlaySFX("EnemyHurt");
         if (enemyModel.CurrentHealth <= 0)
         {
             Death();
@@ -138,6 +139,7 @@ public class EnemyController : MonoBehaviour
         navMeshAgent.speed = speedChase/2;
         isDeath = true;
         animator.SetBool("Death", true);
+        NewAudioManager.Instance.PlaySFX("EnemyDeath");
     }
 
     public void FreezeChara(bool _freeze)
