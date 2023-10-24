@@ -14,9 +14,8 @@ public class EnemyController : MonoBehaviour
     private float speedChase;
 
     //elemental system
-    public ElementalType elementNature;
-    private ElementalType elementStatus;
-    
+    private ElementalType elementStatus = ElementalType.Null;
+    private bool isActive = false;
     
     public float minSpeed = 3f;
     public float maxSpeed = 10f;
@@ -85,9 +84,16 @@ public class EnemyController : MonoBehaviour
 
     public void ApplyElementalStatus(ElementalType elementType)
     {   
-        elementStatus = elementType;
-        Debug.Log("Applied Status "+ elementStatus);
-        HandleElementalInteraction(elementNature, elementStatus);
+        if (elementStatus == ElementalType.Null)
+        {
+            elementStatus = elementType;
+            Debug.Log("Applied Status "+ elementStatus);
+        }
+        else if (elementStatus != elementType)
+        {
+            HandleElementalInteraction(elementStatus, elementType);
+            elementStatus = ElementalType.Null;
+        }
     }
 
     // Function to handle elemental interactions
@@ -100,7 +106,52 @@ public class EnemyController : MonoBehaviour
         {
             // Handle the reaction, e.g., apply damage, change visuals, etc.
             // You can define specific logic for each reaction in this function.
-            HandleReaction(reaction.resultReaction);
+            bool isStacking = reaction.stacking;
+
+            switch (isStacking)
+            {
+                case true:
+                    StartCoroutine(DamageOverTime(reaction.damageReaction, reaction.reactionInterval, reaction.reactionDuration));
+                    speedChase -= reaction.movespeedChange;
+                    StartCoroutine(ChangeSpeed(reaction.movespeedChange, reaction.reactionDuration));
+                    HandleReaction(reaction.resultReaction);
+                    break;
+                case false:
+                    if (!isActive)
+                    {
+                        isActive = true;
+                        StartCoroutine(DamageOverTime(reaction.damageReaction, reaction.reactionInterval, reaction.reactionDuration));
+                        speedChase -= reaction.movespeedChange;
+                        StartCoroutine(ChangeSpeed(reaction.movespeedChange, reaction.reactionDuration));
+                        HandleReaction(reaction.resultReaction);
+                    }
+                    break;
+            } 
+        }
+    }
+
+    private IEnumerator DamageOverTime(int damage, float interval, float duration)
+    {
+        if (damage != 0)
+        {
+            float endTime = Time.time + duration;
+
+            while (Time.time < endTime)
+            {
+                TakeDamage(damage);
+                yield return new WaitForSeconds(interval);
+            }
+            isActive = false;
+        }
+    }
+
+    private IEnumerator ChangeSpeed(float speedValue, float duration)
+    {
+        if (speedValue != 0)
+        {
+            yield return new WaitForSeconds(duration);
+            speedChase += speedValue;
+            isActive = false;
         }
     }
 

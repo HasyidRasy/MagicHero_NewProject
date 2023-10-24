@@ -6,7 +6,8 @@ public enum ElementalType
 {
     Water,
     Fire,
-    Wind
+    Wind,
+    Null
 }
 
 public class ElementalReactionController : MonoBehaviour
