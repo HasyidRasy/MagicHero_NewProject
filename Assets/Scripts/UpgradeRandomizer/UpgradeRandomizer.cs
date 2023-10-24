@@ -18,7 +18,7 @@ public class UpgradeRandomizer : MonoBehaviour
     public Button upgradeSkip;
 
     private List<UpgradeData> availableUpgrades = new List<UpgradeData>();
-    private List<UpgradeData> randomizedUpgrades = new List<UpgradeData>();
+    [SerializeField] List<UpgradeData> randomizedUpgrades = new List<UpgradeData>();
     private CharacterModel upgradedCharacter;
 
     private Dictionary<UpgradeRarity, int> rarityCounts = new Dictionary<UpgradeRarity, int>();
@@ -37,8 +37,6 @@ public class UpgradeRandomizer : MonoBehaviour
         RandomizeUpgrades();
         UpdateUI();
         StartUpgrade();
-
-        this.gameObject.SetActive(false);
     }
 
     public void TestTrigger()
