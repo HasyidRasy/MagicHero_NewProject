@@ -132,12 +132,11 @@ public class EnemyController : MonoBehaviour
 
     private void Death()
     {
-
+        Destroy(this.gameObject, 3f);
         enemyPool.NotifyEnemyDied();
         enemyCollider.enabled = false;
         navMeshAgent.speed = speedChase/2;
         isDeath = true;
-        Destroy(this.gameObject, 3f);
         animator.SetBool("Death", true);
     }
 

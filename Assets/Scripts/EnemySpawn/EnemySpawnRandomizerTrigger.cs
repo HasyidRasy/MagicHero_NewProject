@@ -23,11 +23,12 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
     public int maxEnemies = 10;
 
     public int id;
+    public int spawnEnemy = 0;
     
     private bool isEnemySpawned = true;
 
     public float checkInterval = 5f; // Sesuaikan interval sesuai kebutuhan
-    private bool enemiesPresent = true; // Awalnya anggap ada musuh
+    //private bool enemiesPresent = true; // Awalnya anggap ada musuh
 
     //Membuat koneksi dengan Upgrade Randomizer
     //[SerializeField]private UpgradeRandomizer upgradeRandomizer;
@@ -42,8 +43,7 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
 
         GameEvents.current.onDoorwayTriggerEnter += SpawnEnemyTriggerOff;
         GameEvents.current.onDoorwayTriggerExit += SpawnEnemyTriggerOn;
-
-        StartCoroutine(CheckForEnemiesPeriodically());
+        //StartCoroutine(CheckForEnemiesPeriodically());
     }
 
     private void SpawnEnemyTriggerOff(int id)
@@ -136,34 +136,15 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
             }
 
             Instantiate(randomEnemyPrefab, spawnPos, Quaternion.identity);
-            enemyPool.spawnedEnemies++;
+            spawnEnemy++;
+            enemyPool.SpawnEnemy(spawnEnemy);
         }
     }
-    private IEnumerator CheckForEnemiesPeriodically()
-    {
-        while (true)
-        {
-            // Periksa apakah ada objek musuh dalam adegan
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-            // Jika tidak ada musuh, picu acara
-            if (enemies.Length == 0 && enemiesPresent)
-            {
-                GameEvents.current.DoorwayTriggerEnter(id); // Ganti 0 dengan ID yang sesuai
-                enemiesPresent = false; // Setel tanda agar false
-
-                NewAudioManager.Instance.bgmSource.Stop();
-                NewAudioManager.Instance.PlayBGM("Safezone"); // Play BGM Safezone
-                //NewAudioManager.Instance.PlaySFX("DoorOpen"); // Play sfx door open
-
-            }
-            else if (enemies.Length > 0 && !enemiesPresent)
-            {
-                // Jika musuh hadir lagi, atur ulang tanda tersebut
-                enemiesPresent = true;
-            }
-
-            yield return new WaitForSeconds(checkInterval);
-        }
-    }
+    //public void EnemyCleared(int id)
+    //{
+    //    if(enemyPool.spawnedEnemies <= 0)
+    //    GameEvents.current.DoorwayTriggerEnter(id); // Ganti 0 dengan ID yang sesuai
+    //    //NewAudioManager.Instance.bgmSource.Stop();
+    //    //NewAudioManager.Instance.PlayBGM("Safezone"); // Play BGM Safezone
+    //}
 }
