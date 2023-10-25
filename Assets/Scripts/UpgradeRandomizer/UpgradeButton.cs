@@ -41,13 +41,34 @@ public class UpgradeButton : MonoBehaviour
             upgradedCharacter.ApplyUpgrade(upgrade);
 
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
-            Debug.Log("Upgrade Description: " + upgrade.upgradeType.ToString() + " " + upgrade.upgradeValue);
+            Debug.Log("Upgrade Description: " + GetUpgradeDescription(upgrade));
         
             upgradeRandomizer.gameObject.SetActive(false);
             Time.timeScale = 1f;
-
             GameEvents.current.DoorwayTriggerEnter(id);
             id++;
         }
+    }
+
+     private string GetUpgradeDescription(UpgradeData upgrade)
+    {
+        string description = "";
+        foreach (var stat in upgrade.stats)
+        {
+            if(stat.upgradeValueStatic > 0)
+            {
+                description += stat.upgradeType.ToString() + " +" + stat.upgradeValueStatic + "\n";
+            }
+            else if(stat.upgradeValueStatic < 0)
+            {
+                description += stat.upgradeType.ToString() + " -" + stat.upgradeValueStatic + "\n";
+            }
+
+            if(stat.upgradeValuePercent != 0)
+            {
+                description += stat.upgradeType.ToString() + " +" + stat.upgradeValuePercent + "%\n";
+            }
+        }
+        return description;
     }
 }

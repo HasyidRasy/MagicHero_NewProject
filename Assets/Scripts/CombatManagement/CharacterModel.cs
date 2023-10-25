@@ -14,6 +14,7 @@ public class CharacterModel : MonoBehaviour
     public float attack;
     public float elementalBonus;
     public float move;
+    private float increaseStat;
 
     //Dashing
     public float rotationSpeed = 10.0f;
@@ -99,31 +100,60 @@ public class CharacterModel : MonoBehaviour
     //Apply Upgrades (Avin)
     public void ApplyUpgrade(UpgradeData upgrade)
     {
-        switch (upgrade.upgradeType)
+        foreach(var stat in upgrade.stats)
         {
-        case UpgradeType.ElementalAttack:
-            elementalBonus += upgrade.upgradeValue;
-            Debug.Log("Elemental Bonus: "+elementalBonus);
-            break;
-        case UpgradeType.BasicAttack:
-            attack += upgrade.upgradeValue;
-            Debug.Log("Attack: "+Attack);
-            break;
-        case UpgradeType.HealthPoint:
-            healthPoint += upgrade.upgradeValue;
-            Debug.Log("Health Point: "+healthPoint);
-            break;
-        case UpgradeType.AttackSpeed:
-            attackSpeed += upgrade.upgradeValue;Debug.Log("Elemental Bonus: "+elementalBonus);
-            Debug.Log("Attack Speed :"+AttackSpeed);
-            break;
-        case UpgradeType.Defense:
-            defence += upgrade.upgradeValue;
-            Debug.Log("Defense: "+defence);
-            break;
-        default:
-            Debug.LogError("Unknown upgrade type: " + upgrade.upgradeType);
-            break;
+            switch (stat.upgradeType)
+            {
+            case UpgradeType.ElementalAttack:
+                elementalBonus += stat.upgradeValueStatic;
+                if(stat.upgradeValuePercent != 0)
+                {
+                    increaseStat = elementalBonus * (stat.upgradeValuePercent/100);
+                    elementalBonus += increaseStat;
+                }
+                    Debug.Log("Elemental Bonus: "+elementalBonus);
+                break;
+            case UpgradeType.BasicAttack:
+                attack += stat.upgradeValueStatic;
+                if(stat.upgradeValuePercent != 0)
+                {
+                    increaseStat = attack * (stat.upgradeValuePercent/100);
+                    attack += increaseStat;
+                }
+                Debug.Log("Attack: "+Attack);
+                break;
+            case UpgradeType.HealthPoint:
+                healthPoint += stat.upgradeValueStatic;
+                if(stat.upgradeValuePercent != 0)
+                {
+                    increaseStat = healthPoint * (stat.upgradeValuePercent/100);
+                    healthPoint += increaseStat;
+                }
+                Debug.Log("Health Point: "+healthPoint);
+                break;
+            case UpgradeType.AttackSpeed:
+                attackSpeed += stat.upgradeValueStatic;
+                if(stat.upgradeValuePercent != 0)
+                {
+                    increaseStat = attackSpeed * (stat.upgradeValuePercent/100);
+                    attackSpeed += increaseStat;
+                }
+                Debug.Log("Attack Speed :"+AttackSpeed);
+                break;
+            case UpgradeType.Defense:
+                defence += stat.upgradeValueStatic;
+                if(stat.upgradeValuePercent != 0)
+                {
+                    increaseStat = defence * (stat.upgradeValuePercent/100);
+                    defence += increaseStat;
+                }
+                Debug.Log("Defense: "+defence);
+                break;
+            default:
+                Debug.LogError("Unknown upgrade type: " + stat.upgradeType);
+                break;
+            }
         }
+        
     }
 }

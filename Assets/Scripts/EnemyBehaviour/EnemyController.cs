@@ -19,6 +19,7 @@ public class EnemyController : MonoBehaviour
     private Animator animator;
     public float minSpeed = 3f;
     public float maxSpeed = 10f;
+    private float spawnDuration = 2.0f;
 
 
     public float damageAmount;
@@ -26,6 +27,7 @@ public class EnemyController : MonoBehaviour
     private bool isAttacking;
     private bool canAttack = true;
     private bool freezing;
+    private bool isSpawning;
 
     [SerializeField] private float attackRange;
     [SerializeField] private float attackCooldown = 2.0f; // Adjust the cooldown time as needed
@@ -46,27 +48,22 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         enemyModel.CurrentHealth = enemyModel.HealthPoint;
+        NewAudioManager.Instance.PlaySFX("EnemySpawn");
     }
 
     private void Update()
     {
-        if (!isDeath && target != null)
-        {
+        Invoke("EnemyBehavior", spawnDuration);
+    }
+
+    private void EnemyBehavior() {
+        if (!isDeath && target != null && !isSpawning) {
             float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
-            if (distanceToPlayer <= attackRange)
-            {
-                if (canAttack)
-                {
-                    StartCoroutine(AttackPlayer());
-                }
-            }
-            else
-            {
-                if (!isAttacking && !freezing)
-                {
-                    ChasePlayer();
-                }
+            if (distanceToPlayer <= attackRange) {
+                if (canAttack) StartCoroutine(AttackPlayer());
+            } else {
+                if (!isAttacking && !freezing) ChasePlayer();
             }
         }
     }
@@ -96,6 +93,7 @@ public class EnemyController : MonoBehaviour
         animator.SetBool("isWalking", false);
         animator.SetBool("isHopping", false);
         animator.SetBool("isAttacking", true);
+        NewAudioManager.Instance.PlaySFX("EnemyAtk");
         // Implement your attack logic here, e.g., dealing damage to the player
         yield return new WaitForSeconds(attackCooldown); // Wait for the attack animation to finish
 
@@ -124,6 +122,8 @@ public class EnemyController : MonoBehaviour
         int randomHurtPattern = Random.Range(0, 3);
         animator.SetInteger("hurtPattern", randomHurtPattern);
         animator.SetTrigger("isHurt");
+        navMeshAgent.speed = 0;
+        NewAudioManager.Instance.PlaySFX("EnemyHurt");
         if (enemyModel.CurrentHealth <= 0)
         {
             Death();
@@ -135,9 +135,11 @@ public class EnemyController : MonoBehaviour
         Destroy(this.gameObject, 3f);
         enemyPool.NotifyEnemyDied();
         enemyCollider.enabled = false;
-        navMeshAgent.speed = speedChase/2;
+        //navMeshAgent.speed = speedChase/2;
+        navMeshAgent.speed = 0;
         isDeath = true;
         animator.SetBool("Death", true);
+        NewAudioManager.Instance.PlaySFX("EnemyDeath");
     }
 
     public void FreezeChara(bool _freeze)

@@ -29,7 +29,7 @@ public class AutoCameraBoundary : MonoBehaviour
 
     private void Start() {
         //play audio
-        NewAudioManager.Instance.PlayBGM("Safezone");
+        //NewAudioManager.Instance.PlayBGM("Safezone");
     }
 
     private void Awake()
