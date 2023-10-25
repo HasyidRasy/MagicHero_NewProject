@@ -19,9 +19,9 @@ public class TriggerArea : MonoBehaviour
         if (other.CompareTag("Player"))
         {          
             GameEvents.current.DoorwayTriggerExit(id);
-            NewAudioManager.Instance.bgmSource.Stop();
-            NewAudioManager.Instance.PlaySFX("DoorClose"); // Play sfx door close
-            NewAudioManager.Instance.PlayBGM("Battle"); //Play bgm battle
+            //NewAudioManager.Instance.bgmSource.Stop();
+            //NewAudioManager.Instance.PlaySFX("DoorClose"); // Play sfx door close
+            //NewAudioManager.Instance.PlayBGM("Battle"); //Play bgm battle
         }
     }
 }

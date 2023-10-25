@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: MagicalCore
   m_EditorClassIdentifier: 
   upgradeName: Magical Core
-  upgradeID: 7
+  upgradeID: 2
   upgradeIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  upgradeValue: 10
-  upgradeType: 1
+  stats:
+  - upgradeValueStatic: 10
+    upgradeValuePercent: 0
+    upgradeType: 1
   rarity: 1

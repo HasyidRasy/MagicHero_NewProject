@@ -52,6 +52,7 @@ public class UpgradeRandomizer : MonoBehaviour
         availableUpgrades.Clear();
         availableUpgrades.AddRange(upgradeDatabase.commonUpgrades);
         availableUpgrades.AddRange(upgradeDatabase.rareUpgrades);
+        availableUpgrades.AddRange(upgradeDatabase.legendUpgrades);
 
         InitializeRarityCounts();
         RandomizeUpgrades();
@@ -133,11 +134,15 @@ public class UpgradeRandomizer : MonoBehaviour
             {
                 upgradeNameText[i].color = Color.blue;
             }
+            else if (randomizedUpgrades[i].rarity == UpgradeRarity.Legendary)
+            {
+                upgradeNameText[i].color = Color.yellow;
+            }
             else
             {
                 upgradeNameText[i].color = Color.white;
             }
-            upgradeDescText[i].text = randomizedUpgrades[i].upgradeType.ToString() + " +" + randomizedUpgrades[i].upgradeValue;
+            upgradeDescText[i].text = GetUpgradeDescription(randomizedUpgrades[i]);
             upgradeImage[i].sprite = randomizedUpgrades[i].upgradeIcon;
 
             UpgradeButton upgradeButton = upgradeButtons[i].GetComponent<UpgradeButton>();
@@ -151,4 +156,27 @@ public class UpgradeRandomizer : MonoBehaviour
             }
         }
     }
+
+    private string GetUpgradeDescription(UpgradeData upgrade)
+{
+    string description = "";
+    foreach (var stat in upgrade.stats)
+    {
+        if(stat.upgradeValueStatic > 0)
+        {
+            description += stat.upgradeType.ToString() + " +" + stat.upgradeValueStatic + "\n";
+        }
+        else if(stat.upgradeValueStatic < 0)
+        {
+            description += stat.upgradeType.ToString() + " -" + stat.upgradeValueStatic + "\n";
+        }
+        
+        if(stat.upgradeValuePercent != 0)
+        {
+            description += stat.upgradeType.ToString() + " +" + stat.upgradeValuePercent + "%\n";
+        }
+    }
+    return description;
+}
+
 }
