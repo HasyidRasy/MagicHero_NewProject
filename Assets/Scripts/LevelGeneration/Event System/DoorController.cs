@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoorController : MonoBehaviour
 {
-    public float openHeight = 4f;
+    public float openHeight = -4f;
     private bool isDoorOpen = true;
     private bool isAreaCleared = true;
     private Vector3 targetPosition; // The target position for smooth movement.

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,6 +30,10 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     private float attackCooldown = 0f;
 
+    //[SerializeField] GameObject mousePos;
+
+    public static event Action OnPlayerDeath;
+
 
     private void Awake()
     {
@@ -50,7 +55,7 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f)
             {
                 ShootMagic(attackPattern[currentAttackIndex]);          // Menembakkan sihir sesuai dengan pola serangan saat ini
-                attackCooldown = timeBetweenAttacks; /// characterModel.attackSpeed;
+                attackCooldown = timeBetweenAttacks / (characterModel.attackSpeed);
                 currentAttackIndex = (currentAttackIndex + 1) % 4;      // Pindah ke elemen berikutnya dalam pola serangan
                 ChangeActiveElement();
                 CheckElementalReaction();
@@ -120,6 +125,7 @@ public class PlayerController : MonoBehaviour {
         if (characterModel.HealthPoint <= 0)
         {
             Death(); // If health drops to or below zero, call a method to handle enemy death
+            OnPlayerDeath?.Invoke();
         }
     }
 
@@ -154,6 +160,7 @@ public class PlayerController : MonoBehaviour {
             {
                 rb.velocity = targetDirection * magicProSpeed;
             }
+            //mousePos.transform.position = hit.point;
         }
     }
 
