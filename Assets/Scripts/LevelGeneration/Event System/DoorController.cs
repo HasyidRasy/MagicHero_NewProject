@@ -8,7 +8,7 @@ public class DoorController : MonoBehaviour
     private bool isDoorOpen = true;
     private bool isAreaCleared = true;
     private Vector3 targetPosition; // The target position for smooth movement.
-    [SerializeField] private float doorSpeed = 5f;
+    [SerializeField] private float doorSpeed = 4.5f;
     public int id;
 
     private void Start()

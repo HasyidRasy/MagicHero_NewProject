@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -172,6 +172,7 @@ MonoBehaviour:
   - {fileID: 774480834}
   - {fileID: 725708306}
   upgradeSkip: {fileID: 1423286230}
+  randomizedUpgrades: []
 --- !u!224 &43690604
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2863,10 +2864,6 @@ PrefabInstance:
     - target: {fileID: 7058847640458709340, guid: 7deafbfb3cfb10349b0170ba1cf1b7d1, type: 3}
       propertyPath: m_Name
       value: Pre_MainCharacter
-      objectReference: {fileID: 0}
-    - target: {fileID: 7058847640458709340, guid: 7deafbfb3cfb10349b0170ba1cf1b7d1, type: 3}
-      propertyPath: m_TagString
-      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5708,9 +5705,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab59f6854b2a5241a08d456f59f299c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgradeUIManager: {fileID: 234359138}
-  upgradeRandomizer: {fileID: 43690603}
   spawnedEnemies: 0
+  id: 0
 --- !u!4 &1862759664
 Transform:
   m_ObjectHideFlags: 0

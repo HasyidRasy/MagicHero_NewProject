@@ -46,6 +46,7 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         enemyModel.CurrentHealth = enemyModel.HealthPoint;
+        NewAudioManager.Instance.PlaySFX("EnemySpawn");
     }
 
     private void Update()
@@ -96,6 +97,7 @@ public class EnemyController : MonoBehaviour
         animator.SetBool("isWalking", false);
         animator.SetBool("isHopping", false);
         animator.SetBool("isAttacking", true);
+        NewAudioManager.Instance.PlaySFX("EnemyAtk");
         // Implement your attack logic here, e.g., dealing damage to the player
         yield return new WaitForSeconds(attackCooldown); // Wait for the attack animation to finish
 
@@ -124,6 +126,7 @@ public class EnemyController : MonoBehaviour
         int randomHurtPattern = Random.Range(0, 3);
         animator.SetInteger("hurtPattern", randomHurtPattern);
         animator.SetTrigger("isHurt");
+        navMeshAgent.speed = 0;
         NewAudioManager.Instance.PlaySFX("EnemyHurt");
         if (enemyModel.CurrentHealth <= 0)
         {
@@ -136,7 +139,8 @@ public class EnemyController : MonoBehaviour
         Destroy(this.gameObject, 3f);
         enemyPool.NotifyEnemyDied();
         enemyCollider.enabled = false;
-        navMeshAgent.speed = speedChase/2;
+        //navMeshAgent.speed = speedChase/2;
+        navMeshAgent.speed = 0;
         isDeath = true;
         animator.SetBool("Death", true);
         NewAudioManager.Instance.PlaySFX("EnemyDeath");
