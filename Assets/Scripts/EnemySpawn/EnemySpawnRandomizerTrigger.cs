@@ -140,11 +140,11 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
             enemyPool.SpawnEnemy(spawnEnemy);
         }
     }
-    public void EnemyCleared(int id)
-    {
-        if(enemyPool.spawnedEnemies <= 0)
-        GameEvents.current.DoorwayTriggerEnter(id); // Ganti 0 dengan ID yang sesuai
-        //NewAudioManager.Instance.bgmSource.Stop();
-        //NewAudioManager.Instance.PlayBGM("Safezone"); // Play BGM Safezone
-    }
+    //public void EnemyCleared(int id)
+    //{
+    //    if(enemyPool.spawnedEnemies <= 0)
+    //    GameEvents.current.DoorwayTriggerEnter(id); // Ganti 0 dengan ID yang sesuai
+    //    //NewAudioManager.Instance.bgmSource.Stop();
+    //    //NewAudioManager.Instance.PlayBGM("Safezone"); // Play BGM Safezone
+    //}
 }

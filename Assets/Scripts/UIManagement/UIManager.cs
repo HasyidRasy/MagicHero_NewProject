@@ -12,7 +12,8 @@ public class UIManager : MonoBehaviour
     private bool isConfirmPanelActive = false;
 
     private void Start() {
-        //NewAudioManager.Instance.PlayBGM("MainMenu");
+        NewAudioManager.Instance.bgmSource.Stop();
+        NewAudioManager.Instance.PlayBGM("MainMenu");
     }
 
     private void OnEnable()
@@ -47,6 +48,8 @@ public class UIManager : MonoBehaviour
         if (creditPanel != null)
         {
             creditPanel.SetActive(true);
+            NewAudioManager.Instance.bgmSource.Stop();
+            NewAudioManager.Instance.PlayBGM("Battle");
         }
     }
 
@@ -55,6 +58,8 @@ public class UIManager : MonoBehaviour
         if (creditPanel != null)
         {
             creditPanel.SetActive(false);
+            NewAudioManager.Instance.bgmSource.Stop();
+            NewAudioManager.Instance.PlayBGM("MainMenu");
         }
     }
 

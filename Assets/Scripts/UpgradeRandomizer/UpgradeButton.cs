@@ -7,9 +7,8 @@ public class UpgradeButton : MonoBehaviour
     public UpgradeRandomizer upgradeRandomizer;
     private UpgradeManager upgradeManager;
     private CharacterModel upgradedCharacter;
-
     private UpgradeData upgrade;
-
+    public static int id = 1;
     void Start()
     {
         upgradeManager = FindObjectOfType<UpgradeManager>();
@@ -46,6 +45,8 @@ public class UpgradeButton : MonoBehaviour
         
             upgradeRandomizer.gameObject.SetActive(false);
             Time.timeScale = 1f;
+            GameEvents.current.DoorwayTriggerEnter(id);
+            id++;
         }
     }
 

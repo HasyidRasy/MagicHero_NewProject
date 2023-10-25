@@ -58,7 +58,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
             challengeArea.GetComponentInChildren<TriggerArea>().id = currentAreaID;
             challengeArea.GetComponentInChildren<DoorController>().id = currentAreaID;
             challengeArea.GetComponentInChildren<EnemySpawnManagerTrigger>().id = currentAreaID;
-            challengeArea.GetComponentInChildren<EnemyPool>().id = currentAreaID;
             // Update ID area saat ini
             currentAreaID++;
 
