@@ -19,6 +19,7 @@ public class EnemyController : MonoBehaviour
     private Animator animator;
     public float minSpeed = 3f;
     public float maxSpeed = 10f;
+    private float spawnDuration = 2.0f;
 
 
     public float damageAmount;
@@ -26,6 +27,7 @@ public class EnemyController : MonoBehaviour
     private bool isAttacking;
     private bool canAttack = true;
     private bool freezing;
+    private bool isSpawning;
 
     [SerializeField] private float attackRange;
     [SerializeField] private float attackCooldown = 2.0f; // Adjust the cooldown time as needed
@@ -51,21 +53,17 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        EnemyBehavior();
+        Invoke("EnemyBehavior", spawnDuration);
     }
 
     private void EnemyBehavior() {
-        if (!isDeath && target != null) {
+        if (!isDeath && target != null && !isSpawning) {
             float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
             if (distanceToPlayer <= attackRange) {
-                if (canAttack) {
-                    StartCoroutine(AttackPlayer());
-                }
+                if (canAttack) StartCoroutine(AttackPlayer());
             } else {
-                if (!isAttacking && !freezing) {
-                    ChasePlayer();
-                }
+                if (!isAttacking && !freezing) ChasePlayer();
             }
         }
     }
