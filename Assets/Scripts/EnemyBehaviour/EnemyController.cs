@@ -51,21 +51,19 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        if (!isDeath && target != null)
-        {
+        EnemyBehavior();
+    }
+
+    private void EnemyBehavior() {
+        if (!isDeath && target != null) {
             float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
-            if (distanceToPlayer <= attackRange)
-            {
-                if (canAttack)
-                {
+            if (distanceToPlayer <= attackRange) {
+                if (canAttack) {
                     StartCoroutine(AttackPlayer());
                 }
-            }
-            else
-            {
-                if (!isAttacking && !freezing)
-                {
+            } else {
+                if (!isAttacking && !freezing) {
                     ChasePlayer();
                 }
             }
