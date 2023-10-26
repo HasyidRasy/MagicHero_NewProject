@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerControllerElementalReaction : MonoBehaviour {
     //get model
     private CharacterModel characterModel;
     //cek dash logic
@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour {
             attackCooldown = timeBetweenAttacks;
             currentAttackIndex = (currentAttackIndex + 1) % 4;      // Pindah ke elemen berikutnya dalam pola serangan
             ChangeActiveElement();
-            CheckElementalReaction();
+            //CheckElementalReaction();
         }
     }
 
@@ -138,10 +138,10 @@ public class PlayerController : MonoBehaviour {
             GameObject magic = Instantiate(magicProjectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
 
             // Implementasi logika menembakkan sihir sesuai elemen
-            MagicProjectile magicProjectile = magic.GetComponent<MagicProjectile>();
-            if (magicProjectile != null)
+            MagicProjectileElementalReaction magicProjectileElReact = magic.GetComponent<MagicProjectileElementalReaction>();
+            if (magicProjectileElReact != null)
             {
-                magicProjectile.SetElement(element);
+                magicProjectileElReact.SetElement(element);
             }
             // Mengatur kecepatan proyektil sesuai arah target
             Rigidbody rb = magic.GetComponent<Rigidbody>();
@@ -159,7 +159,7 @@ public class PlayerController : MonoBehaviour {
         // Memperbarui pola serangan berdasarkan elemen yang baru aktif
         attackPattern[currentAttackIndex] = elementalSlots[currentSlotIndex];
     }
-
+    /*
     private void CheckElementalReaction()
     {
         // Mengecek apakah ada 2 elemen berturut-turut dalam pola serangan
@@ -192,10 +192,13 @@ public class PlayerController : MonoBehaviour {
             Debug.Log("Freeze!");
         }
     }
+    */
 }
 
 //helpers
+/*
 public static class Helpers {
     private static Matrix4x4 _isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0f, -45f, 0f));
     public static Vector3 ToIso(this Vector3 input) => _isoMatrix.MultiplyPoint3x4(input);
 }
+*/

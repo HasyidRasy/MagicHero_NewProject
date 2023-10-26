@@ -964,9 +964,9 @@ MonoBehaviour:
   playerSpawnAreas:
   - {fileID: 8963501471895819801, guid: 6b4e0d1d262ef4142a2500c4f0d113ba, type: 3}
   challengeAreaPrefabs:
-  - {fileID: 8960153858026264103, guid: c2cb57f0b9e584e4895130b4de4251ca, type: 3}
-  - {fileID: 3372832882965730329, guid: d1dc3a52b5a22b7488e9099ba66454f3, type: 3}
-  - {fileID: 3952501958403671358, guid: 2e72ee74a85de5e4d9266287465239a2, type: 3}
+  - {fileID: 8960153858026264103, guid: 74ef80750b0a67d4f8ecdc3a7caa92ee, type: 3}
+  - {fileID: 3372832882965730329, guid: 1680127cd56e50e4ba20cb1c7e9300b7, type: 3}
+  - {fileID: 3952501958403671358, guid: 3adb197a2c4269e4fa8d079a7e8704a5, type: 3}
   corridorPrefab: {fileID: 8615632486034306209, guid: 53b3499271f8a7d4a82ce06b7b9f857e, type: 3}
   lastAreaPrefab: {fileID: 5399160249351253660, guid: 77013af77ae6a794682d90528ee2a4ab, type: 3}
   minChallengeAreas: 3
@@ -1293,7 +1293,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1228064677}
-  - component: {fileID: 1228064676}
+  - component: {fileID: 1228064680}
   - component: {fileID: 1228064675}
   - component: {fileID: 1228064678}
   - component: {fileID: 1228064679}
@@ -1327,25 +1327,6 @@ MonoBehaviour:
   dashSpeed: 100
   dashDuration: 0.1
   dashCooldown: 0
---- !u!114 &1228064676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1228064674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c2842199b4a62c4e98d26de74073a25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rb: {fileID: 1228064678}
-  _model: {fileID: 1228064677}
-  elementalSlots: 00000000010000000000000001000000
-  projectileSpawnPoint: {fileID: 398592867}
-  magicProjectilePrefab: {fileID: 5823638608141224870, guid: b95e9efe65ef8fc4a8598efc1b19e376, type: 3}
-  magicProSpeed: 200
-  timeBetweenAttacks: 0
 --- !u!4 &1228064677
 Transform:
   m_ObjectHideFlags: 0
@@ -1494,6 +1475,25 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &1228064680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228064674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eb45b8142a9e3c41ba7acb3c25475eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rb: {fileID: 1228064678}
+  _model: {fileID: 1228064677}
+  elementalSlots: 00000000020000000000000002000000
+  projectileSpawnPoint: {fileID: 398592867}
+  magicProjectilePrefab: {fileID: 5823638608141224870, guid: 1dd62e0380aabfd49b66238b3578a4b4, type: 3}
+  magicProSpeed: 200
+  timeBetweenAttacks: 0
 --- !u!1 &1365725441
 GameObject:
   m_ObjectHideFlags: 0
