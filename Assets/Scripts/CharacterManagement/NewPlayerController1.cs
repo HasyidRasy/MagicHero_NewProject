@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewPlayerController1 : MonoBehaviour {
+public class NewPlayerController1 : MonoBehaviour
+{
     //get model
     private CharacterModel characterModel;
     //cek dash logic
@@ -30,56 +31,53 @@ public class NewPlayerController1 : MonoBehaviour {
     [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     private float attackCooldown = 0f;
 
-    private bool isShooting = false;
+    [SerializeField] private LayerMask groundMask;
 
-    //[SerializeField] GameObject mousePos;
+    private Camera mainCamera;
+    private bool isShooting = false;
+    [SerializeField] private bool isAttacking = true;
 
     public static event Action OnPlayerDeath;
-
 
     private void Awake()
     {
         characterModel = GetComponent<CharacterModel>();
     }
 
-    private void Update() {
+    private void Start()
+    {
+        mainCamera = Camera.main;
+    }
 
-        PlayerStat();
-
-        // Tambahkan kondisi isShooting untuk menonaktifkan pergerakan saat menembak
-        if (!isShooting)
+    private void Update()
+    {
+        //Call Function
+        if(!isShooting)
         {
             CharaMove();
         }
-
+        PlayerStat();
         attackCooldown -= Time.deltaTime;
 
-        if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f)
+        Aim();
+
+        //Call sfx player walk
+        if ((Input.GetAxisRaw("Horizontal") > 0.1f || Input.GetAxisRaw("Vertical") > 0.1f))
         {
-            // Aktifkan isShooting saat pemain mulai menembak
-            isShooting = true;
-            ShootMagic(attackPattern[currentAttackIndex]);          // Menembakkan sihir sesuai dengan pola serangan saat ini
-            attackCooldown = timeBetweenAttacks;
-            currentAttackIndex = (currentAttackIndex + 1) % 4;      // Pindah ke elemen berikutnya dalam pola serangan
-            ChangeActiveElement();
-            CheckElementalReaction();
+            StartCoroutine(Stepping(0.5f));
+            //Debug.Log("Melangkah");
         }
+
     }
 
-    private void CharaMove() {
+    private void CharaMove()
+    {
         //input movement
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
         //move direction
         Vector3 moveDir = new Vector3(horizontal, 0f, vertical).normalized;
-
-        ////move
-        //transform.position += characterModel.MoveSpeed * Time.deltaTime * moveDir;
-        ////rotation
-        //if (moveDir != Vector3.zero) {
-        //    transform.forward = Vector3.Slerp(transform.forward, moveDir, characterModel.RotationSpeed * Time.deltaTime);
-        //}
 
         //New Move Logic
         _rb.MovePosition(transform.position + moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed * Time.deltaTime);
@@ -88,29 +86,38 @@ public class NewPlayerController1 : MonoBehaviour {
         if (moveDir == Vector3.zero) return;
         Quaternion rotation = Quaternion.LookRotation(moveDir.ToIso(), Vector3.up);
         _model.rotation = Quaternion.RotateTowards(_model.rotation, rotation, characterModel.rotationSpeed * Time.deltaTime);
-        
+
         //Call Coroutine Dash
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && (Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f)) {
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && (Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f))
+        {
             StartCoroutine(Dash());
         }
     }
 
     //Coroutine Dash Logic
-    private IEnumerator Dash() {
+    private IEnumerator Dash()
+    {
         isDashing = true;
         float startTime = Time.time;
         Vector3 pos = transform.position;
         Vector3 dashDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
 
-        while (Time.time < startTime + characterModel.DashDuration) {
-            //transform.position += characterModel.DashSpeed * Time.deltaTime * dashDir;
-            //New Logic Dash
+        while (Time.time < startTime + characterModel.DashDuration)
+        {
             _rb.MovePosition(transform.position + dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime);
             yield return null;
         }
 
         yield return new WaitForSeconds(characterModel.DashCooldown);
         isDashing = false;
+    }
+
+    private IEnumerator Stepping(float duration)
+    {
+        //audioManager.PlaySfxStepOnDirt("sfx step on dirt");
+        Debug.Log("Player melangkah");
+
+        yield return new WaitForSeconds(duration);
     }
 
     // Coroutine untuk menonaktifkan isShooting selama durasi tertentu
@@ -122,7 +129,8 @@ public class NewPlayerController1 : MonoBehaviour {
     }
 
     //Player Stat
-    private void PlayerStat() {
+    private void PlayerStat()
+    {
         float playerHp = characterModel.HealthPoint;
         float playerDef = characterModel.Defence;
     }
@@ -154,10 +162,6 @@ public class NewPlayerController1 : MonoBehaviour {
             Vector3 targetDirection = hit.point - projectileSpawnPoint.position;    // Menghitung vektor arah ke target
             targetDirection.Normalize(); // Normalisasi agar memiliki panjang 1
 
-            // Rotasi karakter ke arah target tembakan
-            Quaternion lookRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
-            transform.rotation = lookRotation;
-
             // Instansiasi proyektil di titik spawn
             GameObject magic = Instantiate(magicProjectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
 
@@ -173,8 +177,6 @@ public class NewPlayerController1 : MonoBehaviour {
             {
                 rb.velocity = targetDirection * magicProSpeed;
             }
-            //mousePos.transform.position = hit.point;
-
             // Menonaktifkan isShooting setelah menembak
             StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
         }
@@ -220,5 +222,59 @@ public class NewPlayerController1 : MonoBehaviour {
             Debug.Log("Freeze!");
         }
     }
-}
 
+    private void Aim()
+    {
+        var (success, position) = GetMousePosition();
+        if (success)
+        {
+            var direction = position - transform.position;
+
+            // mengabaikan sumbu y
+            direction.y = 0;
+
+            //cek raycast jika berada di groundMask layer
+            RaycastHit hitInfo;
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+            // raycast jika berada di groundMask layer maka boleh shooting
+            if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, groundMask))
+            {
+                if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f && isAttacking)
+                {
+                    ShootMagic(attackPattern[currentAttackIndex]);
+                    attackCooldown = timeBetweenAttacks;
+                    currentAttackIndex = (currentAttackIndex + 1) % 4;
+                    ChangeActiveElement();
+                    CheckElementalReaction();
+
+                    // membuat playe melihat ke arah klik mouse
+                    transform.forward = direction;
+                }
+            }
+        }
+    }
+
+    private (bool success, Vector3 position) GetMousePosition()
+    {
+        var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
+        {
+            // The Raycast hit something, return with the position.
+            return (success: true, position: hitInfo.point);
+        }
+        else
+        {
+            // The Raycast did not hit anything.
+            return (success: false, position: Vector3.zero);
+        }
+    }
+
+    //helpers
+    //public static class Helpers
+    //{
+    //    private static Matrix4x4 _isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0f, -45f, 0f));
+    //    public static Vector3 ToIso(this Vector3 input) => _isoMatrix.MultiplyPoint3x4(input);
+    //}
+}
