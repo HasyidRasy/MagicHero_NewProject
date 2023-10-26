@@ -29,7 +29,9 @@ public class NewPlayerController1 : MonoBehaviour
 
     [Header("Casting Speed")]
     [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
+    [SerializeField] private float timeBetweenSteps = 0.5f;   // Waktu antara serangan
     private float attackCooldown = 0f;
+    private float stepCooldown = 0f;
 
     [SerializeField] private LayerMask groundMask;
 
@@ -58,16 +60,17 @@ public class NewPlayerController1 : MonoBehaviour
         }
         PlayerStat();
         attackCooldown -= Time.deltaTime;
+        stepCooldown -= Time.deltaTime;
 
         Aim();
 
         //Call sfx player walk
-        if ((Input.GetAxisRaw("Horizontal") > 0.1f || Input.GetAxisRaw("Vertical") > 0.1f))
+        if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f) && stepCooldown <= 0f)
         {
-            StartCoroutine(Stepping(0.5f));
-            //Debug.Log("Melangkah");
+            Stepping(stepCooldown);
+            stepCooldown = timeBetweenSteps;
+            StartCoroutine(Stepping(stepCooldown));
         }
-
     }
 
     private void CharaMove()
@@ -114,7 +117,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     private IEnumerator Stepping(float duration)
     {
-        //audioManager.PlaySfxStepOnDirt("sfx step on dirt");
+        NewAudioManager.Instance.PlaySFX("StepOnDirt");
         Debug.Log("Player melangkah");
 
         yield return new WaitForSeconds(duration);
