@@ -19,19 +19,27 @@ public class UIController : MonoBehaviour {
     }
 
     public void ToggleBgm() {
-        NewAudioManager.Instance.ToggleBGM();
+        if (_bgmToggle != null) {
+            NewAudioManager.Instance.ToggleBGM();
+        }
     }
 
     public void ToggleSfx() {
-        NewAudioManager.Instance.ToggleSFX();
+        if (_sfxToggle != null) {
+            NewAudioManager.Instance.ToggleSFX();
+        }
     }
 
     public void BgmVolume() {
-        NewAudioManager.Instance.BgmVolume(_bgmSlider.value);
+        if (_bgmSlider != null) {
+            NewAudioManager.Instance.BgmVolume(_bgmSlider.value);
+        }
     }
 
     public void SfxVolume() {
-        NewAudioManager.Instance.SfxVolume(_sfxSlider.value);
+        if (_sfxSlider != null) {
+            NewAudioManager.Instance.SfxVolume(_sfxSlider.value);
+        }
     }
 
     private void LoadVolume() {
