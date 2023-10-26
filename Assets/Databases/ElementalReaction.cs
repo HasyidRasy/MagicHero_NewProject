@@ -8,5 +8,13 @@ public class ElementalReaction : ScriptableObject
     public string reactionName;
     public Element elementA;
     public Element elementB;
-    public string resultReaction;   
+    public ElementalType elementalTypeA;
+    public ElementalType elementalTypeB;
+    public string resultReaction;
+    public int damageReaction;
+    public float movespeedChange;
+    public float reactionInterval;
+    public float reactionDuration; 
+    public bool stacking;
+
 }

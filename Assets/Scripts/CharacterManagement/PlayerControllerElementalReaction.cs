@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerControllerElementalReaction : MonoBehaviour {
     //get model
     private CharacterModel characterModel;
     //cek dash logic
@@ -30,10 +29,6 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     private float attackCooldown = 0f;
 
-    //[SerializeField] GameObject mousePos;
-
-    public static event Action OnPlayerDeath;
-
 
     private void Awake()
     {
@@ -45,25 +40,19 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Update() {
-        
-        
-            //Call Function
-            CharaMove();
-            PlayerStat();
+        //Call Function
+        CharaMove();
+        PlayerStat();
 
-            attackCooldown -= Time.deltaTime;
-            if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f)
-            {
-                ShootMagic(attackPattern[currentAttackIndex]);          // Menembakkan sihir sesuai dengan pola serangan saat ini
-                if(characterModel.attackSpeed > 0)
-                    attackCooldown = timeBetweenAttacks / (characterModel.attackSpeed);
-                else
-                    attackCooldown = timeBetweenAttacks;
-                currentAttackIndex = (currentAttackIndex + 1) % 4;      // Pindah ke elemen berikutnya dalam pola serangan
-                ChangeActiveElement();
-                CheckElementalReaction();
-            }
-        
+        attackCooldown -= Time.deltaTime;
+        if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f)
+        {
+            ShootMagic(attackPattern[currentAttackIndex]);          // Menembakkan sihir sesuai dengan pola serangan saat ini
+            attackCooldown = timeBetweenAttacks;
+            currentAttackIndex = (currentAttackIndex + 1) % 4;      // Pindah ke elemen berikutnya dalam pola serangan
+            ChangeActiveElement();
+            //CheckElementalReaction();
+        }
     }
 
     private void CharaMove() {
@@ -121,14 +110,11 @@ public class PlayerController : MonoBehaviour {
 
     public void TakeDamage(float damageAmount)
     {
-        damageAmount -= characterModel.defence;
-
         characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
 
         if (characterModel.HealthPoint <= 0)
         {
             Death(); // If health drops to or below zero, call a method to handle enemy death
-            OnPlayerDeath?.Invoke();
         }
     }
 
@@ -152,10 +138,10 @@ public class PlayerController : MonoBehaviour {
             GameObject magic = Instantiate(magicProjectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
 
             // Implementasi logika menembakkan sihir sesuai elemen
-            MagicProjectile magicProjectile = magic.GetComponent<MagicProjectile>();
-            if (magicProjectile != null)
+            MagicProjectileElementalReaction magicProjectileElReact = magic.GetComponent<MagicProjectileElementalReaction>();
+            if (magicProjectileElReact != null)
             {
-                magicProjectile.SetElement(element);
+                magicProjectileElReact.SetElement(element);
             }
             // Mengatur kecepatan proyektil sesuai arah target
             Rigidbody rb = magic.GetComponent<Rigidbody>();
@@ -163,7 +149,6 @@ public class PlayerController : MonoBehaviour {
             {
                 rb.velocity = targetDirection * magicProSpeed;
             }
-            //mousePos.transform.position = hit.point;
         }
     }
 
@@ -174,7 +159,7 @@ public class PlayerController : MonoBehaviour {
         // Memperbarui pola serangan berdasarkan elemen yang baru aktif
         attackPattern[currentAttackIndex] = elementalSlots[currentSlotIndex];
     }
-
+    /*
     private void CheckElementalReaction()
     {
         // Mengecek apakah ada 2 elemen berturut-turut dalam pola serangan
@@ -207,10 +192,13 @@ public class PlayerController : MonoBehaviour {
             Debug.Log("Freeze!");
         }
     }
+    */
 }
 
 //helpers
+/*
 public static class Helpers {
     private static Matrix4x4 _isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0f, -45f, 0f));
     public static Vector3 ToIso(this Vector3 input) => _isoMatrix.MultiplyPoint3x4(input);
 }
+*/
