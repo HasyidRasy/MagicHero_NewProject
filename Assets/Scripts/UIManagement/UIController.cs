@@ -9,6 +9,15 @@ public class UIController : MonoBehaviour {
     public Toggle _bgmToggle;
     public Toggle _sfxToggle;
 
+    private void Start() {
+        if (PlayerPrefs.HasKey("musicVolume")) {
+            LoadVolume();
+        } else {
+            BgmVolume();
+            SfxVolume();
+        }
+    }
+
     public void ToggleBgm() {
         NewAudioManager.Instance.ToggleBGM();
     }
@@ -23,5 +32,13 @@ public class UIController : MonoBehaviour {
 
     public void SfxVolume() {
         NewAudioManager.Instance.SfxVolume(_sfxSlider.value);
+    }
+
+    private void LoadVolume() {
+        _bgmSlider.value = PlayerPrefs.GetFloat("bgmVolume");
+        _sfxSlider.value = PlayerPrefs.GetFloat("sfxVolume");
+
+        BgmVolume();
+        SfxVolume();
     }
 }
