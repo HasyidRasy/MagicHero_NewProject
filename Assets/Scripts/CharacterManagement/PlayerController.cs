@@ -194,7 +194,7 @@ public class PlayerController : MonoBehaviour {
         if ((element1 == ElementalType.Fire && element2 == ElementalType.Wind) ||
             (element1 == ElementalType.Wind && element2 == ElementalType.Fire))
         {
-            Debug.Log("Combustion!");
+            Debug.Log("Combustion!"); 
         }
         else if ((element1 == ElementalType.Fire && element2 == ElementalType.Water) ||
                  (element1 == ElementalType.Water && element2 == ElementalType.Fire))
