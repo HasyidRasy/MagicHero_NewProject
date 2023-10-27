@@ -168,6 +168,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &244826307
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 244826309}
+  - component: {fileID: 244826308}
+  m_Layer: 0
+  m_Name: ElementalReactionController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &244826308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244826307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31935d813bfccb34eb0bf81ac035cad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementalReaction:
+  - {fileID: 11400000, guid: 94b4f05a26261104995154a3772d5f1c, type: 2}
+  - {fileID: 11400000, guid: 06a552004cddc514fb1183768aa8120a, type: 2}
+  - {fileID: 11400000, guid: d7a11c01a16c869488b6136ce390fc18, type: 2}
+--- !u!4 &244826309
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244826307}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.4212801, y: 36.42791, z: 118.46956}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &246841754
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,7 +1250,7 @@ Transform:
   m_GameObject: {fileID: 398592866}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 4.75, z: 0}
   m_LocalScale: {x: 1, y: 0.27073798, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3571,7 +3619,7 @@ MonoBehaviour:
   _model: {fileID: 1228064677}
   elementalSlots: 01000000000000000200000000000000
   projectileSpawnPoint: {fileID: 398592867}
-  magicProjectilePrefab: {fileID: 5823638608141224870, guid: b95e9efe65ef8fc4a8598efc1b19e376, type: 3}
+  magicProjectilePrefab: {fileID: 5823638608141224870, guid: 1dd62e0380aabfd49b66238b3578a4b4, type: 3}
   magicProSpeed: 125
   timeBetweenAttacks: 0.25
 --- !u!4 &1228064677
@@ -5796,6 +5844,7 @@ SceneRoots:
   - {fileID: 190044107}
   - {fileID: 980354186}
   - {fileID: 662118997}
+  - {fileID: 244826309}
   - {fileID: 1735017189}
   - {fileID: 1365725444}
   - {fileID: 1831281712}

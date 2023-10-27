@@ -16,6 +16,10 @@ public class EnemyController : MonoBehaviour
     public float defense;
     private Collider enemyCollider;
     private float speedChase;
+
+    private ElementalType elementStatus = ElementalType.Null;
+    private bool isActive = false;
+
     private Animator animator;
     public float minSpeed = 3f;
     public float maxSpeed = 10f;
@@ -84,7 +88,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-
     private IEnumerator AttackPlayer()
     {
         canAttack = false;
@@ -128,6 +131,72 @@ public class EnemyController : MonoBehaviour
         {
             Death();
         }
+    }
+
+    public void ApplyElementalStatus(ElementalType elementType) {
+        if (elementStatus == ElementalType.Null) {
+            elementStatus = elementType;
+            Debug.Log("Applied Status " + elementStatus);
+        } else if (elementStatus != elementType) {
+            HandleElementalInteraction(elementStatus, elementType);
+            elementStatus = ElementalType.Null;
+        }
+    }
+
+    // Function to handle elemental interactions
+    public void HandleElementalInteraction(ElementalType currentElement, ElementalType otherElement) {
+        // Check for an elemental reaction between the player's element and the other element
+        ElementalReaction reaction = ElementalReactionController.Instance.CheckElementalReaction(currentElement, otherElement);
+
+        if (reaction != null) {
+            // Handle the reaction, e.g., apply damage, change visuals, etc.
+            // You can define specific logic for each reaction in this function.
+            bool isStacking = reaction.stacking;
+
+            switch (isStacking) {
+                case true:
+                    StartCoroutine(DamageOverTime(reaction.damageReaction, reaction.reactionInterval, reaction.reactionDuration));
+                    speedChase -= reaction.movespeedChange;
+                    StartCoroutine(ChangeSpeed(reaction.movespeedChange, reaction.reactionDuration));
+                    HandleReaction(reaction.resultReaction);
+                    break;
+                case false:
+                    if (!isActive) {
+                        isActive = true;
+                        StartCoroutine(DamageOverTime(reaction.damageReaction, reaction.reactionInterval, reaction.reactionDuration));
+                        speedChase -= reaction.movespeedChange;
+                        StartCoroutine(ChangeSpeed(reaction.movespeedChange, reaction.reactionDuration));
+                        HandleReaction(reaction.resultReaction);
+                    }
+                    break;
+            }
+        }
+    }
+
+    private IEnumerator DamageOverTime(int damage, float interval, float duration) {
+        if (damage != 0) {
+            float endTime = Time.time + duration;
+
+            while (Time.time < endTime) {
+                TakeDamage(damage);
+                yield return new WaitForSeconds(interval);
+            }
+            isActive = false;
+        }
+    }
+
+    private IEnumerator ChangeSpeed(float speedValue, float duration) {
+        if (speedValue != 0) {
+            yield return new WaitForSeconds(duration);
+            speedChase += speedValue;
+            isActive = false;
+        }
+    }
+
+    // Function to handle the reaction result
+    private void HandleReaction(string resultReaction) {
+        // Implement logic for the reaction, e.g., change player's appearance, apply effects, etc.
+        Debug.Log("Terjadi Reaksi " + resultReaction);
     }
 
     private void Death()
