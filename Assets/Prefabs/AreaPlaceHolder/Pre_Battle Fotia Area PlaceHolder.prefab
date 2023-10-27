@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c032fed1f9898f46835a3e9415770ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPool: {fileID: 0}
   enemyPrefabs:
   - {fileID: 8693549782459797256, guid: 38802fde60458ab43b1baa560194c4cb, type: 3}
   spawnPoints:
@@ -156,9 +157,10 @@ MonoBehaviour:
   safeZones: []
   spawnInterval: 20
   minY: 3
-  maxDistanceFromSpawnPoint: 50
+  maxDistanceFromSpawnPoint: 100
   maxEnemies: 5
   id: 0
+  spawnEnemy: 0
   checkInterval: 1
 --- !u!1 &802490040384832865
 GameObject:
@@ -172,7 +174,7 @@ GameObject:
   - component: {fileID: 5670841978950939206}
   - component: {fileID: 2028263034361582620}
   - component: {fileID: 1424046664080443033}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +279,7 @@ GameObject:
   - component: {fileID: 1408310389194556353}
   - component: {fileID: 2572215964941351114}
   - component: {fileID: 8268064124682269726}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -382,7 +384,7 @@ GameObject:
   - component: {fileID: 2684808556090891043}
   - component: {fileID: 616755776921012877}
   - component: {fileID: 3720142822353992827}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -487,7 +489,7 @@ GameObject:
   - component: {fileID: 56836536804317921}
   - component: {fileID: 5617718757533432365}
   - component: {fileID: 7040892739567739745}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Reruntuhan (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -697,7 +699,7 @@ GameObject:
   - component: {fileID: 2600799546851189916}
   - component: {fileID: 8087843398758111483}
   - component: {fileID: 6255650002983890378}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Reruntuhan (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -802,7 +804,7 @@ GameObject:
   - component: {fileID: 5283718148626130325}
   - component: {fileID: 5042079853206463906}
   - component: {fileID: 5065890672696042603}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -907,7 +909,7 @@ GameObject:
   - component: {fileID: 4517539436901258389}
   - component: {fileID: 6334781977444017502}
   - component: {fileID: 372274183935528105}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Reruntuhan (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1012,7 +1014,7 @@ GameObject:
   - component: {fileID: 8301545480915727175}
   - component: {fileID: 8118802083632092215}
   - component: {fileID: 1145230489267246783}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1117,7 +1119,7 @@ GameObject:
   - component: {fileID: 3589907904431405513}
   - component: {fileID: 6633242506584327397}
   - component: {fileID: 8054024691314460296}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1219,7 +1221,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5396955718137117778}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Big Reruntuhan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1294,7 +1296,7 @@ GameObject:
   - component: {fileID: 5597888592595111927}
   - component: {fileID: 980786179509827008}
   - component: {fileID: 5099225551953973703}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1535,7 +1537,7 @@ GameObject:
   - component: {fileID: 4615261456899212154}
   - component: {fileID: 8702047904583935907}
   - component: {fileID: 2206738640415733216}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1640,7 +1642,7 @@ GameObject:
   - component: {fileID: 5818627190072438504}
   - component: {fileID: 6915326405046191760}
   - component: {fileID: 6479714484295463173}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Reruntuhan (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1745,7 +1747,7 @@ GameObject:
   - component: {fileID: 4546054177946486411}
   - component: {fileID: 6886787943039059354}
   - component: {fileID: 8464420356743607116}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Reruntuhan (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1847,7 +1849,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8734100032502125175}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Small Reruntuhan (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1884,7 +1886,7 @@ GameObject:
   - component: {fileID: 3556189832104389234}
   - component: {fileID: 744242519824544807}
   - component: {fileID: 947983616528704127}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2108,7 +2110,7 @@ GameObject:
   - component: {fileID: 8482551467235737737}
   - component: {fileID: 6575312581562744587}
   - component: {fileID: 2460639450832446478}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2473,7 +2475,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7436195693095126814}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Big Reruntuhan (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2510,7 +2512,7 @@ GameObject:
   - component: {fileID: 176413440313394821}
   - component: {fileID: 5979757611346663337}
   - component: {fileID: 2079541356999440104}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2615,7 +2617,7 @@ GameObject:
   - component: {fileID: 237477522615064026}
   - component: {fileID: 5322953603433813472}
   - component: {fileID: 9088227409508857393}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2871,7 +2873,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 374714976253943840}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Med Reruntuhan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2908,7 +2910,7 @@ GameObject:
   - component: {fileID: 7826282219777568596}
   - component: {fileID: 1603257593069819105}
   - component: {fileID: 6780777432588225342}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3044,7 +3046,7 @@ GameObject:
   - component: {fileID: 4923553674892912401}
   - component: {fileID: 6635891833737646476}
   - component: {fileID: 440992045484752656}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3149,7 +3151,7 @@ GameObject:
   - component: {fileID: 2525443884718315259}
   - component: {fileID: 8432080458852828620}
   - component: {fileID: 5859025822426563245}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3303,7 +3305,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 9b6b8dc82250c1748ab97ec9a3571790, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 296ba55131e67d3428fb561d09d97a2a, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &8345765248055796915
 GameObject:
@@ -3422,7 +3424,7 @@ GameObject:
   - component: {fileID: 2003726381680219675}
   - component: {fileID: 8535986311546125664}
   - component: {fileID: 5564673552378508974}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Reruntuhan (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3632,7 +3634,7 @@ GameObject:
   - component: {fileID: 3627875517988485233}
   - component: {fileID: 6854256137503939486}
   - component: {fileID: 3978387982127033837}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillars (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

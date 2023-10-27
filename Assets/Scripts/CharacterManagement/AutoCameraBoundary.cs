@@ -5,7 +5,7 @@ public class AutoCameraBoundary : MonoBehaviour
     [Header("Player Follow")]
     [SerializeField] private Transform target;
     [SerializeField] private float smoothTime;
-    [SerializeField] private string boundaryName = "Cam Anchor";
+    [SerializeField] private GameObject boundaryName;
 
     private Vector3 _offset;
     private Vector3 _currentVelocity = Vector3.zero;
@@ -19,20 +19,25 @@ public class AutoCameraBoundary : MonoBehaviour
     private Transform maxXPosition; // Maximum X coordinate of the boundary
     private Transform minZPosition; // Minimum Z coordinate of the boundary
     private Transform maxZPosition; // Maximum Z coordinate of the boundary
-    private Transform frontTrigger; // Maximum Z coordinate of the boundary
-    private Transform backTrigger; // Maximum Z coordinate of the boundary
+    private Transform frontTrigger; // Maximum front coordinate of the boundary
+    private Transform backTrigger; // Maximum back coordinate of the boundary
 
     [SerializeField] private float offsetCenterFront; // Offset for frontTrigger relative to centerMov
     [SerializeField] private float offsetCenterBack;  // Offset for backTrigger relative to centerMov
 
     private bool blankArea = false;
 
+    private void Start() {
+        //play audio
+        //NewAudioManager.Instance.PlayBGM("Safezone");
+    }
+
     private void Awake()
     {
         _offset = transform.position - target.position;
 
         // Find the centerMov GameObject based on the specified name
-        GameObject centerMovObject = GameObject.Find(boundaryName);
+        GameObject centerMovObject = boundaryName;
 
         if (centerMovObject)
         {
@@ -108,5 +113,5 @@ public class AutoCameraBoundary : MonoBehaviour
         {
             renderer.enabled = enableFeature;
         }
-    } 
+    }
 }
