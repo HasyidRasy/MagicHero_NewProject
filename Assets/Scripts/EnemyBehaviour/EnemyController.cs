@@ -25,12 +25,13 @@ public class EnemyController : MonoBehaviour
     public float maxSpeed = 10f;
     private float spawnDuration = 2.0f;
 
+    private VfxTest vfx;
 
     public float damageAmount;
     private bool isDeath = false;
     private bool isAttacking;
     private bool canAttack = true;
-    private bool freezing;
+    private bool freezing = false;
     private bool isSpawning;
 
     [SerializeField] private float attackRange;
@@ -53,6 +54,11 @@ public class EnemyController : MonoBehaviour
     {
         enemyModel.CurrentHealth = enemyModel.HealthPoint;
         NewAudioManager.Instance.PlaySFX("EnemySpawn");
+        vfx = GetComponent<VfxTest>();
+
+        if (vfx == null) {
+            Debug.LogWarning("VfxTest component not found on this GameObject.");
+        }
     }
 
     private void Update()
@@ -158,7 +164,7 @@ public class EnemyController : MonoBehaviour
                     StartCoroutine(DamageOverTime(reaction.damageReaction, reaction.reactionInterval, reaction.reactionDuration));
                     speedChase -= reaction.movespeedChange;
                     StartCoroutine(ChangeSpeed(reaction.movespeedChange, reaction.reactionDuration));
-                    HandleReaction(reaction.resultReaction);
+                    HandleReaction(reaction.resultReaction, reaction.reactionDuration);
                     break;
                 case false:
                     if (!isActive) {
@@ -166,7 +172,7 @@ public class EnemyController : MonoBehaviour
                         StartCoroutine(DamageOverTime(reaction.damageReaction, reaction.reactionInterval, reaction.reactionDuration));
                         speedChase -= reaction.movespeedChange;
                         StartCoroutine(ChangeSpeed(reaction.movespeedChange, reaction.reactionDuration));
-                        HandleReaction(reaction.resultReaction);
+                        HandleReaction(reaction.resultReaction, reaction.reactionDuration);
                     }
                     break;
             }
@@ -194,9 +200,21 @@ public class EnemyController : MonoBehaviour
     }
 
     // Function to handle the reaction result
-    private void HandleReaction(string resultReaction) {
-        // Implement logic for the reaction, e.g., change player's appearance, apply effects, etc.
-        Debug.Log("Terjadi Reaksi " + resultReaction);
+    private void HandleReaction(string resultReaction, float reactionDuration) {
+        
+        if(resultReaction == "Freezing" && !freezing) {
+            Debug.Log("Terjadi Reaksi " + resultReaction);
+            freezing = true;
+            vfx.Freeze(reactionDuration);
+            Invoke("Unfreeze", reactionDuration);
+            Invoke("HandleFreezing", reactionDuration + 0.5f);
+        }
+    }
+    private void Unfreeze() {
+        vfx.Unfreeze();
+    }
+    private void HandleFreezing() {
+        freezing = false;
     }
 
     private void Death()
