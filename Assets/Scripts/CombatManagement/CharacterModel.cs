@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharacterModel : MonoBehaviour
 {
     public static CharacterModel Instance {get; private set;}
+    private PlayerController playerController;
 
     // Private fields to store character properties
     public float healthPoint;
@@ -33,6 +34,8 @@ public class CharacterModel : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        playerController = FindObjectOfType<PlayerController>();
     }
 
     // Getter and setter for healthPoint
@@ -100,53 +103,31 @@ public class CharacterModel : MonoBehaviour
     //Apply Upgrades (Avin)
     public void ApplyUpgrade(UpgradeData upgrade)
     {
+        if(upgrade.enableDoubleDash)
+        {
+            playerController.maxDash = 2;
+        }
+
         foreach(var stat in upgrade.stats)
         {
             switch (stat.upgradeType)
             {
             case UpgradeType.ElementalAttack:
                 elementalBonus += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = elementalBonus * (stat.upgradeValuePercent/100);
-                    elementalBonus += increaseStat;
-                }
-                    Debug.Log("Elemental Bonus: "+elementalBonus);
                 break;
             case UpgradeType.BasicAttack:
                 attack += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = attack * (stat.upgradeValuePercent/100);
-                    attack += increaseStat;
-                }
-                Debug.Log("Attack: "+Attack);
                 break;
             case UpgradeType.HealthPoint:
                 healthPoint += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = healthPoint * (stat.upgradeValuePercent/100);
-                    healthPoint += increaseStat;
-                }
                 Debug.Log("Health Point: "+healthPoint);
                 break;
             case UpgradeType.AttackSpeed:
                 attackSpeed += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = attackSpeed * (stat.upgradeValuePercent/100);
-                    attackSpeed += increaseStat;
-                }
                 Debug.Log("Attack Speed :"+AttackSpeed);
                 break;
             case UpgradeType.Defense:
                 defence += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = defence * (stat.upgradeValuePercent/100);
-                    defence += increaseStat;
-                }
                 Debug.Log("Defense: "+defence);
                 break;
             default:

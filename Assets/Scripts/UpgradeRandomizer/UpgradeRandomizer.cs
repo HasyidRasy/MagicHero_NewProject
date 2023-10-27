@@ -94,17 +94,61 @@ public class UpgradeRandomizer : MonoBehaviour
 
     private UpgradeRarity GetRandomRarityWithWeightedDistribution()
     {
-        float randomValue = Random.Range(0f, 1f);
-        
-        // 75% chance for common, 25% chance for rare
-        if (randomValue <= 0.75f)
+        /*Amount Randomizer
+        int commonAmount = 0;
+        int rareAmount = 0;
+        int legendAmount = 0;
+    
+        foreach(var upgrades in upgradeDatabase.commonUpgrades)
+        {
+            commonAmount += 6;
+        }
+
+        foreach(var upgrades in upgradeDatabase.rareUpgrades)
+        {
+            rareAmount += 3;
+        }
+
+        foreach(var upgrades in upgradeDatabase.legendUpgrades)
+        {
+            legendAmount += 1;
+        }
+
+        int totalAmount = commonAmount + rareAmount + legendAmount;
+
+        int randVal = Random.Range(1, totalAmount);
+
+        if(randVal >= 1 && randVal <= commonAmount)
         {
             return UpgradeRarity.Common;
         }
-        else
+        else if(randVal > commonAmount && randVal <= (commonAmount + rareAmount))
         {
             return UpgradeRarity.Rare;
         }
+        else 
+        {
+            return UpgradeRarity.Legendary;
+        }
+        */
+        
+        //|| Percent randomizer;
+        float randomValue = Random.Range(0f, 1f);
+        
+        // 60% chance for common, 30% chance for rare, 10% change for legend
+        if (randomValue <= 0.60f)
+        {
+            return UpgradeRarity.Common;
+        }
+        else if (randomValue > 0.60f && randomValue <= 0.9f)
+        {
+            return UpgradeRarity.Rare;
+        }
+        else
+        {
+            return UpgradeRarity.Legendary;
+        }
+        
     }
     private UpgradeData GetRandomUpgrade(UpgradeRarity rarity)
     {
@@ -171,9 +215,9 @@ public class UpgradeRandomizer : MonoBehaviour
             description += stat.upgradeType.ToString() + " -" + stat.upgradeValueStatic + "\n";
         }
         
-        if(stat.upgradeValuePercent != 0)
+        if(upgrade.upgradeDesc != null && upgrade.stats == null)
         {
-            description += stat.upgradeType.ToString() + " +" + stat.upgradeValuePercent + "%\n";
+            description += upgrade.upgradeDesc;
         }
     }
     return description;

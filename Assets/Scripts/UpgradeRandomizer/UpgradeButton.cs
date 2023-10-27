@@ -63,11 +63,11 @@ public class UpgradeButton : MonoBehaviour
             {
                 description += stat.upgradeType.ToString() + " -" + stat.upgradeValueStatic + "\n";
             }
+        }
 
-            if(stat.upgradeValuePercent != 0)
-            {
-                description += stat.upgradeType.ToString() + " +" + stat.upgradeValuePercent + "%\n";
-            }
+        if(upgrade.upgradeDesc != null)
+        {
+            description += upgrade.upgradeDesc;
         }
         return description;
     }

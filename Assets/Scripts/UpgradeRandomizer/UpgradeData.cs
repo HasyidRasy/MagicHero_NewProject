@@ -11,13 +11,14 @@ public class UpgradeData : ScriptableObject
    public Sprite upgradeIcon;
    public UpgradeStats[] stats;
    public UpgradeRarity rarity;
+   public bool enableDoubleDash;
+   public string upgradeDesc;
 }
 
 [System.Serializable]
 public class UpgradeStats
 {
     public int upgradeValueStatic;
-    public float upgradeValuePercent;
     public UpgradeType upgradeType;
 }
 
