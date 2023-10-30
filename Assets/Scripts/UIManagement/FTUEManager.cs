@@ -12,7 +12,7 @@ public class FTUEManager : MonoBehaviour {
     public GameObject _sceneArea3;
     public GameObject _sceneArea4;
     public GameObject _sceneArea5;
-    private int _id;
+    public GameObject _sceneEnemyIntro;
 
     private void Awake() {
         if (Instance == null) {
@@ -28,6 +28,8 @@ public class FTUEManager : MonoBehaviour {
         if (_sceneStory != null) {
             _sceneStory.SetActive(true);
         }
+        NewAudioManager.Instance.bgmSource.Stop();
+        NewAudioManager.Instance.PlayBGM("Safezone");
     }
 
     public void Pause() {
@@ -38,23 +40,30 @@ public class FTUEManager : MonoBehaviour {
         Time.timeScale = 1f;
     }
 
-    public void FTUEActive(int id) {
-        if (id == 1)
+    public void FTUEActive(string nameFtue) {
+        if (nameFtue == "TutorialBattle")
         {
             Pause();
             _sceneArea2.SetActive(true);
         }
-        if (id == 2) {
+        if (nameFtue == "TutorialElemental") {
             Pause();
             _sceneArea3.SetActive(true);
         }
-        if (id == 3) {
+        if (nameFtue == "RewardExplain") {
             Pause();
             _sceneArea4.SetActive(true);
         }
-        if (id == 4) {
+        if (nameFtue == "GameObj") {
             Pause();
             _sceneArea5.SetActive(true);
+        }
+        if (nameFtue == "EnemyIntro") {
+            Pause();
+            _sceneEnemyIntro.SetActive(true);
+        }
+        if (nameFtue == "GoToMainLevel") {
+            SceneManager.LoadScene("Level1");
         }
     }
 }

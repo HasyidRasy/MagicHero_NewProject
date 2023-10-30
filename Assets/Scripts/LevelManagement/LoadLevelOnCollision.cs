@@ -4,7 +4,7 @@ using System.Collections;
 
 public class LoadLevelOnCollision : MonoBehaviour
 {
-    public int sceneIndexToLoad = 1; // Change this to the desired scene index.
+    public string sceneIndexToLoad; // Change this to the desired scene index.
     public float delayBeforeLoad = 2.0f; // Delay in seconds before loading.
     public Renderer objectRenderer; // Reference to the object's renderer.
 
