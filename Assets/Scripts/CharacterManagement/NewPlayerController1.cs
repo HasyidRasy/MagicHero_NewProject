@@ -169,7 +169,7 @@ public class NewPlayerController1 : MonoBehaviour
             GameObject magic = Instantiate(magicProjectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
 
             // Implementasi logika menembakkan sihir sesuai elemen
-            MagicProjectile magicProjectile = magic.GetComponent<MagicProjectile>();
+            MagicProjectileElementalReaction magicProjectile = magic.GetComponent<MagicProjectileElementalReaction>();
             if (magicProjectile != null)
             {
                 magicProjectile.SetElement(element);
