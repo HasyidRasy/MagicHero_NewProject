@@ -217,6 +217,19 @@ public class EnemyController : MonoBehaviour
         freezing = false;
     }
 
+    private void VfxHandle(string resultReaction) {
+
+        if (resultReaction == "Freezing") {
+            vfx.Unfreeze();
+        } 
+        else if (resultReaction == "Burning") {
+            vfx.Unfreeze();
+        } 
+        else if (resultReaction == "Slowness") {
+            vfx.Unfreeze();
+        }
+    }
+
     private void Death()
     {
         Destroy(this.gameObject, 3f);

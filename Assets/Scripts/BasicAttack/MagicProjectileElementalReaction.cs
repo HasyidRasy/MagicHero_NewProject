@@ -8,6 +8,10 @@ public class MagicProjectileElementalReaction : MonoBehaviour
     [SerializeField] private float lifeTime;
     [SerializeField] private int damageAmount = 20;
 
+    [SerializeField] GameObject fotiaVfx;
+    [SerializeField] GameObject neroVfx;
+    [SerializeField] GameObject anemosVfx;
+
     //untuk menghancurkan projectile dalam kurun waktu tertentu
     private void Awake()
     {
@@ -26,16 +30,13 @@ public class MagicProjectileElementalReaction : MonoBehaviour
         switch (element)
         {
             case ElementalType.Water:
-                material.color = Color.blue;
-                Debug.Log("tembak proyeqtil "+ element);
+                neroVfx.SetActive(true);
                 break;
             case ElementalType.Fire:
-                material.color = Color.red;
-                Debug.Log("tembak proyeqtil " + element);
+                fotiaVfx.SetActive(true);
                 break;
             case ElementalType.Wind:
-                material.color = Color.green;
-                Debug.Log("tembak proyeqtil " + element);
+                anemosVfx.SetActive(true);
                 break;
         }
     }
