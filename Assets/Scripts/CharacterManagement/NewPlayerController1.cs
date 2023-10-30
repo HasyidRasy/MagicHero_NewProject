@@ -7,6 +7,7 @@ public class NewPlayerController1 : MonoBehaviour
 {
     //get model
     private CharacterModel characterModel;
+    private Animator animator;
     //cek dash logic
     private bool isDashing = false;
     //rigidbody
@@ -25,6 +26,7 @@ public class NewPlayerController1 : MonoBehaviour
     [SerializeField] private GameObject magicProjectilePrefab;  // Prefab untuk sihir
 
     [Header("Magic Speed")]
+    [SerializeField] private float delayShoot = 2f;
     [SerializeField] private float magicProSpeed = 10f;         // Kecepatan proyektil
 
     [Header("Casting Speed")]
@@ -44,6 +46,7 @@ public class NewPlayerController1 : MonoBehaviour
     private void Awake()
     {
         characterModel = GetComponent<CharacterModel>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void Start()
@@ -54,10 +57,7 @@ public class NewPlayerController1 : MonoBehaviour
     private void Update()
     {
         //Call Function
-        if(!isShooting)
-        {
-            CharaMove();
-        }
+        if(!isShooting) CharaMove();
         PlayerStat();
         attackCooldown -= Time.deltaTime;
         stepCooldown -= Time.deltaTime;
@@ -65,61 +65,67 @@ public class NewPlayerController1 : MonoBehaviour
         Aim();
 
         //Call sfx player walk
-        if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f) && stepCooldown <= 0f)
-        {
+        if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f) && stepCooldown <= 0f) {
             Stepping(stepCooldown);
             stepCooldown = timeBetweenSteps;
             StartCoroutine(Stepping(stepCooldown));
         }
     }
 
-    private void CharaMove()
-    {
-        //input movement
+    private void CharaMove() {
+        // Input movement
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        //move direction
+        // Move direction
         Vector3 moveDir = new Vector3(horizontal, 0f, vertical).normalized;
 
-        //New Move Logic
+        // Check if the character is walking
+        bool isWalking = moveDir != Vector3.zero;
+
+        // Set the "isWalking" parameter in the animator
+        animator.SetBool("isWalking", isWalking);
+        animator.SetBool("isDashing", isDashing);
+        // New Move Logic
         _rb.MovePosition(transform.position + moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed * Time.deltaTime);
 
-        //New Look Logic (rotation)
+        // New Look Logic (rotation)
         if (moveDir == Vector3.zero) return;
         Quaternion rotation = Quaternion.LookRotation(moveDir.ToIso(), Vector3.up);
         _model.rotation = Quaternion.RotateTowards(_model.rotation, rotation, characterModel.rotationSpeed * Time.deltaTime);
 
-        //Call Coroutine Dash
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && (Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f))
-        {
+        // Call Coroutine Dash
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && isWalking) {
             StartCoroutine(Dash());
         }
     }
 
-    //Coroutine Dash Logic
-    private IEnumerator Dash()
-    {
+
+
+    // Coroutine Dash Logic
+    private IEnumerator Dash() {
         isDashing = true;
+        animator.SetBool("isWalking", false);
+        animator.SetBool("isDashing", true); // Set isDashing to true while dashing
+
         float startTime = Time.time;
         Vector3 pos = transform.position;
         Vector3 dashDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
 
-        while (Time.time < startTime + characterModel.DashDuration)
-        {
+        while (Time.time < startTime + characterModel.DashDuration) {
             _rb.MovePosition(transform.position + dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime);
             yield return null;
         }
 
+        animator.SetBool("isDashing", false); // Set isDashing back to false after dashing
         yield return new WaitForSeconds(characterModel.DashCooldown);
         isDashing = false;
     }
 
+
     private IEnumerator Stepping(float duration)
     {
         NewAudioManager.Instance.PlaySFX("StepOnDirt");
-        Debug.Log("Player melangkah");
-
         yield return new WaitForSeconds(duration);
     }
 
@@ -129,6 +135,7 @@ public class NewPlayerController1 : MonoBehaviour
         isShooting = true;
         yield return new WaitForSeconds(duration);
         isShooting = false;
+        animator.SetBool("isAttacking", false);
     }
 
     //Player Stat
@@ -166,10 +173,10 @@ public class NewPlayerController1 : MonoBehaviour
             targetDirection.Normalize(); // Normalisasi agar memiliki panjang 1
 
             // Instansiasi proyektil di titik spawn
-            GameObject magic = Instantiate(magicProjectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
+            GameObject magic = Instantiate(magicProjectilePrefab, projectileSpawnPoint.position, Quaternion.LookRotation(targetDirection));
 
             // Implementasi logika menembakkan sihir sesuai elemen
-            MagicProjectile magicProjectile = magic.GetComponent<MagicProjectile>();
+            MagicProjectileElementalReaction magicProjectile = magic.GetComponent<MagicProjectileElementalReaction>();
             if (magicProjectile != null)
             {
                 magicProjectile.SetElement(element);
@@ -245,18 +252,24 @@ public class NewPlayerController1 : MonoBehaviour
             {
                 if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f && isAttacking)
                 {
+                    animator.SetBool("isAttacking", true);
+                    //Invoke("DelayedShootMagic", delayShoot);
                     ShootMagic(attackPattern[currentAttackIndex]);
                     attackCooldown = timeBetweenAttacks;
                     currentAttackIndex = (currentAttackIndex + 1) % 4;
                     ChangeActiveElement();
-                    CheckElementalReaction();
-
+                    CheckElementalReaction();                   
                     // membuat playe melihat ke arah klik mouse
                     transform.forward = direction;
                 }
             }
         }
     }
+
+    //void DelayedShootMagic() {
+    //    // Here you can call ShootMagic with the attack pattern.
+    //    ShootMagic(attackPattern[currentAttackIndex]);
+    //}
 
     private (bool success, Vector3 position) GetMousePosition()
     {
