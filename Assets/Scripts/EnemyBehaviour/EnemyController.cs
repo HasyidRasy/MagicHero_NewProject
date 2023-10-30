@@ -16,17 +16,22 @@ public class EnemyController : MonoBehaviour
     public float defense;
     private Collider enemyCollider;
     private float speedChase;
+
+    private ElementalType elementStatus = ElementalType.Null;
+    private bool isActive = false;
+
     private Animator animator;
     public float minSpeed = 3f;
     public float maxSpeed = 10f;
     private float spawnDuration = 2.0f;
 
+    private VfxTest vfx;
 
     public float damageAmount;
     private bool isDeath = false;
     private bool isAttacking;
     private bool canAttack = true;
-    private bool freezing;
+    private bool freezing = false;
     private bool isSpawning;
 
     [SerializeField] private float attackRange;
@@ -49,6 +54,11 @@ public class EnemyController : MonoBehaviour
     {
         enemyModel.CurrentHealth = enemyModel.HealthPoint;
         NewAudioManager.Instance.PlaySFX("EnemySpawn");
+        vfx = GetComponent<VfxTest>();
+
+        if (vfx == null) {
+            Debug.LogWarning("VfxTest component not found on this GameObject.");
+        }
     }
 
     private void Update()
@@ -83,7 +93,6 @@ public class EnemyController : MonoBehaviour
             animator.SetBool("isHopping", true);
         }
     }
-
 
     private IEnumerator AttackPlayer()
     {
@@ -128,6 +137,84 @@ public class EnemyController : MonoBehaviour
         {
             Death();
         }
+    }
+
+    public void ApplyElementalStatus(ElementalType elementType) {
+        if (elementStatus == ElementalType.Null) {
+            elementStatus = elementType;
+            Debug.Log("Applied Status " + elementStatus);
+        } else if (elementStatus != elementType) {
+            HandleElementalInteraction(elementStatus, elementType);
+            elementStatus = ElementalType.Null;
+        }
+    }
+
+    // Function to handle elemental interactions
+    public void HandleElementalInteraction(ElementalType currentElement, ElementalType otherElement) {
+        // Check for an elemental reaction between the player's element and the other element
+        ElementalReaction reaction = ElementalReactionController.Instance.CheckElementalReaction(currentElement, otherElement);
+
+        if (reaction != null) {
+            // Handle the reaction, e.g., apply damage, change visuals, etc.
+            // You can define specific logic for each reaction in this function.
+            bool isStacking = reaction.stacking;
+
+            switch (isStacking) {
+                case true:
+                    StartCoroutine(DamageOverTime(reaction.damageReaction, reaction.reactionInterval, reaction.reactionDuration));
+                    speedChase -= reaction.movespeedChange;
+                    StartCoroutine(ChangeSpeed(reaction.movespeedChange, reaction.reactionDuration));
+                    HandleReaction(reaction.resultReaction, reaction.reactionDuration);
+                    break;
+                case false:
+                    if (!isActive) {
+                        isActive = true;
+                        StartCoroutine(DamageOverTime(reaction.damageReaction, reaction.reactionInterval, reaction.reactionDuration));
+                        speedChase -= reaction.movespeedChange;
+                        StartCoroutine(ChangeSpeed(reaction.movespeedChange, reaction.reactionDuration));
+                        HandleReaction(reaction.resultReaction, reaction.reactionDuration);
+                    }
+                    break;
+            }
+        }
+    }
+
+    private IEnumerator DamageOverTime(int damage, float interval, float duration) {
+        if (damage != 0) {
+            float endTime = Time.time + duration;
+
+            while (Time.time < endTime) {
+                TakeDamage(damage);
+                yield return new WaitForSeconds(interval);
+            }
+            isActive = false;
+        }
+    }
+
+    private IEnumerator ChangeSpeed(float speedValue, float duration) {
+        if (speedValue != 0) {
+            yield return new WaitForSeconds(duration);
+            speedChase += speedValue;
+            isActive = false;
+        }
+    }
+
+    // Function to handle the reaction result
+    private void HandleReaction(string resultReaction, float reactionDuration) {
+        
+        if(resultReaction == "Freezing" && !freezing) {
+            Debug.Log("Terjadi Reaksi " + resultReaction);
+            freezing = true;
+            vfx.Freeze(reactionDuration);
+            Invoke("Unfreeze", reactionDuration);
+            Invoke("HandleFreezing", reactionDuration + 0.5f);
+        }
+    }
+    private void Unfreeze() {
+        vfx.Unfreeze();
+    }
+    private void HandleFreezing() {
+        freezing = false;
     }
 
     private void Death()
