@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 916650723546164655}
   - component: {fileID: 5912997185544656413}
   - component: {fileID: 7705990997861321368}
+  - component: {fileID: 4211806686860366882}
   m_Layer: 0
   m_Name: Cube.017
   m_TagString: Untagged
@@ -83,6 +84,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4211806686860366882
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 515013839241861706}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1716842359454501035, guid: 82c38813aff9e0942b197945aa4ca620, type: 3}
 --- !u!1 &4999115954605876317
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,6 +150,7 @@ GameObject:
   - component: {fileID: 7045592894401448720}
   - component: {fileID: 5354308588227022826}
   - component: {fileID: 4414625328602378987}
+  - component: {fileID: 7274341349127839302}
   m_Layer: 0
   m_Name: Cube.011
   m_TagString: Untagged
@@ -199,3 +223,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7274341349127839302
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6774058267668101643}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -153830957423991239, guid: 82c38813aff9e0942b197945aa4ca620, type: 3}

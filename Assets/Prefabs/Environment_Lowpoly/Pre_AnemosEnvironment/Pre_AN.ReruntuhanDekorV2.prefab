@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3855657724504538680}
   - component: {fileID: 2380652008960285885}
   - component: {fileID: 3035436184934008546}
+  - component: {fileID: 1476459034467326257}
   m_Layer: 0
   m_Name: Pre_AN.ReruntuhanV
   m_TagString: Untagged
@@ -83,6 +84,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1476459034467326257
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266512197904450723}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 523262842557256890, guid: 82c38813aff9e0942b197945aa4ca620, type: 3}
 --- !u!1 &1784782219106681194
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,6 +150,7 @@ GameObject:
   - component: {fileID: 5867192373350225017}
   - component: {fileID: 1254813608233955774}
   - component: {fileID: 2333366986153461888}
+  - component: {fileID: 6851528919580157524}
   m_Layer: 0
   m_Name: Pre_Reruntuhan.002
   m_TagString: Untagged
@@ -199,3 +223,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6851528919580157524
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6489182337739201340}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 362890564180794543, guid: 82c38813aff9e0942b197945aa4ca620, type: 3}
