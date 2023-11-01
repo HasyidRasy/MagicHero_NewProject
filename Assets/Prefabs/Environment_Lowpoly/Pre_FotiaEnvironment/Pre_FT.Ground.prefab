@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 5590193529459279036}
   - component: {fileID: 1132818686978335438}
   - component: {fileID: 7450255399919012324}
-  m_Layer: 0
+  - component: {fileID: 6986812937357992457}
+  m_Layer: 3
   m_Name: Pre_FT.Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,3 +84,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6986812937357992457
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3955456478186873965}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 0.015625088, z: 256}
+  m_Center: {x: 0, y: 0, z: 0}
