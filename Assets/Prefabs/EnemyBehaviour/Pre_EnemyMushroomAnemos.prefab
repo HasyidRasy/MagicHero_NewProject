@@ -808,6 +808,7 @@ GameObject:
   - component: {fileID: 4425454995608835221}
   - component: {fileID: 3122808084488387725}
   - component: {fileID: 8089879816901790824}
+  - component: {fileID: 7788925379478589466}
   m_Layer: 0
   m_Name: Pre_EnemyMushroomAnemos
   m_TagString: Enemy
@@ -862,6 +863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 134d8ad108d4a9a4e8f58cc6a29c7bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defense: 0
   minSpeed: 3
   maxSpeed: 6
   damageAmount: 20
@@ -939,6 +941,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &7788925379478589466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8693549782459797256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa107a6e79fd30548acb9b1da6adedeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FreezeEffect: {fileID: 5997036805935092942, guid: 520b8e8230c0f5b4f92121d6e7ab0a46, type: 3}
+  FreezeOff: {fileID: 4071121852338977983, guid: c238dfcae3907024992a2e2c2542ef7c, type: 3}
+  SteamEffect: {fileID: 2469520844961459858, guid: 5de7b845a20dbf240842294ce3df2522, type: 3}
 --- !u!1 &8853150581868435938
 GameObject:
   m_ObjectHideFlags: 0

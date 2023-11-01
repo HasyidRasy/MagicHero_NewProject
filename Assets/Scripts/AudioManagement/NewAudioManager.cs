@@ -50,9 +50,11 @@ public class NewAudioManager : MonoBehaviour {
 
     public void BgmVolume(float volume) {
         bgmSource.volume = volume;
+        PlayerPrefs.SetFloat("bgmVolume", volume);
     }
 
     public void SfxVolume(float volume) {
         sfxSource.volume = volume;
+        PlayerPrefs.SetFloat("sfxVolume", volume);
     }
 }

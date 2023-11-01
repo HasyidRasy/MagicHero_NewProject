@@ -9,6 +9,7 @@ public class CharacterModel : MonoBehaviour
 
     // Private fields to store character properties
     public float healthPoint;
+    public float maxHealthPoint = 100;
     public float defence;
     public float attackSpeed;
     public float moveSpeed = 5.0f;
@@ -43,6 +44,13 @@ public class CharacterModel : MonoBehaviour
         get { return healthPoint; }
         set {
             healthPoint = Mathf.Clamp(value, 0, 100); // Health should be between 0 and 100
+        }
+    }
+
+    public float MaxHealthPoint{
+        get { return maxHealthPoint; }
+        set { 
+            maxHealthPoint = value; 
         }
     }
 
@@ -103,31 +111,27 @@ public class CharacterModel : MonoBehaviour
     //Apply Upgrades (Avin)
     public void ApplyUpgrade(UpgradeData upgrade)
     {
-        if(upgrade.enableDoubleDash)
-        {
-            playerController.maxDash = 2;
-        }
 
         foreach(var stat in upgrade.stats)
         {
             switch (stat.upgradeType)
             {
             case UpgradeType.ElementalAttack:
-                elementalBonus += stat.upgradeValueStatic;
+                ElementalBonus += stat.upgradeValueStatic;
                 break;
             case UpgradeType.BasicAttack:
-                attack += stat.upgradeValueStatic;
+                Attack += stat.upgradeValueStatic;
                 break;
-            case UpgradeType.HealthPoint:
-                healthPoint += stat.upgradeValueStatic;
-                Debug.Log("Health Point: "+healthPoint);
+            case UpgradeType.MaxHealthPoint:
+                MaxHealthPoint += stat.upgradeValueStatic;
+                Debug.Log("Max Health Point: "+maxHealthPoint);
                 break;
             case UpgradeType.AttackSpeed:
-                attackSpeed += stat.upgradeValueStatic;
+                AttackSpeed += stat.upgradeValueStatic;
                 Debug.Log("Attack Speed :"+AttackSpeed);
                 break;
             case UpgradeType.Defense:
-                defence += stat.upgradeValueStatic;
+                Defence += stat.upgradeValueStatic;
                 Debug.Log("Defense: "+defence);
                 break;
             default:

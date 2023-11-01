@@ -14,6 +14,8 @@ public class UpgradeRandomizer : MonoBehaviour
     public TMP_Text[] upgradeNameText;
     public TMP_Text[] upgradeDescText;
     public Image[] upgradeImage;
+    public Image[] upgradeRarity;
+    public Image[] upgradeBgColor;
     public Button[] upgradeButtons;
     public Button upgradeSkip;
 
@@ -173,18 +175,25 @@ public class UpgradeRandomizer : MonoBehaviour
             if (randomizedUpgrades[i].rarity == UpgradeRarity.Common)
             {
                 upgradeNameText[i].color = Color.green;
+                upgradeRarity[i].color = new Color(139,194,206);
+                upgradeBgColor[i].color = new Color(139,194,206);
             }
             else if (randomizedUpgrades[i].rarity == UpgradeRarity.Rare)
             {
                 upgradeNameText[i].color = Color.blue;
+                upgradeRarity[i].color = new Color(132,40,189);
+                upgradeBgColor[i].color = new Color(132,40,189);
             }
             else if (randomizedUpgrades[i].rarity == UpgradeRarity.Legendary)
             {
                 upgradeNameText[i].color = Color.yellow;
+                upgradeRarity[i].color = new Color(230,143,63);
+                upgradeBgColor[i].color = new Color(230,143,63);
             }
             else
             {
                 upgradeNameText[i].color = Color.white;
+                upgradeRarity[i].color = Color.white;
             }
             upgradeDescText[i].text = GetUpgradeDescription(randomizedUpgrades[i]);
             upgradeImage[i].sprite = randomizedUpgrades[i].upgradeIcon;
@@ -202,25 +211,25 @@ public class UpgradeRandomizer : MonoBehaviour
     }
 
     private string GetUpgradeDescription(UpgradeData upgrade)
-{
-    string description = "";
-    foreach (var stat in upgrade.stats)
     {
-        if(stat.upgradeValueStatic > 0)
+        string description = "";
+        foreach (var stat in upgrade.stats)
         {
-            description += stat.upgradeType.ToString() + " +" + stat.upgradeValueStatic + "\n";
+            if(stat.upgradeValueStatic > 0)
+            {
+                description += stat.upgradeType.ToString() + " +" + stat.upgradeValueStatic + "\n";
+            }
+            else if(stat.upgradeValueStatic < 0)
+            {
+                description += stat.upgradeType.ToString() + " -" + stat.upgradeValueStatic + "\n";
+            }
+            
+            if(upgrade.upgradeDesc != null && upgrade.stats == null)
+            {
+                description += upgrade.upgradeDesc;
+            }
         }
-        else if(stat.upgradeValueStatic < 0)
-        {
-            description += stat.upgradeType.ToString() + " -" + stat.upgradeValueStatic + "\n";
-        }
-        
-        if(upgrade.upgradeDesc != null && upgrade.stats == null)
-        {
-            description += upgrade.upgradeDesc;
-        }
+        return description;
     }
-    return description;
-}
 
 }

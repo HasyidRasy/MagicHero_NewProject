@@ -9,19 +9,44 @@ public class UIController : MonoBehaviour {
     public Toggle _bgmToggle;
     public Toggle _sfxToggle;
 
+    private void Start() {
+        if (PlayerPrefs.HasKey("musicVolume")) {
+            LoadVolume();
+        } else {
+            BgmVolume();
+            SfxVolume();
+        }
+    }
+
     public void ToggleBgm() {
-        NewAudioManager.Instance.ToggleBGM();
+        if (_bgmToggle != null) {
+            NewAudioManager.Instance.ToggleBGM();
+        }
     }
 
     public void ToggleSfx() {
-        NewAudioManager.Instance.ToggleSFX();
+        if (_sfxToggle != null) {
+            NewAudioManager.Instance.ToggleSFX();
+        }
     }
 
     public void BgmVolume() {
-        NewAudioManager.Instance.BgmVolume(_bgmSlider.value);
+        if (_bgmSlider != null) {
+            NewAudioManager.Instance.BgmVolume(_bgmSlider.value);
+        }
     }
 
     public void SfxVolume() {
-        NewAudioManager.Instance.SfxVolume(_sfxSlider.value);
+        if (_sfxSlider != null) {
+            NewAudioManager.Instance.SfxVolume(_sfxSlider.value);
+        }
+    }
+
+    private void LoadVolume() {
+        _bgmSlider.value = PlayerPrefs.GetFloat("bgmVolume");
+        _sfxSlider.value = PlayerPrefs.GetFloat("sfxVolume");
+
+        BgmVolume();
+        SfxVolume();
     }
 }
