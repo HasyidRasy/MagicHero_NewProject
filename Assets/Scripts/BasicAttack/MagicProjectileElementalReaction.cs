@@ -31,12 +31,15 @@ public class MagicProjectileElementalReaction : MonoBehaviour
         {
             case ElementalType.Water:
                 neroVfx.SetActive(true);
+                NewAudioManager.Instance.PlaySFX("WaterRelease");
                 break;
             case ElementalType.Fire:
                 fotiaVfx.SetActive(true);
+                NewAudioManager.Instance.PlaySFX("FireRelease");
                 break;
             case ElementalType.Wind:
                 anemosVfx.SetActive(true);
+                NewAudioManager.Instance.PlaySFX("WindRelease");
                 break;
         }
     }

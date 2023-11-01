@@ -132,6 +132,7 @@ public class EnemyController : MonoBehaviour
         animator.SetInteger("hurtPattern", randomHurtPattern);
         animator.SetTrigger("isHurt");
         navMeshAgent.speed = 0;
+        NewAudioManager.Instance.sfxSource.Stop();
         NewAudioManager.Instance.PlaySFX("EnemyHurt");
         if (enemyModel.CurrentHealth <= 0)
         {
