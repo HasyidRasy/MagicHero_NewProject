@@ -132,6 +132,7 @@ public class EnemyController : MonoBehaviour
         animator.SetInteger("hurtPattern", randomHurtPattern);
         animator.SetTrigger("isHurt");
         navMeshAgent.speed = 0;
+        NewAudioManager.Instance.sfxSource.Stop();
         NewAudioManager.Instance.PlaySFX("EnemyHurt");
         if (enemyModel.CurrentHealth <= 0)
         {
@@ -215,6 +216,19 @@ public class EnemyController : MonoBehaviour
     }
     private void HandleFreezing() {
         freezing = false;
+    }
+
+    private void VfxHandle(string resultReaction) {
+
+        if (resultReaction == "Freezing") {
+            vfx.Unfreeze();
+        } 
+        else if (resultReaction == "Burning") {
+            vfx.Unfreeze();
+        } 
+        else if (resultReaction == "Slowness") {
+            vfx.Unfreeze();
+        }
     }
 
     private void Death()
