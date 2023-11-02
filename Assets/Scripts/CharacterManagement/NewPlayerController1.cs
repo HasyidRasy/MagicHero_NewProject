@@ -37,6 +37,9 @@ public class NewPlayerController1 : MonoBehaviour
 
     [SerializeField] private LayerMask groundMask;
 
+    [Header("Jarak Antara Player dan Spawn Magic ")]
+    [SerializeField] private float distanceInFront = 2.0f; // Sesuaikan dengan jarak yang Anda inginkan
+
     private Camera mainCamera;
     private bool isShooting = false;
     [SerializeField] private bool isAttacking = true;
@@ -132,7 +135,7 @@ public class NewPlayerController1 : MonoBehaviour
     // Coroutine untuk menonaktifkan isShooting selama durasi tertentu
     private IEnumerator DisableShootingForDuration(float duration)
     {
-        isShooting = true;
+        //isShooting = true;
         yield return new WaitForSeconds(duration);
         isShooting = false;
         animator.SetBool("isAttacking", false);
@@ -172,8 +175,11 @@ public class NewPlayerController1 : MonoBehaviour
             Vector3 targetDirection = hit.point - projectileSpawnPoint.position;    // Menghitung vektor arah ke target
             targetDirection.Normalize(); // Normalisasi agar memiliki panjang 1
 
+            // Hitung posisi spawn di depan pemain
+            Vector3 spawnPosition = projectileSpawnPoint.position + transform.forward * distanceInFront;
+
             // Instansiasi proyektil di titik spawn
-            GameObject magic = Instantiate(magicProjectilePrefab, projectileSpawnPoint.position, Quaternion.LookRotation(targetDirection));
+            GameObject magic = Instantiate(magicProjectilePrefab, spawnPosition, Quaternion.LookRotation(targetDirection));
 
             // Implementasi logika menembakkan sihir sesuai elemen
             MagicProjectileElementalReaction magicProjectile = magic.GetComponent<MagicProjectileElementalReaction>();
@@ -235,41 +241,45 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void Aim()
     {
-        var (success, position) = GetMousePosition();
-        if (success)
+        if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f && isAttacking && !isShooting)
         {
-            var direction = position - transform.position;
-
-            // mengabaikan sumbu y
-            direction.y = 0;
-
-            //cek raycast jika berada di groundMask layer
-            RaycastHit hitInfo;
+            // Raycast dari kursor mouse ke dunia 3D
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
-            // raycast jika berada di groundMask layer maka boleh shooting
-            if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, groundMask))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
             {
-                if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f && isAttacking)
-                {
-                    animator.SetBool("isAttacking", true);
-                    //Invoke("DelayedShootMagic", delayShoot);
-                    ShootMagic(attackPattern[currentAttackIndex]);
-                    attackCooldown = timeBetweenAttacks;
-                    currentAttackIndex = (currentAttackIndex + 1) % 4;
-                    ChangeActiveElement();
-                    CheckElementalReaction();                   
-                    // membuat playe melihat ke arah klik mouse
-                    transform.forward = direction;
-                }
+
+                isShooting = true;
+                animator.SetBool("isAttacking", true);
+
+                // Menghitung vektor arah ke titik klik mouse
+                Vector3 targetDirection = hit.point - transform.position;
+
+                // Mengabaikan perubahan tinggi (sumbu Y)
+                targetDirection.y = 0;
+
+                // Membuat pemain melihat ke arah klik mouse
+                transform.forward = targetDirection.normalized;
+
+                // Menembak proyektil ke arah tersebut
+                Invoke("DelayedShootMagic", delayShoot);
+                //ShootMagic(attackPattern[currentAttackIndex]);
+
+                // Mengatur waktu cooldown
+                attackCooldown = timeBetweenAttacks;
+                currentAttackIndex = (currentAttackIndex + 1) % 4;
+                ChangeActiveElement();
+                CheckElementalReaction();
             }
         }
     }
 
-    //void DelayedShootMagic() {
-    //    // Here you can call ShootMagic with the attack pattern.
-    //    ShootMagic(attackPattern[currentAttackIndex]);
-    //}
+    void DelayedShootMagic()
+    {
+        // Here you can call ShootMagic with the attack pattern.
+        ShootMagic(attackPattern[currentAttackIndex]);
+    }
 
     private (bool success, Vector3 position) GetMousePosition()
     {
