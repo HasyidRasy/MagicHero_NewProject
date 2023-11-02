@@ -34,6 +34,7 @@ public class UpgradeButton : MonoBehaviour
 
     public void OnButtonClick()
     {
+        Debug.Log("Button clicked");
         if (upgrade != null)
         {
             UpgradeData selectedUpgrade = UpgradeManager.instance.GetSelectedUpgrade(upgrade.upgradeID);

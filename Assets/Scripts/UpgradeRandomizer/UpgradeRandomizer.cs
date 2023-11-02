@@ -168,33 +168,36 @@ public class UpgradeRandomizer : MonoBehaviour
     // Update is called once per frame
     public void UpdateUI()
     {
-
         for (int i = 0; i < 3; i++)
         {
             upgradeNameText[i].text = randomizedUpgrades[i].upgradeName;
+            
+            // Use Color values between 0 and 1
             if (randomizedUpgrades[i].rarity == UpgradeRarity.Common)
             {
-                upgradeNameText[i].color = Color.green;
-                upgradeRarity[i].color = new Color(139,194,206);
-                upgradeBgColor[i].color = new Color(139,194,206);
+                //upgradeNameText[i].color = new Color(0.545f, 0.761f, 0.808f); // Cyan color
+                upgradeRarity[i].color = new Color(0.545f, 0.761f, 0.808f);
+                upgradeBgColor[i].color = new Color(0.545f, 0.761f, 0.808f);
             }
             else if (randomizedUpgrades[i].rarity == UpgradeRarity.Rare)
             {
-                upgradeNameText[i].color = Color.blue;
-                upgradeRarity[i].color = new Color(132,40,189);
-                upgradeBgColor[i].color = new Color(132,40,189);
+                //upgradeNameText[i].color = new Color(0.518f, 0.157f, 0.741f); // Purple color
+                upgradeRarity[i].color = new Color(0.518f, 0.157f, 0.741f);
+                upgradeBgColor[i].color = new Color(0.518f, 0.157f, 0.741f);
             }
             else if (randomizedUpgrades[i].rarity == UpgradeRarity.Legendary)
             {
-                upgradeNameText[i].color = Color.yellow;
-                upgradeRarity[i].color = new Color(230,143,63);
-                upgradeBgColor[i].color = new Color(230,143,63);
+                //upgradeNameText[i].color = new Color(0.902f, 0.561f, 0.247f); // Orange color
+                upgradeRarity[i].color = new Color(0.902f, 0.561f, 0.247f);
+                upgradeBgColor[i].color = new Color(0.902f, 0.561f, 0.247f);
             }
             else
             {
-                upgradeNameText[i].color = Color.white;
+                //upgradeNameText[i].color = Color.white;
                 upgradeRarity[i].color = Color.white;
+                upgradeBgColor[i].color = Color.white;
             }
+            upgradeNameText[i].color = Color.white;
             upgradeDescText[i].text = GetUpgradeDescription(randomizedUpgrades[i]);
             upgradeImage[i].sprite = randomizedUpgrades[i].upgradeIcon;
 
@@ -207,8 +210,8 @@ public class UpgradeRandomizer : MonoBehaviour
             {
                 upgradeManager.AddSelectedUpgrade(upgrade);
             }
-        }
     }
+}
 
     private string GetUpgradeDescription(UpgradeData upgrade)
     {
@@ -223,11 +226,11 @@ public class UpgradeRandomizer : MonoBehaviour
             {
                 description += stat.upgradeType.ToString() + " -" + stat.upgradeValueStatic + "\n";
             }
-            
-            if(upgrade.upgradeDesc != null && upgrade.stats == null)
+            /*
+            if(upgrade.upgradeDesc != null)
             {
                 description += upgrade.upgradeDesc;
-            }
+            }*/
         }
         return description;
     }
