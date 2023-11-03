@@ -43,6 +43,17 @@ public class VfxTest : MonoBehaviour
             animator.speed = 1;
     }
 
+    public void Slowness(float reactionDuration) {
+        Debug.Log("Slowness VFX");
+        vfxUsed = Instantiate(SteamEffect, this.transform.position, this.transform.rotation);
+        vfxUsed.transform.SetParent(this.transform);
+        Destroy(vfxUsed, reactionDuration);
+    }
+
+    public void UnSteam() {
+        animator.speed = 1;
+    }
+
     //void Steam()
     //{
     //    if (SteamEffect != null)

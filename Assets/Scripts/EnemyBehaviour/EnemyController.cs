@@ -32,6 +32,8 @@ public class EnemyController : MonoBehaviour
     private bool isAttacking;
     private bool canAttack = true;
     private bool freezing = false;
+    private bool burning = false;
+    private bool slowness = false;
     private bool isSpawning;
 
     [SerializeField] private float attackRange;
@@ -115,7 +117,7 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+            NewPlayerController1 playerController = collision.gameObject.GetComponent<NewPlayerController1>();
 
             if (playerController != null)
             {
@@ -202,34 +204,55 @@ public class EnemyController : MonoBehaviour
 
     // Function to handle the reaction result
     private void HandleReaction(string resultReaction, float reactionDuration) {
-        
-        if(resultReaction == "Freezing" && !freezing) {
+        if (resultReaction == "Freezing" && !freezing) {
             Debug.Log("Terjadi Reaksi " + resultReaction);
             freezing = true;
             vfx.Freeze(reactionDuration);
-            Invoke("Unfreeze", reactionDuration);
-            Invoke("HandleFreezing", reactionDuration + 0.5f);
+            //Invoke("Unfreeze", reactionDuration);
+            //Invoke("HandleFreezing", reactionDuration + 0.5f);
+            StartCoroutine(VfxHandleElemental(resultReaction, reactionDuration));
+            StartCoroutine(VfxHandleElementalState(resultReaction, reactionDuration + 0.5f));
+        } else if (resultReaction == "Burning") {
+            //vfx.Slowness(reactionDuration);
+        } else if (resultReaction == "Slowness") {
+            slowness = true;
+            vfx.Slowness(reactionDuration);
+            StartCoroutine(VfxHandleElementalState(resultReaction, reactionDuration));
         }
     }
-    private void Unfreeze() {
-        vfx.Unfreeze();
-    }
-    private void HandleFreezing() {
-        freezing = false;
-    }
+        //private void Unfreeze() {
+        //    vfx.Unfreeze();
+        //}
+        //private void HandleFreezing() {
+        //    freezing = false;
+        //}
 
-    private void VfxHandle(string resultReaction) {
+        IEnumerator VfxHandleElemental(string resultReaction, float delayTime) {
+        yield return new WaitForSeconds(delayTime);
 
         if (resultReaction == "Freezing") {
             vfx.Unfreeze();
-        } 
-        else if (resultReaction == "Burning") {
+        } else if (resultReaction == "Burning") {
             vfx.Unfreeze();
+        } else if (resultReaction == "Slowness") {
+            vfx.UnSteam();
         } 
-        else if (resultReaction == "Slowness") {
-            vfx.Unfreeze();
-        }
+
     }
+
+    IEnumerator VfxHandleElementalState(string resultReaction, float delayTime) {
+        yield return new WaitForSeconds(delayTime);
+
+        if (resultReaction == "Freezing") {
+            freezing = false;
+        } else if (resultReaction == "Burning") {
+            burning = false;
+        } else if (resultReaction == "Slowness") {
+            slowness = false;
+        }
+
+    }
+
 
     private void Death()
     {
