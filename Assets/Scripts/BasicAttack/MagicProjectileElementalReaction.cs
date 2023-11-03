@@ -49,7 +49,7 @@ public class MagicProjectileElementalReaction : MonoBehaviour
         {
             
             EnemyController enemyController = other.GetComponent<EnemyController>();
-            float totalDamage = (damageAmount + characterModel.Attack) - enemyController.defense;
+            float totalDamage = damageAmount + (characterModel.attack - enemyController.defense) + characterModel.elementalBonus;
             enemyController.TakeDamage(totalDamage);
             enemyController.ApplyElementalStatus(element);          
             Destroy(gameObject); // Hancurkan proyektil setelah bertabrakan

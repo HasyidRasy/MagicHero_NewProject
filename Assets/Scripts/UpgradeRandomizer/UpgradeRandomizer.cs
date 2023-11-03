@@ -216,21 +216,22 @@ public class UpgradeRandomizer : MonoBehaviour
     private string GetUpgradeDescription(UpgradeData upgrade)
     {
         string description = "";
+
+        if(upgrade.upgradeDesc != null)
+        {
+            description = upgrade.upgradeDesc;
+        }
+
         foreach (var stat in upgrade.stats)
         {
             if(stat.upgradeValueStatic > 0)
             {
-                description += stat.upgradeType.ToString() + " +" + stat.upgradeValueStatic + "\n";
+                description = stat.upgradeType.ToString() + " +" + stat.upgradeValueStatic + "\n";
             }
             else if(stat.upgradeValueStatic < 0)
             {
-                description += stat.upgradeType.ToString() + " -" + stat.upgradeValueStatic + "\n";
+                description = stat.upgradeType.ToString() + " -" + stat.upgradeValueStatic + "\n";
             }
-            /*
-            if(upgrade.upgradeDesc != null)
-            {
-                description += upgrade.upgradeDesc;
-            }*/
         }
         return description;
     }
