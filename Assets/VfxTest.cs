@@ -10,8 +10,8 @@ public class VfxTest : MonoBehaviour
     public GameObject SteamEffect;
     private Animator animator;
     private GameObject vfxUsed;
-    private bool Freezed = false;
-    private bool Steamed = false;
+    //private bool Freezed = false;
+    //private bool Steamed = false;
 
     private EnemyController enemyController;
 
