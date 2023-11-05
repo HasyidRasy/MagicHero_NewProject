@@ -104,6 +104,10 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    public void GoToStory() {
+        SceneManager.LoadScene("Story");
+    }
+
     public void GoToTutorial() {
         SceneManager.LoadScene("Tutorial");
     }
