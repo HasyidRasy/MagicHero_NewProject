@@ -58,9 +58,12 @@ public class AutoCameraBoundary : MonoBehaviour
         }
     }
 
+    private void FixedUpdate() {
+        CameraMovement();
+    }
+
     private void LateUpdate()
     {
-        CameraMovement();
         TurnOffVisual();
     }
 

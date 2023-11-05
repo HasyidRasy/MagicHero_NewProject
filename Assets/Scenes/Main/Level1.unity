@@ -11055,7 +11055,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1228064677}
-  - component: {fileID: 1228064676}
   - component: {fileID: 1228064675}
   - component: {fileID: 1228064678}
   - component: {fileID: 1228064679}
@@ -11085,29 +11084,10 @@ MonoBehaviour:
   attack: 0
   elementalBonus: 0
   move: 0
-  rotationSpeed: 700
+  rotationSpeed: 500
   dashSpeed: 70
   dashDuration: 0.45
   dashCooldown: 0
---- !u!114 &1228064676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1228064674}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c2842199b4a62c4e98d26de74073a25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rb: {fileID: 1228064678}
-  _model: {fileID: 1228064677}
-  elementalSlots: 01000000000000000200000000000000
-  projectileSpawnPoint: {fileID: 398592867}
-  magicProjectilePrefab: {fileID: 5823638608141224870, guid: 1dd62e0380aabfd49b66238b3578a4b4, type: 3}
-  magicProSpeed: 125
-  timeBetweenAttacks: 0.25
 --- !u!4 &1228064677
 Transform:
   m_ObjectHideFlags: 0
@@ -11134,7 +11114,7 @@ Rigidbody:
   m_GameObject: {fileID: 1228064674}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 10
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -11166,12 +11146,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rb: {fileID: 1228064678}
   _model: {fileID: 1228064677}
-  elementalSlots: 00000000000000000000000000000000
+  elementalSlots: 00000000010000000000000002000000
   projectileSpawnPoint: {fileID: 398592867}
   magicProjectilePrefab: {fileID: 5823638608141224870, guid: 1dd62e0380aabfd49b66238b3578a4b4, type: 3}
   delayShoot: 0
   magicProSpeed: 45
-  timeBetweenAttacks: 0.75
+  timeBetweenAttacks: 0.3
   timeBetweenSteps: 0.5
   groundMask:
     serializedVersion: 2
