@@ -286,20 +286,27 @@ public class NewPlayerController1 : MonoBehaviour
     //}
 
     private (bool success, Vector3 position) GetMousePosition()
+{
+    if (mainCamera == null)
     {
-        var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
-        {
-            // The Raycast hit something, return with the position.
-            return (success: true, position: hitInfo.point);
-        }
-        else
-        {
-            // The Raycast did not hit anything.
-            return (success: false, position: Vector3.zero);
-        }
+        // Handle the case where mainCamera is not yet available.
+        return (success: false, position: Vector3.zero);
     }
+
+    var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+    if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
+    {
+        // The Raycast hit something, return with the position.
+        return (success: true, position: hitInfo.point);
+    }
+    else
+    {
+        // The Raycast did not hit anything.
+        return (success: false, position: Vector3.zero);
+    }
+}
+
 
     //helpers
     //public static class Helpers

@@ -3,7 +3,7 @@ using UnityEngine;
 public class AutoCameraBoundary : MonoBehaviour
 {
     [Header("Player Follow")]
-    [SerializeField] private Transform target;
+    [SerializeField] private GameObject target;
     [SerializeField] private float smoothTime;
     [SerializeField] private GameObject boundaryName;
 
@@ -28,19 +28,14 @@ public class AutoCameraBoundary : MonoBehaviour
     private bool blankArea = false;
 
     private void Start() {
-        //play audio
-        //NewAudioManager.Instance.PlayBGM("Safezone");
-    }
+        target = GameObject.FindWithTag("Player");
 
-    private void Awake()
-    {
-        _offset = transform.position - target.position;
+        _offset = transform.position - target.transform.position;
 
         // Find the centerMov GameObject based on the specified name
         GameObject centerMovObject = boundaryName;
 
-        if (centerMovObject)
-        {
+        if (centerMovObject) {
             // Set centerMov to the found GameObject's transform
             centerMov = centerMovObject.transform;
 
@@ -51,11 +46,16 @@ public class AutoCameraBoundary : MonoBehaviour
             maxZPosition = centerMov.Find("maxZ");
             frontTrigger = centerMov.Find("FrontTrigger");
             backTrigger = centerMov.Find("BackTrigger");
-        }
-        else
-        {
+        } else {
             Debug.LogError("GameObject with name '" + boundaryName + "' not found.");
         }
+        //play audio
+        //NewAudioManager.Instance.PlayBGM("Safezone");
+    }
+
+    private void Awake()
+    {
+        
     }
 
     private void FixedUpdate() {
@@ -77,9 +77,9 @@ public class AutoCameraBoundary : MonoBehaviour
             return;
         }
 
-        Vector3 targetPosition = target.position;
+        Vector3 targetPosition = target.transform.position;
 
-        if (target.position.z < backTrigger.position.z)
+        if (target.transform.position.z < backTrigger.position.z)
         {
             // Use the offsetCenterBack to set the position of centerMov
             centerMov.position = new Vector3(
@@ -98,7 +98,7 @@ public class AutoCameraBoundary : MonoBehaviour
             );
             blankArea = true;
         }
-        else if (target.position.z > backTrigger.position.z)
+        else if (target.transform.position.z > backTrigger.position.z)
         {
             blankArea = false;
         }
