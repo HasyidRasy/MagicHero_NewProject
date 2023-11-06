@@ -95,6 +95,15 @@ public class UIManager : MonoBehaviour
             confirmPanel.SetActive(false);
         }
     }
+
+    public void Pause() {
+        Time.timeScale = 0;
+    }
+
+    public void Continue() {
+        Time.timeScale = 1f;
+    }
+
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
