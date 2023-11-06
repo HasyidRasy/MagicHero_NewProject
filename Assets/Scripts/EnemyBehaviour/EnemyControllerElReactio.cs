@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyControllerElReactio : MonoBehaviour
 {
@@ -16,6 +17,12 @@ public class EnemyControllerElReactio : MonoBehaviour
     //elemental system
     private ElementalType elementStatus = ElementalType.Null;
     private bool isActive = false;
+
+    //elemental PopupUI
+    private UIElementPopup uiElementPopup;
+    private Sprite elementSprite;
+    private Element elementScrptObj;
+    private Coroutine isElementApplied;
     
     public float minSpeed = 3f;
     public float maxSpeed = 10f;
@@ -25,6 +32,7 @@ public class EnemyControllerElReactio : MonoBehaviour
     private void Awake()
     {
         enemyModel = GetComponent<EnemyModel>();
+        uiElementPopup = GetComponent<UIElementPopup>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
         enemyRenderer = GetComponentInChildren<Renderer>();
@@ -46,6 +54,12 @@ public class EnemyControllerElReactio : MonoBehaviour
             navMeshAgent.speed = speedChase;
             // Set target pemain untuk dikejar
             navMeshAgent.destination = target.position;
+        }
+
+        if (enemyModel.currentHealth != enemyModel.HealthPoint)
+        {
+            // Show HP Bar
+            uiElementPopup.ShowUpdateHealthBarUI(enemyModel.currentHealth, enemyModel.healthPoint);
         }
 
         UpdateEnemyColor();
@@ -84,16 +98,42 @@ public class EnemyControllerElReactio : MonoBehaviour
 
     public void ApplyElementalStatus(ElementalType elementType)
     {   
+        elementScrptObj = ElementalReactionController.Instance.GetElementScrptObj(elementType);
+
         if (elementStatus == ElementalType.Null)
         {
             elementStatus = elementType;
             Debug.Log("Applied Status "+ elementStatus);
+
+            //PopupUI
+            if (isElementApplied != null)
+            {
+                StopCoroutine(isElementApplied);
+                uiElementPopup.ResetPopupUI();
+            }
+            elementSprite = elementScrptObj.elementSprite;
+            uiElementPopup.ShowElementalPopup(elementSprite);
+            isElementApplied = StartCoroutine(uiElementPopup.ElementPopupDuration());
+        }
+        else if (elementStatus == elementType)
+        {
+            StopCoroutine(isElementApplied);
+            isElementApplied = StartCoroutine(uiElementPopup.ElementPopupDuration());
         }
         else if (elementStatus != elementType)
         {
+            uiElementPopup.ResetPopupUI();
+            StopCoroutine(isElementApplied);
+            uiElementPopup.ShowReactionPopupUI(elementSprite, elementScrptObj.elementSprite);
+            isElementApplied = StartCoroutine(uiElementPopup.ResetReactionPopupUI());
             HandleElementalInteraction(elementStatus, elementType);
-            elementStatus = ElementalType.Null;
+            ResetElementalStatus();
         }
+    }
+
+    public void ResetElementalStatus()
+    {
+        elementStatus = ElementalType.Null;
     }
 
     // Function to handle elemental interactions

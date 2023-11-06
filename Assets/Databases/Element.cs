@@ -7,4 +7,6 @@ public class Element : ScriptableObject
 {
     public string elementName;
     public int elementID;
+    public ElementalType elementEnum;
+    public Sprite elementSprite;
 }
