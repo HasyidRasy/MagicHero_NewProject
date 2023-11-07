@@ -6,21 +6,26 @@ using UnityEngine.AI;
 
 public class VfxTest : MonoBehaviour
 {
+    [Header("Freeze Effect")]
     public GameObject FreezeEffect;
     public GameObject FreezeOff;
+    public float freezeYPosition = 0;
+    public float freezeMovementAnimation = 0;
+
+    [Header("Steam Effect")]
     public GameObject SteamEffect;
+    public Material steamOverlay;
+    public float steamMovementAnimation = 0.50f;
+
+    [Header("Combustion Effect")]
     public GameObject CombustionEffect;
+    public Material combustionOverlay;
+
     private Animator animator;
     private GameObject vfxUsed;
 
     private List<Material> originalMaterials = new List<Material>();
-    public Material combustionOverlay;
-    public Material steamOverlay;
-
-    private Material originalMaterial;
     private SkinnedMeshRenderer skinnedMeshRenderer;
-    //private bool Freezed = false;
-    //private bool Steamed = false;
 
     private EnemyController enemyController;
 
@@ -30,7 +35,6 @@ public class VfxTest : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         enemyController = GetComponent<EnemyController>();  
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
-
         originalMaterials.AddRange(skinnedMeshRenderer.materials);
     }
 
@@ -41,12 +45,12 @@ public class VfxTest : MonoBehaviour
 
     public void Freeze(float reactionDuration) {
             Debug.Log("Freezing VFX");
-            vfxUsed = Instantiate(FreezeEffect, this.transform.position, this.transform.rotation);
-            animator.speed = 0;
+            Vector3 spawnPosition = new Vector3(this.transform.position.x, freezeYPosition, this.transform.position.z);
+            vfxUsed = Instantiate(FreezeEffect, spawnPosition, this.transform.rotation);
+            animator.speed = freezeMovementAnimation;
             vfxUsed.transform.SetParent(this.transform);
 
         ParticleSystem particleSystem = vfxUsed.GetComponentInChildren<ParticleSystem>();
-
         if (particleSystem != null) {
             ParticleSystem.MainModule mainModule = particleSystem.main;
             mainModule.startLifetime = new ParticleSystem.MinMaxCurve(reactionDuration);
@@ -60,19 +64,29 @@ public class VfxTest : MonoBehaviour
 
     public void Unfreeze()
     {
-            var freezeOff = Instantiate(FreezeOff, this.transform.position, this.transform.rotation);
-            Destroy(freezeOff, 5f);
+            //var freezeOff = Instantiate(FreezeOff, this.transform.position, this.transform.rotation);
+            //Destroy(freezeOff, 5f);
             animator.speed = 1;
     }
 
-    public void Slowness(float reactionDuration) {
+    public void Steam(float reactionDuration) {
         Debug.Log("Slowness VFX");
         vfxUsed = Instantiate(SteamEffect, this.transform.position, this.transform.rotation);
         vfxUsed.transform.SetParent(this.transform);
+
+        animator.speed = steamMovementAnimation;
+
+        Material[] materials = skinnedMeshRenderer.materials;
+        Array.Resize(ref materials, materials.Length + 1);
+        materials[materials.Length - 1] = steamOverlay;
+        skinnedMeshRenderer.materials = materials;
+
         Destroy(vfxUsed, reactionDuration);
     }
 
     public void UnSteam() {
+        Debug.Log("Steam done");
+        skinnedMeshRenderer.materials = originalMaterials.ToArray();
         animator.speed = 1;
     }
     public void Combustion(float reactionDuration) {
