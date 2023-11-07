@@ -213,6 +213,10 @@ public class EnemyController : MonoBehaviour
             StartCoroutine(VfxHandleElemental(resultReaction, reactionDuration));
             StartCoroutine(VfxHandleElementalState(resultReaction, reactionDuration + 0.5f));
         } else if (resultReaction == "Burning") {
+            burning = true;
+            vfx.Combustion(reactionDuration);
+            StartCoroutine(VfxHandleElemental(resultReaction, reactionDuration));
+            StartCoroutine(VfxHandleElementalState(resultReaction, reactionDuration + 0.5f));
             //vfx.Slowness(reactionDuration);
         } else if (resultReaction == "Slowness") {
             slowness = true;
@@ -233,7 +237,7 @@ public class EnemyController : MonoBehaviour
         if (resultReaction == "Freezing") {
             vfx.Unfreeze();
         } else if (resultReaction == "Burning") {
-            vfx.Unfreeze();
+            vfx.UnCombustion();
         } else if (resultReaction == "Slowness") {
             vfx.UnSteam();
         } 
