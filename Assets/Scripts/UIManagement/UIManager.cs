@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !isConfirmPanelActive)
         {
+            Time.timeScale = 0;
             EnableConfirmPanel();
         }
         if (Input.GetKeyDown(KeyCode.Tab) && !isSwitchElementPanelActive)
@@ -130,12 +131,20 @@ public class UIManager : MonoBehaviour
     }
     public void GoToMainMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void GoToStory() {
+        SceneManager.LoadScene("Story");
+    }
+
+    public void GoToTutorial() {
+        SceneManager.LoadScene("Tutorial");
     }
 
     public void GoToMainLevel()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("Level1");
     }
 
     public void ExitGame()

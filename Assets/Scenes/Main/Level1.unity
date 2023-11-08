@@ -10320,9 +10320,9 @@ MonoBehaviour:
   playerSpawnAreas:
   - {fileID: 8963501471895819801, guid: 6b4e0d1d262ef4142a2500c4f0d113ba, type: 3}
   challengeAreaPrefabs:
-  - {fileID: 9174099225277444778, guid: 09d3a2a4439483a4b89cdb616fd038b4, type: 3}
-  - {fileID: 6825701118201881300, guid: 258dcc2287547ca46a775d914f54704b, type: 3}
-  - {fileID: 4958058284906033585, guid: f83fc37913f32e541b52bb37d2857df1, type: 3}
+  - {fileID: 5378700236290580642, guid: 5eb44620a1f0a5c41869447eee05e0c0, type: 3}
+  - {fileID: 5484978161598056845, guid: 68609f01ae9e6da4c98641ddb37a5d87, type: 3}
+  - {fileID: 220110423527018933, guid: eb62b1f251843b549a912624d9704e04, type: 3}
   corridorPrefab: {fileID: 8615632486034306209, guid: 53b3499271f8a7d4a82ce06b7b9f857e, type: 3}
   lastAreaPrefab: {fileID: 5399160249351253660, guid: 77013af77ae6a794682d90528ee2a4ab, type: 3}
   minChallengeAreas: 5
@@ -11055,7 +11055,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1228064677}
-  - component: {fileID: 1228064676}
   - component: {fileID: 1228064675}
   - component: {fileID: 1228064678}
   - component: {fileID: 1228064679}
@@ -11085,29 +11084,10 @@ MonoBehaviour:
   attack: 0
   elementalBonus: 0
   move: 0
-  rotationSpeed: 700
+  rotationSpeed: 500
   dashSpeed: 70
   dashDuration: 0.45
   dashCooldown: 0
---- !u!114 &1228064676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1228064674}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c2842199b4a62c4e98d26de74073a25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rb: {fileID: 1228064678}
-  _model: {fileID: 1228064677}
-  elementalSlots: 01000000000000000200000000000000
-  projectileSpawnPoint: {fileID: 398592867}
-  magicProjectilePrefab: {fileID: 5823638608141224870, guid: 1dd62e0380aabfd49b66238b3578a4b4, type: 3}
-  magicProSpeed: 125
-  timeBetweenAttacks: 0.25
 --- !u!4 &1228064677
 Transform:
   m_ObjectHideFlags: 0
@@ -11117,7 +11097,7 @@ Transform:
   m_GameObject: {fileID: 1228064674}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 16.44, z: 44.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11134,7 +11114,7 @@ Rigidbody:
   m_GameObject: {fileID: 1228064674}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 10
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -11166,12 +11146,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rb: {fileID: 1228064678}
   _model: {fileID: 1228064677}
-  elementalSlots: 00000000000000000000000000000000
+  elementalSlots: 00000000010000000000000001000000
   projectileSpawnPoint: {fileID: 398592867}
   magicProjectilePrefab: {fileID: 5823638608141224870, guid: 1dd62e0380aabfd49b66238b3578a4b4, type: 3}
   delayShoot: 0
   magicProSpeed: 45
-  timeBetweenAttacks: 0.75
+  timeBetweenAttacks: 0.3
   timeBetweenSteps: 0.5
   groundMask:
     serializedVersion: 2
@@ -11434,6 +11414,51 @@ RectTransform:
   m_AnchoredPosition: {x: -8.851257, y: -206.68622}
   m_SizeDelta: {x: 66.7108, y: 12.5083}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1271300822
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1271300824}
+  - component: {fileID: 1271300823}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1271300823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271300822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55d56050655d89942bdbedbd969afa1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultPosition: {x: 0, y: 0, z: 0}
+--- !u!4 &1271300824
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271300822}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1291745828
 GameObject:
   m_ObjectHideFlags: 0
@@ -11986,7 +12011,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c0bc856a89bb54783a7917f86e4200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1228064677}
+  target: {fileID: 1228064674}
   smoothTime: 0.15
   boundaryName: {fileID: 1831281709}
   enableFeature: 1
@@ -13297,6 +13322,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 2025222758}
+  - {fileID: 1271300824}
   - {fileID: 1251161308}
   - {fileID: 876597934}
   - {fileID: 2082397363}

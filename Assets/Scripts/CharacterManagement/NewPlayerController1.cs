@@ -15,6 +15,8 @@ public class NewPlayerController1 : MonoBehaviour
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _model;
 
+    private Vector3 _input; 
+
     [Header("Attack Pattern")]
     [SerializeField] private ElementalType[] elementalSlots = new ElementalType[4]; // Set Attack Pattern
     private int currentSlotIndex = 0;
@@ -65,11 +67,12 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void Update()
     {
-        //Call Function
-        if(!isShooting) CharaMove();
+        //if (!isShooting) CharaMove();
         PlayerStat();
         attackCooldown -= Time.deltaTime;
         stepCooldown -= Time.deltaTime;
+
+        
 
         Aim();
 
@@ -79,6 +82,10 @@ public class NewPlayerController1 : MonoBehaviour
             stepCooldown = timeBetweenSteps;
             StartCoroutine(Stepping(stepCooldown));
         }
+    }
+
+    private void FixedUpdate() {
+        if (!isShooting) CharaMove();
     }
 
     private void CharaMove() {
@@ -95,8 +102,12 @@ public class NewPlayerController1 : MonoBehaviour
         // Set the "isWalking" parameter in the animator
         animator.SetBool("isWalking", isWalking);
         animator.SetBool("isDashing", isDashing);
-        // New Move Logic
-        _rb.MovePosition(transform.position + moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed * Time.deltaTime);
+
+        // Calculate the desired velocity
+        Vector3 velocity = moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed;
+
+        // Apply velocity to the Rigidbody
+        _rb.velocity = velocity;
 
         // New Look Logic (rotation)
         if (moveDir == Vector3.zero) return;
@@ -104,7 +115,7 @@ public class NewPlayerController1 : MonoBehaviour
         _model.rotation = Quaternion.RotateTowards(_model.rotation, rotation, characterModel.rotationSpeed * Time.deltaTime);
 
         // Call Coroutine Dash
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && isWalking) {
+        if (Input.GetKey(KeyCode.LeftShift) && !isDashing && isWalking) {
             StartCoroutine(Dash());
         }
     }
@@ -157,9 +168,9 @@ public class NewPlayerController1 : MonoBehaviour
     public void TakeDamage(float damageAmount)
     {
         characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
-
+        animator.SetTrigger("isHurt");
         if (characterModel.HealthPoint <= 0)
-        {
+        {          
             Death(); // If health drops to or below zero, call a method to handle enemy death
             OnPlayerDeath?.Invoke();
         }
@@ -167,7 +178,9 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void Death()
     {
-        Destroy(gameObject);
+        animator.SetBool("isDeath", true);
+        characterModel.rotationSpeed = 0;
+        characterModel.moveSpeed = 0;
     }
 
     private void ShootMagic(ElementalType element)
@@ -296,20 +309,27 @@ public class NewPlayerController1 : MonoBehaviour
     }
 
     private (bool success, Vector3 position) GetMousePosition()
+{
+    if (mainCamera == null)
     {
-        var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
-        {
-            // The Raycast hit something, return with the position.
-            return (success: true, position: hitInfo.point);
-        }
-        else
-        {
-            // The Raycast did not hit anything.
-            return (success: false, position: Vector3.zero);
-        }
+        // Handle the case where mainCamera is not yet available.
+        return (success: false, position: Vector3.zero);
     }
+
+    var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+    if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
+    {
+        // The Raycast hit something, return with the position.
+        return (success: true, position: hitInfo.point);
+    }
+    else
+    {
+        // The Raycast did not hit anything.
+        return (success: false, position: Vector3.zero);
+    }
+}
+
 
     //helpers
     //public static class Helpers
