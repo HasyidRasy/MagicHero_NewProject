@@ -108,6 +108,7 @@ public class UIManager : MonoBehaviour
             confirmPanel.SetActive(false);
         }
     }
+
     public void EnableSwitchElementPanel()
     {
         if (switchElementPanel != null)
@@ -125,6 +126,16 @@ public class UIManager : MonoBehaviour
             isSwitchElementPanelActive = false;
         }
     }
+
+
+    public void Pause() {
+        Time.timeScale = 0;
+    }
+
+    public void Continue() {
+        Time.timeScale = 1f;
+    }
+
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
