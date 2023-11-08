@@ -8,6 +8,7 @@ public class NewPlayerController1 : MonoBehaviour
     //get model
     private CharacterModel characterModel;
     private Animator animator;
+    private ElementSwitchSystem elementSwitchSystem;
     //cek dash logic
     private bool isDashing = false;
     //rigidbody
@@ -42,6 +43,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     private Camera mainCamera;
     private bool isShooting = false;
+    private Vector3 targetDirection;
     [SerializeField] private bool isAttacking = true;
 
     public static event Action OnPlayerDeath;
@@ -50,11 +52,15 @@ public class NewPlayerController1 : MonoBehaviour
     {
         characterModel = GetComponent<CharacterModel>();
         animator = GetComponentInChildren<Animator>();
+        elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
     }
 
     private void Start()
     {
         mainCamera = Camera.main;
+
+        //SetAttackPattern(elementalSlots[currentSlotIndex]);
+        attackPattern[0] = elementalSlots[0];
     }
 
     private void Update()
@@ -166,13 +172,6 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void ShootMagic(ElementalType element)
     {
-        // Raycast dari kursor mouse ke dunia 3D
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit))
-        {
-            Vector3 targetDirection = hit.point - projectileSpawnPoint.position;    // Menghitung vektor arah ke target
             targetDirection.Normalize(); // Normalisasi agar memiliki panjang 1
 
             // Hitung posisi spawn di depan pemain
@@ -193,9 +192,9 @@ public class NewPlayerController1 : MonoBehaviour
             {
                 rb.velocity = targetDirection * magicProSpeed;
             }
+            ChangeActiveElement();
             // Menonaktifkan isShooting setelah menembak
             StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
-        }
     }
 
     private void ChangeActiveElement()
@@ -204,6 +203,17 @@ public class NewPlayerController1 : MonoBehaviour
         currentSlotIndex = (currentSlotIndex + 1) % 4;
         // Memperbarui pola serangan berdasarkan elemen yang baru aktif
         attackPattern[currentAttackIndex] = elementalSlots[currentSlotIndex];
+    }
+    public ElementalType[] GetCurrentAttackPattern()
+    {
+        // Mengembalikan elemen yang sedang digunakan dalam pola serangan saat ini
+        return elementalSlots;
+    }
+
+    // Method untuk mendapatkan indeks attack saat ini
+    public int GetCurrentAttackIndex()
+    {
+        return currentSlotIndex;
     }
 
     private void CheckElementalReaction()
@@ -254,7 +264,7 @@ public class NewPlayerController1 : MonoBehaviour
                 animator.SetBool("isAttacking", true);
 
                 // Menghitung vektor arah ke titik klik mouse
-                Vector3 targetDirection = hit.point - transform.position;
+                targetDirection = hit.point - transform.position;
 
                 // Mengabaikan perubahan tinggi (sumbu Y)
                 targetDirection.y = 0;
@@ -268,8 +278,7 @@ public class NewPlayerController1 : MonoBehaviour
 
                 // Mengatur waktu cooldown
                 attackCooldown = timeBetweenAttacks;
-                currentAttackIndex = (currentAttackIndex + 1) % 4;
-                ChangeActiveElement();
+
                 CheckElementalReaction();
             }
         }
@@ -279,6 +288,11 @@ public class NewPlayerController1 : MonoBehaviour
     {
         // Here you can call ShootMagic with the attack pattern.
         ShootMagic(attackPattern[currentAttackIndex]);
+    }
+
+    public void SetAttackPattern(ElementalType newElement)
+    {
+        elementalSlots[elementSwitchSystem.currentButtonIndex] = newElement;
     }
 
     private (bool success, Vector3 position) GetMousePosition()

@@ -9,11 +9,15 @@ public class UIManager : MonoBehaviour
     public GameObject creditPanel;
     public GameObject controlPanel;
     public GameObject confirmPanel;
+    public GameObject switchElementPanel;
     private bool isConfirmPanelActive = false;
+    private bool isSwitchElementPanelActive = false;
+    private ElementSwitchSystem elementSwitchSystem;
 
     private void Start() {
         NewAudioManager.Instance.bgmSource.Stop();
         NewAudioManager.Instance.PlayBGM("MainMenu");
+        elementSwitchSystem = GetComponent<ElementSwitchSystem>();
     }
 
     private void OnEnable()
@@ -30,6 +34,15 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && !isConfirmPanelActive)
         {
             EnableConfirmPanel();
+        }
+        if (Input.GetKeyDown(KeyCode.Tab) && !isSwitchElementPanelActive)
+        {
+
+            EnableSwitchElementPanel();
+        }
+        else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive)
+        {
+            DisableSwitchElementPanel();
         }
     }
 
@@ -92,6 +105,23 @@ public class UIManager : MonoBehaviour
         if (confirmPanel != null)
         {
             confirmPanel.SetActive(false);
+        }
+    }
+    public void EnableSwitchElementPanel()
+    {
+        if (switchElementPanel != null)
+        {
+            elementSwitchSystem.UpdateAttackPatternIndicator();
+            switchElementPanel.SetActive(true);
+            isSwitchElementPanelActive = true;
+        }
+    }
+    public void DisableSwitchElementPanel()
+    {
+        if (switchElementPanel != null)
+        {
+            switchElementPanel.SetActive(false);
+            isSwitchElementPanelActive = false;
         }
     }
     public void Restart()
