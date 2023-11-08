@@ -9554,6 +9554,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pre_UpgradesWithUI
       objectReference: {fileID: 0}
+    - target: {fileID: 2390877489587423289, guid: bb2b8a204e2c408468c0d4e126216ba7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4644403198561878170, guid: bb2b8a204e2c408468c0d4e126216ba7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -9634,6 +9638,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5392115900260248180, guid: bb2b8a204e2c408468c0d4e126216ba7, type: 3}
+      propertyPath: upgradeManager
+      value: 
+      objectReference: {fileID: 190044106}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9644,6 +9652,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4644403198561878170, guid: bb2b8a204e2c408468c0d4e126216ba7, type: 3}
   m_PrefabInstance: {fileID: 1073666327}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1073666329 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5392115900260248180, guid: bb2b8a204e2c408468c0d4e126216ba7, type: 3}
+  m_PrefabInstance: {fileID: 1073666327}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b465cac890dd764da111e5c882dd984, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1124074570
 GameObject:
   m_ObjectHideFlags: 0
@@ -10019,7 +10038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a5b073f7061b4408441a19acd5eef4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgradeRandomizer: {fileID: 0}
+  upgradeRandomizer: {fileID: 1073666329}
 --- !u!1 &1291745828
 GameObject:
   m_ObjectHideFlags: 0

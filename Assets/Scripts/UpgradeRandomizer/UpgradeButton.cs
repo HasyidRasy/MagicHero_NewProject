@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UpgradeButton : MonoBehaviour
 {
     public UpgradeRandomizer upgradeRandomizer;
+    public Image hoverImage;
     private UpgradeManager upgradeManager;
     private CharacterModel upgradedCharacter;
     private UpgradeData upgrade;
     public static int id = 1;
+
     void Start()
     {
         upgradeManager = FindObjectOfType<UpgradeManager>();
@@ -25,6 +28,17 @@ public class UpgradeButton : MonoBehaviour
             Debug.Log("Upgrade not found");
             return;
         }
+        
+        if(upgrade.rarity == UpgradeRarity.Common)
+        {
+            hoverImage.color = new Color(0.545f, 0.761f, 0.808f);
+        }
+        else if(upgrade.rarity == UpgradeRarity.Rare)
+        {
+            hoverImage.color = new Color(0.518f, 0.157f, 0.741f);
+        }
+
+        hoverImage.gameObject.SetActive(false);
     }
 
     public void SetUpgrade(UpgradeData upgradeData)
@@ -51,7 +65,7 @@ public class UpgradeButton : MonoBehaviour
         }
     }
 
-     private string GetUpgradeDescription(UpgradeData upgrade)
+    private string GetUpgradeDescription(UpgradeData upgrade)
     {
         string description = "";
         foreach (var stat in upgrade.stats)
@@ -72,4 +86,17 @@ public class UpgradeButton : MonoBehaviour
         }
         return description;
     }
+
+    public void OnPointerEnterButton()
+    {
+        // Activate the hover image here
+        hoverImage.gameObject.SetActive(true);
+    }
+
+    public void OnPointerExitButton()
+    {
+        // Deactivate the hover image here
+        hoverImage.gameObject.SetActive(false);
+    }
+
 }

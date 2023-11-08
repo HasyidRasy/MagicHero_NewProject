@@ -54,7 +54,7 @@ public class UpgradeRandomizer : MonoBehaviour
         availableUpgrades.Clear();
         availableUpgrades.AddRange(upgradeDatabase.commonUpgrades);
         availableUpgrades.AddRange(upgradeDatabase.rareUpgrades);
-        availableUpgrades.AddRange(upgradeDatabase.legendUpgrades);
+        //availableUpgrades.AddRange(upgradeDatabase.legendUpgrades);
 
         InitializeRarityCounts();
         RandomizeUpgrades();
