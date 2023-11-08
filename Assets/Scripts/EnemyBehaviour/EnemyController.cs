@@ -15,7 +15,7 @@ public class EnemyController : MonoBehaviour
     private NavMeshAgent navMeshAgent;    
     public float defense;
     private Collider enemyCollider;
-    private float speedChase;
+    [SerializeField] private float speedChase;
 
     private ElementalType elementStatus = ElementalType.Null;
     private bool isActive = false;
@@ -86,13 +86,15 @@ public class EnemyController : MonoBehaviour
         navMeshAgent.speed = speedChase;
         navMeshAgent.destination = target.position;
 
-        if (speedChase < 4)
+        if (navMeshAgent.speed < 4)
         {
             animator.SetBool("isWalking", true);
+            animator.SetBool("isHopping", false);
         }
-        else if (speedChase > 4)
+        else if (navMeshAgent.speed > 4)
         {
             animator.SetBool("isHopping", true);
+            animator.SetBool("isWalking", false);
         }
     }
 
@@ -213,19 +215,18 @@ public class EnemyController : MonoBehaviour
             StartCoroutine(VfxHandleElemental(resultReaction, reactionDuration));
             StartCoroutine(VfxHandleElementalState(resultReaction, reactionDuration + 0.5f));
         } else if (resultReaction == "Burning") {
+            burning = true;
+            vfx.Combustion(reactionDuration);
+            StartCoroutine(VfxHandleElemental(resultReaction, reactionDuration));
+            StartCoroutine(VfxHandleElementalState(resultReaction, reactionDuration + 0.5f));
             //vfx.Slowness(reactionDuration);
         } else if (resultReaction == "Slowness") {
             slowness = true;
-            vfx.Slowness(reactionDuration);
-            StartCoroutine(VfxHandleElementalState(resultReaction, reactionDuration));
+            vfx.Steam(reactionDuration);
+            StartCoroutine(VfxHandleElemental(resultReaction, reactionDuration));
+            StartCoroutine(VfxHandleElementalState(resultReaction, reactionDuration + 0.5f));
         }
     }
-        //private void Unfreeze() {
-        //    vfx.Unfreeze();
-        //}
-        //private void HandleFreezing() {
-        //    freezing = false;
-        //}
 
         IEnumerator VfxHandleElemental(string resultReaction, float delayTime) {
         yield return new WaitForSeconds(delayTime);
@@ -233,9 +234,12 @@ public class EnemyController : MonoBehaviour
         if (resultReaction == "Freezing") {
             vfx.Unfreeze();
         } else if (resultReaction == "Burning") {
-            vfx.Unfreeze();
+            vfx.UnCombustion();
         } else if (resultReaction == "Slowness") {
             vfx.UnSteam();
+            speedChase = Random.Range(minSpeed, maxSpeed);
+            ChasePlayer();
+            Debug.Log("Steam done");
         } 
 
     }
