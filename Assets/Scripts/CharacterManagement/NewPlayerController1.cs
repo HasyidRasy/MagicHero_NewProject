@@ -60,19 +60,14 @@ public class NewPlayerController1 : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
-
-        //SetAttackPattern(elementalSlots[currentSlotIndex]);
         attackPattern[0] = elementalSlots[0];
     }
 
     private void Update()
     {
-        //if (!isShooting) CharaMove();
         PlayerStat();
         attackCooldown -= Time.deltaTime;
         stepCooldown -= Time.deltaTime;
-
-        
 
         Aim();
 
@@ -86,6 +81,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void FixedUpdate() {
         if (!isShooting) CharaMove();
+        else _rb.velocity = Vector3.zero; //stop move & sliding
     }
 
     private void CharaMove() {
@@ -120,8 +116,6 @@ public class NewPlayerController1 : MonoBehaviour
         }
     }
 
-
-
     // Coroutine Dash Logic
     private IEnumerator Dash() {
         isDashing = true;
@@ -141,7 +135,6 @@ public class NewPlayerController1 : MonoBehaviour
         yield return new WaitForSeconds(characterModel.DashCooldown);
         isDashing = false;
     }
-
 
     private IEnumerator Stepping(float duration)
     {
@@ -264,7 +257,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void Aim()
     {
-        if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f && isAttacking && !isShooting)
+        if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f && isAttacking && !isShooting && Time.timeScale !=0)
         {
             // Raycast dari kursor mouse ke dunia 3D
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -307,29 +300,6 @@ public class NewPlayerController1 : MonoBehaviour
     {
         elementalSlots[elementSwitchSystem.currentButtonIndex] = newElement;
     }
-
-    private (bool success, Vector3 position) GetMousePosition()
-{
-    if (mainCamera == null)
-    {
-        // Handle the case where mainCamera is not yet available.
-        return (success: false, position: Vector3.zero);
-    }
-
-    var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-    if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
-    {
-        // The Raycast hit something, return with the position.
-        return (success: true, position: hitInfo.point);
-    }
-    else
-    {
-        // The Raycast did not hit anything.
-        return (success: false, position: Vector3.zero);
-    }
-}
-
 
     //helpers
     //public static class Helpers
