@@ -18,6 +18,10 @@ public class NewAudioManager : MonoBehaviour {
         }
     }
 
+    private void Start() {
+        sfxSource.volume = 0.5f;
+    }
+
     public void PlayBGM(string name) {
         Sound bgm = Array.Find(bgmAudio, x => x.names == name);
         if (bgm == null) {
