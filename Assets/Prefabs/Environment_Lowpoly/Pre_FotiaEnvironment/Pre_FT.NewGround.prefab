@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4349671799803488369}
   - component: {fileID: 270845470795384543}
   - component: {fileID: 2187494128199116875}
+  - component: {fileID: 1248191296878578869}
   m_Layer: 3
   m_Name: PlaneNeww
   m_TagString: Untagged
@@ -83,6 +84,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1248191296878578869
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2652181647164110986}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6416302070336371891, guid: 3e848299afa838948a554a01b278e9d7, type: 3}
 --- !u!1 &2846805384072145993
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,7 +115,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2861901873810949738}
-  - component: {fileID: 2946398566603205557}
   m_Layer: 3
   m_Name: Pre_FT.NewGround
   m_TagString: Untagged
@@ -118,27 +140,6 @@ Transform:
   - {fileID: 4349671799803488369}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2946398566603205557
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2846805384072145993}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 129.28, y: 1, z: 126.6}
-  m_Center: {x: 0, y: 0, z: -0.4}
 --- !u!1 &6193658360790391153
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,6 +151,7 @@ GameObject:
   - component: {fileID: 1539430335989208108}
   - component: {fileID: 738765173810450090}
   - component: {fileID: 1295431689886516197}
+  - component: {fileID: 63454796591423761}
   m_Layer: 3
   m_Name: PlaneNew
   m_TagString: Untagged
@@ -222,6 +224,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &63454796591423761
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6193658360790391153}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -462981019419857548, guid: 3e848299afa838948a554a01b278e9d7, type: 3}
 --- !u!1 &8267753467035756419
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,6 +257,7 @@ GameObject:
   - component: {fileID: 6242835214548740261}
   - component: {fileID: 3421611115039927549}
   - component: {fileID: 8185976178617506912}
+  - component: {fileID: 4531079363491188696}
   m_Layer: 3
   m_Name: GroundNew
   m_TagString: Untagged
@@ -305,3 +330,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4531079363491188696
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8267753467035756419}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 0.01562509, z: 256}
+  m_Center: {x: 0, y: -0.0078125, z: 0}
