@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4349671799803488369}
   - component: {fileID: 270845470795384543}
   - component: {fileID: 2187494128199116875}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PlaneNeww
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2861901873810949738}
-  m_Layer: 0
+  - component: {fileID: 2946398566603205557}
+  m_Layer: 3
   m_Name: Pre_FT.NewGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +109,7 @@ Transform:
   m_GameObject: {fileID: 2846805384072145993}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -117,6 +118,27 @@ Transform:
   - {fileID: 4349671799803488369}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2946398566603205557
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846805384072145993}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6193658360790391153
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,7 +150,7 @@ GameObject:
   - component: {fileID: 1539430335989208108}
   - component: {fileID: 738765173810450090}
   - component: {fileID: 1295431689886516197}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PlaneNew
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +233,7 @@ GameObject:
   - component: {fileID: 6242835214548740261}
   - component: {fileID: 3421611115039927549}
   - component: {fileID: 8185976178617506912}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: GroundNew
   m_TagString: Untagged
   m_Icon: {fileID: 0}
