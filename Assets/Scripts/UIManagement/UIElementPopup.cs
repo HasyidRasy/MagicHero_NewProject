@@ -26,7 +26,7 @@ public class UIElementPopup : MonoBehaviour
     private Image middleImagePopupUI;
 
     //HealthBar UI Popup
-    private GameObject healtBarPopupUI;
+    public GameObject healtBarPopupUI;
     private Slider healtBarSlider;
     private Vector3 healthBarOffset = new Vector3(0, -2, 0);
 

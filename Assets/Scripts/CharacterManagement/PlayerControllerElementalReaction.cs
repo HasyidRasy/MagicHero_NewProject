@@ -29,10 +29,19 @@ public class PlayerControllerElementalReaction : MonoBehaviour {
     [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     private float attackCooldown = 0f;
 
+    //elemental PopupUI
+    private UIElementPopup uiElementPopup;
+    //private Sprite elementSprite;
+    //private Element elementScrptObj;
+    private float maksHealth;
+    private Vector3 healthBarScale = new Vector3(3, 3, 3);
+
 
     private void Awake()
     {
         characterModel = GetComponent<CharacterModel>();
+        uiElementPopup = GetComponent<UIElementPopup>();
+        maksHealth = characterModel.healthPoint;
     }
     private void Start() 
     {       
@@ -52,6 +61,13 @@ public class PlayerControllerElementalReaction : MonoBehaviour {
             currentAttackIndex = (currentAttackIndex + 1) % 4;      // Pindah ke elemen berikutnya dalam pola serangan
             ChangeActiveElement();
             //CheckElementalReaction();
+        }
+
+        if (characterModel.healthPoint != maksHealth)
+        {
+            // Show HP Bar
+            uiElementPopup.ShowUpdateHealthBarUI(characterModel.healthPoint, maksHealth);
+            uiElementPopup.healtBarPopupUI.transform.localScale = healthBarScale;
         }
     }
 

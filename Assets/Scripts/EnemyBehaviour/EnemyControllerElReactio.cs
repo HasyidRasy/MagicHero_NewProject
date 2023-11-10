@@ -69,11 +69,11 @@ public class EnemyControllerElReactio : MonoBehaviour
     {      
             if (collision.gameObject.CompareTag("Player"))
             {
-                PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+                PlayerControllerElementalReaction playerControllerElementalReaction = collision.gameObject.GetComponent<PlayerControllerElementalReaction>();
 
-                if (playerController != null)
+                if (playerControllerElementalReaction != null)
                 {
-                    playerController.TakeDamage(damageAmount);
+                    playerControllerElementalReaction.TakeDamage(damageAmount);
                 }
             }     
     }
