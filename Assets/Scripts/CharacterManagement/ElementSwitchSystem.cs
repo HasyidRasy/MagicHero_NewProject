@@ -5,17 +5,42 @@ public class ElementSwitchSystem : MonoBehaviour
 {
     [SerializeField] private Sprite[] elementSprites = new Sprite[3]; // Array sprite untuk elemen
     [SerializeField] private Image[] elementIndicatorImages = new Image[3]; // Array Image untuk menampilkan elemen saat ini
+    [SerializeField] private GameObject[] elementPanel = new GameObject[3];
+    public ElementUnlockedInfo unlockedElementInfo = new ElementUnlockedInfo();
+    
+    private ElementalType element;
+    private int elementIndex;
 
-    private ElementalType element; // Elemen button
-    public GameObject elementPanel;
     private NewPlayerController1 playerController;
-    public int currentButtonIndex;
+    
+    [HideInInspector]
+    public int currentButtonIndex = 0;
+
+    [System.Serializable] //[System.Serializable] akan dihapus setelah masa pengembangan
+    public class ElementUnlockedInfo
+    {
+        public bool isFireUnlocked = false;
+        public bool isWaterUnlocked = false;
+        public bool isWindUnlocked = false;
+    }
+
+    /*
+     * untuk mengubah kondisi unlock element dari script lain, dapat diatur seperti ini:
+     * ElementSwitchSystem.unlockElement.isFireUnlocked = true; 
+     * dan sebagainya, sesuaikan dengan kebutuhan
+     */
 
     private void Awake()
     {
         // Cari dan simpan referensi ke NewPlayerController1 saat awal mulai
         playerController = FindObjectOfType<NewPlayerController1>();
     }
+
+    private void Start()
+    {
+        elementIndex = elementPanel.Length;
+    }
+
     //Mengatur elemen proyektil
     public void SetElement(ElementalType newElement)
     {
@@ -24,13 +49,33 @@ public class ElementSwitchSystem : MonoBehaviour
         switch (element)
         {
             case ElementalType.Water:
-                playerController.SetAttackPattern(newElement);
+                if (unlockedElementInfo.isWaterUnlocked) {
+                    playerController.SetAttackPattern(newElement);
+                }
+                else {
+                    Debug.Log("Element Water belum terbuka.");
+                }
+
                 break;
             case ElementalType.Fire:
-                playerController.SetAttackPattern(newElement);
+                if (unlockedElementInfo.isFireUnlocked)
+                {
+                    playerController.SetAttackPattern(newElement);
+                }
+                else
+                {
+                    Debug.Log("Element Fire belum terbuka.");
+                }
                 break;
             case ElementalType.Wind:
-                playerController.SetAttackPattern(newElement);
+                if (unlockedElementInfo.isWindUnlocked)
+                {
+                    playerController.SetAttackPattern(newElement);
+                }
+                else
+                {
+                    Debug.Log("Element Wind belum terbuka.");
+                }
                 break;
         }
     }
@@ -40,25 +85,21 @@ public class ElementSwitchSystem : MonoBehaviour
         SetElement(ElementalType.Fire);
         UpdateAttackPatternIndicator();
     }
-
     public void OnWaterButtonClick()
     {
         // Saat tombol Water diklik, atur elemen ke Water.
         SetElement(ElementalType.Water);
         UpdateAttackPatternIndicator();
     }
-
     public void OnWindButtonClick()
     {
         // Saat tombol Wind diklik, atur elemen ke Wind.
         SetElement(ElementalType.Wind);
         UpdateAttackPatternIndicator();
     }
-
     public void UpdateAttackPatternIndicator()
     {
         ElementalType[] attackPattern = playerController.GetCurrentAttackPattern();
-        //int currentAttackIndex = playerController.GetCurrentAttackIndex();
 
         for (int i = 0; i < elementIndicatorImages.Length; i++)
         {
@@ -79,19 +120,22 @@ public class ElementSwitchSystem : MonoBehaviour
     public void EnableElementPanel(int buttonIndex)
     {
         currentButtonIndex = buttonIndex;
-        Debug.Log("current button index" + currentButtonIndex);
         if (elementPanel != null)
         {
-            elementPanel.SetActive(true);
-            //SetElement((ElementalType)buttonIndex);
-            //Debug.Log("button index " + buttonIndex);
+            for (int i = 0; i < elementIndex; i++)
+            {
+                elementPanel[i].SetActive(true);
+            }
         }
     }
     public void DisableElementPanel()
     {
         if (elementPanel != null)
         {
-            elementPanel.SetActive(false);
+            for (int i = 0; i < elementIndex; i++)
+            {
+                elementPanel[i].SetActive(false);
+            }
         }
     }
 }

@@ -71,7 +71,7 @@ public class EnemyControllerElReactio : MonoBehaviour
 
     public void TakeDamage(int damageAmount)
     {
-        enemyModel.CurrentHealth -= damageAmount; // Reduce current health by the damage amount
+        enemyModel.CurrentHealth -= damageAmount ; // Reduce current health by the damage amount
 
         if (enemyModel.CurrentHealth <= 0)
         {

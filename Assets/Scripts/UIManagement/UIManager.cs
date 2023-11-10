@@ -115,6 +115,7 @@ public class UIManager : MonoBehaviour
         {
             elementSwitchSystem.UpdateAttackPatternIndicator();
             switchElementPanel.SetActive(true);
+            Time.timeScale = 0;
             isSwitchElementPanelActive = true;
         }
     }
@@ -123,6 +124,7 @@ public class UIManager : MonoBehaviour
         if (switchElementPanel != null)
         {
             switchElementPanel.SetActive(false);
+            Time.timeScale = 1;
             isSwitchElementPanelActive = false;
         }
     }
