@@ -76,18 +76,14 @@ public class NewPlayerController1 : MonoBehaviour
     {
 
         mainCamera = Camera.main;
-
         attackPattern[0] = elementalSlots[0];
     }
 
     private void Update()
     {
-        //if (!isShooting) CharaMove();
         PlayerStat();
         attackCooldown -= Time.deltaTime;
         stepCooldown -= Time.deltaTime;
-
-        
 
         Aim();
 
@@ -101,6 +97,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void FixedUpdate() {
         if (!isShooting) CharaMove();
+        else _rb.velocity = Vector3.zero; //stop move & sliding
     }
 
     private void CharaMove() {
@@ -135,8 +132,6 @@ public class NewPlayerController1 : MonoBehaviour
         }
     }
 
-
-
     // Coroutine Dash Logic
     private IEnumerator Dash() {
         isDashing = true;
@@ -156,7 +151,6 @@ public class NewPlayerController1 : MonoBehaviour
         yield return new WaitForSeconds(characterModel.DashCooldown);
         isDashing = false;
     }
-
 
     private IEnumerator Stepping(float duration)
     {
@@ -279,7 +273,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void Aim()
     {
-        if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f && isAttacking && !isShooting)
+        if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f && isAttacking && !isShooting && Time.timeScale !=0)
         {
             // Raycast dari kursor mouse ke dunia 3D
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -322,7 +316,6 @@ public class NewPlayerController1 : MonoBehaviour
     {
         elementalSlots[elementSwitchSystem.currentButtonIndex] = newElement;
     }
-
     
     public void GetCamera(Camera cam) {
         var newCamera = cam;
@@ -342,8 +335,6 @@ public class NewPlayerController1 : MonoBehaviour
             }
   
     }
-
-
 
     //helpers
     //public static class Helpers
