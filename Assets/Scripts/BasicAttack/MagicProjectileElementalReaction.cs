@@ -52,9 +52,9 @@ public class MagicProjectileElementalReaction : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
 
-            EnemyControllerElReactio enemyControllerElReact = other.GetComponent<EnemyControllerElReactio>();
-            enemyControllerElReact.TakeDamage(damageAmount);
-            enemyControllerElReact.ApplyElementalStatus(element);
+            //EnemyControllerElReactio enemyControllerElReact = other.GetComponent<EnemyControllerElReactio>();
+            //enemyControllerElReact.TakeDamage(damageAmount);
+            //enemyControllerElReact.ApplyElementalStatus(element);
 
             
             EnemyController enemyController = other.GetComponent<EnemyController>();
