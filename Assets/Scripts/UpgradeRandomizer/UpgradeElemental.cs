@@ -18,7 +18,7 @@ public class UpgradeElemental : MonoBehaviour
 
     private CharacterModel upgradedCharacter;
 
-    [SerializeField]private List<UpgradeData> availableUpgrades = new List<UpgradeData>();
+    public List<UpgradeData> availableUpgrades = new List<UpgradeData>();
     
 
     // Start is called before the first frame update
@@ -61,7 +61,6 @@ public class UpgradeElemental : MonoBehaviour
             }
             else
             {
-                
                 upgradeRarity[i].color = Color.white;
                 upgradeBgColor[i].color = Color.white;
             }

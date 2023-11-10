@@ -6,20 +6,23 @@ using UnityEngine.UI;
 public class UpgradeElementalButton : MonoBehaviour
 {
     public Image hoverImage;
+    public int id;
     private UpgradeManager upgradeManager;
-    private CharacterModel upgradedCharacter;
+    //private CharacterModel upgradedCharacter;
     private UpgradeData upgrade;
-    public UpgradeElemental upgradeElemental;
+    private UpgradeElemental upgradeElemental;
+    private ElementSwitchSystem elementSwitchSystem;
     
     // Start is called before the first frame update
     void Start()
     {
+        upgradeElemental = FindObjectOfType<UpgradeElemental>();
         upgradeManager = FindObjectOfType<UpgradeManager>();
-        upgradedCharacter = FindObjectOfType<CharacterModel>();
+        elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
 
-        if(upgradedCharacter == null)
+        if(elementSwitchSystem == null)
         {
-            Debug.Log("Characracter not found");
+            Debug.Log("System not found");
             return;
         }
         
@@ -37,10 +40,20 @@ public class UpgradeElementalButton : MonoBehaviour
         Debug.Log("Button clicked");
         if (upgrade != null)
         {
-            UpgradeData selectedUpgrade = UpgradeManager.instance.GetSelectedUpgrade(upgrade.upgradeID);
-
-            upgradedCharacter.ApplyUpgrade(upgrade);
-
+            if (id == 0)
+            {
+                elementSwitchSystem.unlockedElementInfo.isWaterUnlocked = true;
+            }
+            else if (id == 1)
+            {
+                elementSwitchSystem.unlockedElementInfo.isWindUnlocked = true;
+            }
+            else if (id == 2)
+            {
+                elementSwitchSystem.unlockedElementInfo.isFireUnlocked = true;
+            }
+        
+            
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
             Debug.Log("Upgrade Description: " + upgradeElemental.GetUpgradeDescription(upgrade));
         
