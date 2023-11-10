@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FTUEController : MonoBehaviour {
-    public int id;
+    public string _nameFtue;
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
-            FTUEManager.Instance.FTUEActive(id);
+            FTUEManager.Instance.FTUEActive(_nameFtue);
         }
     }
 }
