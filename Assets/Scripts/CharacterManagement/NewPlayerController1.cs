@@ -181,7 +181,7 @@ public class NewPlayerController1 : MonoBehaviour
         if (characterModel.HealthPoint <= 0)
         {          
             Death(); // If health drops to or below zero, call a method to handle enemy death
-            OnPlayerDeath?.Invoke();
+            Invoke("ShowDeathPanel", 3f);
         }
     }
 
@@ -190,6 +190,9 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isDeath", true);
         characterModel.rotationSpeed = 0;
         characterModel.moveSpeed = 0;
+    }
+    private void ShowDeathPanel() {
+        OnPlayerDeath?.Invoke();
     }
 
     private void ShootMagic(ElementalType element)
