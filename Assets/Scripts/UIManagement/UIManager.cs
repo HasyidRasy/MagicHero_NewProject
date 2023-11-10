@@ -22,11 +22,11 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.OnPlayerDeath += EnableDeathPanel;
+        NewPlayerController1.OnPlayerDeath += EnableDeathPanel;
     }
     private void OnDisable()
     {
-        PlayerController.OnPlayerDeath -= EnableDeathPanel;
+        NewPlayerController1.OnPlayerDeath -= EnableDeathPanel;
     }
 
     private void Update()
