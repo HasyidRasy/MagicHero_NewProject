@@ -67,7 +67,7 @@ public class UpgradeManager : MonoBehaviour
             }
         }
 
-        foreach (UpgradeData upgrade in upgradeDatabase.legendUpgrades)
+        foreach (UpgradeData upgrade in upgradeDatabase.elementalUpgrades)
         {
             if (PlayerPrefs.HasKey(upgrade.upgradeID.ToString()))
             {

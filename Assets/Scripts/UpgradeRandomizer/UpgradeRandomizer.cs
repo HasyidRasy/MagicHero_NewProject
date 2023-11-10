@@ -54,9 +54,8 @@ public class UpgradeRandomizer : MonoBehaviour
         availableUpgrades.Clear();
         availableUpgrades.AddRange(upgradeDatabase.commonUpgrades);
         availableUpgrades.AddRange(upgradeDatabase.rareUpgrades);
-        //availableUpgrades.AddRange(upgradeDatabase.legendUpgrades);
 
-        InitializeRarityCounts();
+        //InitializeRarityCounts();
         RandomizeUpgrades();
         UpdateUI();
     }
@@ -142,15 +141,14 @@ public class UpgradeRandomizer : MonoBehaviour
         {
             return UpgradeRarity.Common;
         }
-        else if (randomValue > 0.60f && randomValue <= 0.9f)
+        else if (randomValue > 0.60f && randomValue <= 1f)
         {
             return UpgradeRarity.Rare;
         }
         else
         {
-            return UpgradeRarity.Legendary;
+            return 0;
         }
-        
     }
     private UpgradeData GetRandomUpgrade(UpgradeRarity rarity)
     {
@@ -185,12 +183,6 @@ public class UpgradeRandomizer : MonoBehaviour
                 upgradeRarity[i].color = new Color(0.518f, 0.157f, 0.741f);
                 upgradeBgColor[i].color = new Color(0.518f, 0.157f, 0.741f);
             }
-            else if (randomizedUpgrades[i].rarity == UpgradeRarity.Legendary)
-            {
-                //upgradeNameText[i].color = new Color(0.902f, 0.561f, 0.247f); // Orange color
-                upgradeRarity[i].color = new Color(0.902f, 0.561f, 0.247f);
-                upgradeBgColor[i].color = new Color(0.902f, 0.561f, 0.247f);
-            }
             else
             {
                 //upgradeNameText[i].color = Color.white;
@@ -210,8 +202,8 @@ public class UpgradeRandomizer : MonoBehaviour
             {
                 upgradeManager.AddSelectedUpgrade(upgrade);
             }
+        }
     }
-}
 
     private string GetUpgradeDescription(UpgradeData upgrade)
     {
