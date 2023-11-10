@@ -138,7 +138,7 @@ public class EnemyController : MonoBehaviour
         navMeshAgent.speed = 0;
         NewAudioManager.Instance.sfxSource.Stop();
         NewAudioManager.Instance.PlaySFX("EnemyHurt");
-        if (enemyModel.CurrentHealth <= 0)
+        if (enemyModel.CurrentHealth <= 0 && isDeath == false)
         {
             Death();
         }
