@@ -14,6 +14,9 @@ public class AsynLoader : MonoBehaviour {
     [Header("Slider")]
     [SerializeField] private Slider loadingSlider;
 
+    [Header("Transition")]
+    [SerializeField] Animator transitionAnim;
+
     //private void Awake() {
     //    if (Instance == null) {
     //        Instance = this;
@@ -32,15 +35,13 @@ public class AsynLoader : MonoBehaviour {
     }
 
     public void TrigerLoadLevel(string levelToLoad) {
-        if (levelToLoad == "Level1") {
-            mainMenu.SetActive(false);
-            loadingScreen.SetActive(true);
-
-            StartCoroutine(LoadLevelAsyn("Level1"));
-        }
+        loadingScreen.SetActive(true);
+        StartCoroutine(LoadLevelAsyn(levelToLoad));
     }
 
     IEnumerator LoadLevelAsyn(string levelToLoad) {
+        transitionAnim.SetTrigger("TransitionEnd");
+        yield return new WaitForSeconds(1f);
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(levelToLoad);
         
         while (!loadOperation.isDone) {
@@ -48,5 +49,6 @@ public class AsynLoader : MonoBehaviour {
             loadingSlider.value = progressValue;
             yield return null;
         }
+        transitionAnim.SetTrigger("TransitionStart");
     }
 }

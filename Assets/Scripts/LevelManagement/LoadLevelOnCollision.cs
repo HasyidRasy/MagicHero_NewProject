@@ -54,5 +54,6 @@ public class LoadLevelOnCollision : MonoBehaviour
 
         // Load the scene with the specified index.
         SceneManager.LoadScene(sceneIndexToLoad);
+        //AsynLoader.Instance.TrigerLoadLevel(sceneIndexToLoad);
     }
 }
