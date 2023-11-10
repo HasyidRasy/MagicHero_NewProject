@@ -38,7 +38,6 @@ public class UIManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Tab) && !isSwitchElementPanelActive)
         {
-
             EnableSwitchElementPanel();
         }
         else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive)
@@ -115,6 +114,7 @@ public class UIManager : MonoBehaviour
         {
             elementSwitchSystem.UpdateAttackPatternIndicator();
             switchElementPanel.SetActive(true);
+            Time.timeScale = 0;
             isSwitchElementPanelActive = true;
         }
     }
@@ -123,6 +123,8 @@ public class UIManager : MonoBehaviour
         if (switchElementPanel != null)
         {
             switchElementPanel.SetActive(false);
+            elementSwitchSystem.DisableElementPanel();
+            Time.timeScale = 1;
             isSwitchElementPanelActive = false;
         }
     }
