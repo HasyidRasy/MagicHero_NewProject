@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MagicProjectileElementalReaction : MonoBehaviour
 {
+    [SerializeField] private CharacterModel characterModel;
     [SerializeField] public ElementalType element; // Elemen proyektil
     [SerializeField] private float lifeTime;
     [SerializeField] private int damageAmount = 20;
@@ -15,6 +16,7 @@ public class MagicProjectileElementalReaction : MonoBehaviour
     //untuk menghancurkan projectile dalam kurun waktu tertentu
     private void Awake()
     {
+        characterModel = FindObjectOfType<CharacterModel>();
         Destroy(gameObject, lifeTime);
     }
 
@@ -49,9 +51,17 @@ public class MagicProjectileElementalReaction : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
+
             EnemyControllerElReactio enemyControllerElReact = other.GetComponent<EnemyControllerElReactio>();
             enemyControllerElReact.TakeDamage(damageAmount);
             enemyControllerElReact.ApplyElementalStatus(element);
+
+            
+            EnemyController enemyController = other.GetComponent<EnemyController>();
+            float totalDamage = damageAmount + (characterModel.attack - enemyController.defense) + characterModel.elementalBonus;
+            enemyController.TakeDamage(totalDamage);
+            enemyController.ApplyElementalStatus(element);          
+
             Destroy(gameObject); // Hancurkan proyektil setelah bertabrakan
             Debug.Log("Menyerang Musuh");
         }        

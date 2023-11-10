@@ -14,6 +14,8 @@ public class UpgradeRandomizer : MonoBehaviour
     public TMP_Text[] upgradeNameText;
     public TMP_Text[] upgradeDescText;
     public Image[] upgradeImage;
+    public Image[] upgradeRarity;
+    public Image[] upgradeBgColor;
     public Button[] upgradeButtons;
     public Button upgradeSkip;
 
@@ -52,9 +54,8 @@ public class UpgradeRandomizer : MonoBehaviour
         availableUpgrades.Clear();
         availableUpgrades.AddRange(upgradeDatabase.commonUpgrades);
         availableUpgrades.AddRange(upgradeDatabase.rareUpgrades);
-        availableUpgrades.AddRange(upgradeDatabase.legendUpgrades);
 
-        InitializeRarityCounts();
+        //InitializeRarityCounts();
         RandomizeUpgrades();
         UpdateUI();
     }
@@ -94,16 +95,59 @@ public class UpgradeRandomizer : MonoBehaviour
 
     private UpgradeRarity GetRandomRarityWithWeightedDistribution()
     {
-        float randomValue = Random.Range(0f, 1f);
-        
-        // 75% chance for common, 25% chance for rare
-        if (randomValue <= 0.75f)
+        /*Amount Randomizer
+        int commonAmount = 0;
+        int rareAmount = 0;
+        int legendAmount = 0;
+    
+        foreach(var upgrades in upgradeDatabase.commonUpgrades)
+        {
+            commonAmount += 6;
+        }
+
+        foreach(var upgrades in upgradeDatabase.rareUpgrades)
+        {
+            rareAmount += 3;
+        }
+
+        foreach(var upgrades in upgradeDatabase.legendUpgrades)
+        {
+            legendAmount += 1;
+        }
+
+        int totalAmount = commonAmount + rareAmount + legendAmount;
+
+        int randVal = Random.Range(1, totalAmount);
+
+        if(randVal >= 1 && randVal <= commonAmount)
         {
             return UpgradeRarity.Common;
         }
-        else
+        else if(randVal > commonAmount && randVal <= (commonAmount + rareAmount))
         {
             return UpgradeRarity.Rare;
+        }
+        else 
+        {
+            return UpgradeRarity.Legendary;
+        }
+        */
+        
+        //|| Percent randomizer;
+        float randomValue = Random.Range(0f, 1f);
+        
+        // 60% chance for common, 30% chance for rare, 10% change for legend
+        if (randomValue <= 0.60f)
+        {
+            return UpgradeRarity.Common;
+        }
+        else if (randomValue > 0.60f && randomValue <= 1f)
+        {
+            return UpgradeRarity.Rare;
+        }
+        else
+        {
+            return 0;
         }
     }
     private UpgradeData GetRandomUpgrade(UpgradeRarity rarity)
@@ -122,26 +166,30 @@ public class UpgradeRandomizer : MonoBehaviour
     // Update is called once per frame
     public void UpdateUI()
     {
-
         for (int i = 0; i < 3; i++)
         {
             upgradeNameText[i].text = randomizedUpgrades[i].upgradeName;
+            
+            // Use Color values between 0 and 1
             if (randomizedUpgrades[i].rarity == UpgradeRarity.Common)
             {
-                upgradeNameText[i].color = Color.green;
+                //upgradeNameText[i].color = new Color(0.545f, 0.761f, 0.808f); // Cyan color
+                upgradeRarity[i].color = new Color(0.545f, 0.761f, 0.808f);
+                upgradeBgColor[i].color = new Color(0.545f, 0.761f, 0.808f);
             }
             else if (randomizedUpgrades[i].rarity == UpgradeRarity.Rare)
             {
-                upgradeNameText[i].color = Color.blue;
-            }
-            else if (randomizedUpgrades[i].rarity == UpgradeRarity.Legendary)
-            {
-                upgradeNameText[i].color = Color.yellow;
+                //upgradeNameText[i].color = new Color(0.518f, 0.157f, 0.741f); // Purple color
+                upgradeRarity[i].color = new Color(0.518f, 0.157f, 0.741f);
+                upgradeBgColor[i].color = new Color(0.518f, 0.157f, 0.741f);
             }
             else
             {
-                upgradeNameText[i].color = Color.white;
+                //upgradeNameText[i].color = Color.white;
+                upgradeRarity[i].color = Color.white;
+                upgradeBgColor[i].color = Color.white;
             }
+            upgradeNameText[i].color = Color.white;
             upgradeDescText[i].text = GetUpgradeDescription(randomizedUpgrades[i]);
             upgradeImage[i].sprite = randomizedUpgrades[i].upgradeIcon;
 
@@ -158,25 +206,26 @@ public class UpgradeRandomizer : MonoBehaviour
     }
 
     private string GetUpgradeDescription(UpgradeData upgrade)
-{
-    string description = "";
-    foreach (var stat in upgrade.stats)
     {
-        if(stat.upgradeValueStatic > 0)
+        string description = "";
+
+        if(upgrade.upgradeDesc != null)
         {
-            description += stat.upgradeType.ToString() + " +" + stat.upgradeValueStatic + "\n";
+            description = upgrade.upgradeDesc;
         }
-        else if(stat.upgradeValueStatic < 0)
+
+        foreach (var stat in upgrade.stats)
         {
-            description += stat.upgradeType.ToString() + " -" + stat.upgradeValueStatic + "\n";
+            if(stat.upgradeValueStatic > 0)
+            {
+                description = stat.upgradeType.ToString() + " +" + stat.upgradeValueStatic + "\n";
+            }
+            else if(stat.upgradeValueStatic < 0)
+            {
+                description = stat.upgradeType.ToString() + " -" + stat.upgradeValueStatic + "\n";
+            }
         }
-        
-        if(stat.upgradeValuePercent != 0)
-        {
-            description += stat.upgradeType.ToString() + " +" + stat.upgradeValuePercent + "%\n";
-        }
+        return description;
     }
-    return description;
-}
 
 }

@@ -54,7 +54,20 @@ public class UpgradeManager : MonoBehaviour
             }
         }
 
-         foreach (UpgradeData upgrade in upgradeDatabase.rareUpgrades)
+        foreach (UpgradeData upgrade in upgradeDatabase.rareUpgrades)
+        {
+            if (PlayerPrefs.HasKey(upgrade.upgradeID.ToString()))
+            {
+                int upgradeID = PlayerPrefs.GetInt(upgrade.upgradeID.ToString());
+                UpgradeData selectedUpgrade = upgradeDatabase.GetUpgradeByID(upgradeID);
+                if (selectedUpgrade != null)
+                {
+                    selectedUpgrades.Add(upgradeID, selectedUpgrade);
+                }
+            }
+        }
+
+        foreach (UpgradeData upgrade in upgradeDatabase.elementalUpgrades)
         {
             if (PlayerPrefs.HasKey(upgrade.upgradeID.ToString()))
             {

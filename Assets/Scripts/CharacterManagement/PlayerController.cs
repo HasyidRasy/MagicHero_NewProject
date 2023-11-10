@@ -30,6 +30,11 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     private float attackCooldown = 0f;
 
+    [Header("Upgrade Shenanigans")]
+    public int maxDash = 1;
+    [SerializeField]private int availableDash;
+    [SerializeField]private float dashCd;
+
     //[SerializeField] GameObject mousePos;
 
     public static event Action OnPlayerDeath;
@@ -41,7 +46,8 @@ public class PlayerController : MonoBehaviour {
     }
     private void Start() 
     {       
-        
+        availableDash = maxDash;
+        dashCd = characterModel.dashCooldown;
     }
 
     private void Update() {
@@ -90,8 +96,12 @@ public class PlayerController : MonoBehaviour {
         _model.rotation = Quaternion.RotateTowards(_model.rotation, rotation, characterModel.rotationSpeed * Time.deltaTime);
         
         //Call Coroutine Dash
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && (Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f)) {
-            StartCoroutine(Dash());
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && (Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f) && availableDash > 0) {
+            if(availableDash > 0)
+            {
+                availableDash--;
+                StartCoroutine(Dash());
+            }
         }
     }
 
@@ -106,11 +116,20 @@ public class PlayerController : MonoBehaviour {
             //transform.position += characterModel.DashSpeed * Time.deltaTime * dashDir;
             //New Logic Dash
             _rb.MovePosition(transform.position + dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime);
+
+            /*if(Input.GetKeyDown(KeyCode.LeftShift) && availableDash > 0)
+            {
+                availableDash--;
+                dashCd = 0;
+            }*/
+
             yield return null;
         }
 
-        yield return new WaitForSeconds(characterModel.DashCooldown);
+        yield return new WaitForSeconds(dashCd);
         isDashing = false;
+        availableDash = maxDash;
+        dashCd = characterModel.dashCooldown;
     }
 
     //Player Stat
