@@ -33,8 +33,11 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !isConfirmPanelActive)
         {
-            Time.timeScale = 0;
+            Pause();
             EnableConfirmPanel();
+        } else if (Input.GetKeyDown(KeyCode.Escape) && isConfirmPanelActive) {
+            Continue();
+            DisableConfirmPanel();
         }
         if (Input.GetKeyDown(KeyCode.Tab) && !isSwitchElementPanelActive)
         {
@@ -114,7 +117,7 @@ public class UIManager : MonoBehaviour
         {
             elementSwitchSystem.UpdateAttackPatternIndicator();
             switchElementPanel.SetActive(true);
-            Time.timeScale = 0;
+            Pause();
             isSwitchElementPanelActive = true;
         }
     }
@@ -124,7 +127,7 @@ public class UIManager : MonoBehaviour
         {
             switchElementPanel.SetActive(false);
             elementSwitchSystem.DisableElementPanel();
-            Time.timeScale = 1;
+            Continue();
             isSwitchElementPanelActive = false;
         }
     }
