@@ -74,7 +74,6 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void Start()
     {
-
         mainCamera = Camera.main;
         attackPattern[0] = elementalSlots[0];
     }
@@ -316,6 +315,7 @@ public class NewPlayerController1 : MonoBehaviour
     {
         elementalSlots[elementSwitchSystem.currentButtonIndex] = newElement;
     }
+
     
     public void GetCamera(Camera cam) {
         var newCamera = cam;
@@ -335,7 +335,7 @@ public class NewPlayerController1 : MonoBehaviour
             }
   
     }
-    
+
     //helpers
     //public static class Helpers
     //{

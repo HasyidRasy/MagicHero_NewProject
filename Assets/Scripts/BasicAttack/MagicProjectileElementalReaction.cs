@@ -51,11 +51,17 @@ public class MagicProjectileElementalReaction : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
+
+            EnemyControllerElReactio enemyControllerElReact = other.GetComponent<EnemyControllerElReactio>();
+            enemyControllerElReact.TakeDamage(damageAmount);
+            enemyControllerElReact.ApplyElementalStatus(element);
+
             
             EnemyController enemyController = other.GetComponent<EnemyController>();
             float totalDamage = damageAmount + (characterModel.attack - enemyController.defense) + characterModel.elementalBonus;
             enemyController.TakeDamage(totalDamage);
             enemyController.ApplyElementalStatus(element);          
+
             Destroy(gameObject); // Hancurkan proyektil setelah bertabrakan
             Debug.Log("Menyerang Musuh");
         }        

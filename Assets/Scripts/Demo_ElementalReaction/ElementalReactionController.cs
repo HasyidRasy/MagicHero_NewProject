@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class ElementalReactionController : MonoBehaviour
 {
+    //Popup Element
+    public List<Element> elementScrptObj;
+    private Element element;
+
+
     public static ElementalReactionController Instance; // Singleton instance
 
     public List<ElementalReaction> elementalReaction;
@@ -33,5 +38,17 @@ public class ElementalReactionController : MonoBehaviour
             }
         }
         return null; // No reaction found.
+    }
+
+    public Element GetElementScrptObj(ElementalType elementalType)
+    {
+        foreach (Element elemen in elementScrptObj)
+        {
+            if (elemen.elementEnum == elementalType) 
+            {
+                return elemen;
+            }
+        }
+        return null;
     }
 }
