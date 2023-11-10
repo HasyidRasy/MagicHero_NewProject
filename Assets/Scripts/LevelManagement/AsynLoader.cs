@@ -10,6 +10,7 @@ public class AsynLoader : MonoBehaviour {
     [Header("Scene")]
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject transition;
 
     [Header("Slider")]
     [SerializeField] private Slider loadingSlider;
@@ -26,12 +27,14 @@ public class AsynLoader : MonoBehaviour {
     //    }
     //}
 
-    public void LoadLevelBtn(string levelToLoad) { 
+    public void LoadLevelBtn(string levelToLoad) {
+        loadingScreen.SetActive(true);
         mainMenu.SetActive(false);
         loadingScreen.SetActive(true);
 
         //run loading
         StartCoroutine(LoadLevelAsyn(levelToLoad));
+        loadingScreen.SetActive(false);
     }
 
     public void TrigerLoadLevel(string levelToLoad) {
