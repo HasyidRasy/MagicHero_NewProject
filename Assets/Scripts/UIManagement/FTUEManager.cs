@@ -57,6 +57,9 @@ public class FTUEManager : MonoBehaviour {
             _sceneElementIntro.SetActive(true);
         }
         if (nameFtue == "GoToMainLevel") {
+            NewAudioManager.Instance.bgmSource.Stop();
+            NewAudioManager.Instance.sfxSource.Stop();
+            NewAudioManager.Instance.PlaySFX("Teleport");
             SceneManager.LoadScene("Level1");
         }
     }
