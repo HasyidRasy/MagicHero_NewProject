@@ -142,18 +142,10 @@ public class NewPlayerController1 : MonoBehaviour
         Vector3 pos = transform.position;
         Vector3 dashDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
 
-        //while (Time.time < startTime + characterModel.DashDuration) {
-        //    _rb.MovePosition(transform.position + dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime);
-        //    yield return null;
-        //}
-
-        Vector3 dashVelocity = dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime;
-
-        _rb.velocity = dashVelocity;
-
-        yield return new WaitForSeconds(characterModel.dashDuration);
-
-        _rb.velocity = Vector3.zero;
+        while (Time.time < startTime + characterModel.DashDuration) {
+            _rb.MovePosition(transform.position + dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime);
+            yield return null;
+        }
 
         animator.SetBool("isDashing", false); // Set isDashing back to false after dashing
         yield return new WaitForSeconds(characterModel.DashCooldown);
