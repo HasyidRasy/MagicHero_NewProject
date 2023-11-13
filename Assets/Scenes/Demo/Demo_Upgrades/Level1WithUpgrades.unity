@@ -9268,8 +9268,8 @@ MonoBehaviour:
   - {fileID: 5378700236290580642, guid: 5eb44620a1f0a5c41869447eee05e0c0, type: 3}
   - {fileID: 5484978161598056845, guid: 68609f01ae9e6da4c98641ddb37a5d87, type: 3}
   - {fileID: 220110423527018933, guid: eb62b1f251843b549a912624d9704e04, type: 3}
+  lastAreaPrefabs: []
   corridorPrefab: {fileID: 8615632486034306209, guid: 53b3499271f8a7d4a82ce06b7b9f857e, type: 3}
-  lastAreaPrefab: {fileID: 5399160249351253660, guid: 77013af77ae6a794682d90528ee2a4ab, type: 3}
   minChallengeAreas: 5
   maxChallengeAreas: 7
   roomSpacing: 165
@@ -9554,10 +9554,6 @@ PrefabInstance:
     - target: {fileID: 2390877489587423289, guid: bb2b8a204e2c408468c0d4e126216ba7, type: 3}
       propertyPath: m_Name
       value: Pre_UpgradesWithUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 2390877489587423289, guid: bb2b8a204e2c408468c0d4e126216ba7, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4644403198561878170, guid: bb2b8a204e2c408468c0d4e126216ba7, type: 3}
       propertyPath: m_Pivot.x
@@ -9904,6 +9900,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   distanceInFront: 2
+  mainCamera: {fileID: 0}
   isAttacking: 1
 --- !u!1 &1251161303
 GameObject:
@@ -10043,7 +10040,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgradeRandomizer: {fileID: 1073666329}
-  upgradeElemental: {fileID: 0}
+  upgradeElemental: {fileID: 2951721752395706669}
 --- !u!1 &1291745828
 GameObject:
   m_ObjectHideFlags: 0
@@ -11587,6 +11584,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7283230138717046061, guid: 06bf94d2a1d572a42aa2d6af11a63bf8, type: 3}
   m_PrefabInstance: {fileID: 598771318964214231}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2951721752395706669 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3033539728507255628, guid: 06bf94d2a1d572a42aa2d6af11a63bf8, type: 3}
+  m_PrefabInstance: {fileID: 598771318964214231}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5b44f032b4e7c14da9e322b45c491ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

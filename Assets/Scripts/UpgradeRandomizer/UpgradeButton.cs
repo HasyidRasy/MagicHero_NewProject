@@ -28,7 +28,7 @@ public class UpgradeButton : MonoBehaviour
             Debug.Log("Upgrade not found");
             return;
         }
-        
+           
         if(upgrade.rarity == UpgradeRarity.Common)
         {
             hoverImage.color = new Color(0.545f, 0.761f, 0.808f);

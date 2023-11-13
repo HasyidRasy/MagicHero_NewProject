@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NewPlayerController1 : MonoBehaviour
 {
@@ -43,13 +44,27 @@ public class NewPlayerController1 : MonoBehaviour
     [Header("Jarak Antara Player dan Spawn Magic ")]
     [SerializeField] private float distanceInFront = 2.0f; // Sesuaikan dengan jarak yang Anda inginkan
 
-    private Camera mainCamera;
+    [SerializeField] public Camera mainCamera;
     private bool isShooting = false;
     private Vector3 targetDirection;
     [SerializeField] private bool isAttacking = true;
 
     public static event Action OnPlayerDeath;
 
+
+    private void OnEnable() {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        // Assign the mainCamera reference when a new scene is loaded
+        mainCamera = Camera.main;
+        Debug.Log("kamera : " + mainCamera);
+    }
     private void Awake()
     {
         characterModel = GetComponent<CharacterModel>();
@@ -59,6 +74,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void Start()
     {
+
         mainCamera = Camera.main;
         attackPattern[0] = elementalSlots[0];
     }
@@ -165,7 +181,7 @@ public class NewPlayerController1 : MonoBehaviour
         if (characterModel.HealthPoint <= 0)
         {          
             Death(); // If health drops to or below zero, call a method to handle enemy death
-            OnPlayerDeath?.Invoke();
+            Invoke("ShowDeathPanel", 3f);
         }
     }
 
@@ -174,6 +190,9 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isDeath", true);
         characterModel.rotationSpeed = 0;
         characterModel.moveSpeed = 0;
+    }
+    private void ShowDeathPanel() {
+        OnPlayerDeath?.Invoke();
     }
 
     private void ShootMagic(ElementalType element)
@@ -299,6 +318,25 @@ public class NewPlayerController1 : MonoBehaviour
     public void SetAttackPattern(ElementalType newElement)
     {
         elementalSlots[elementSwitchSystem.currentButtonIndex] = newElement;
+    }
+    
+    public void GetCamera(Camera cam) {
+        var newCamera = cam;
+        mainCamera = newCamera;
+        Debug.Log("A key pressed. Camera: " + (cam != null ? cam.name : "null"));
+    }
+    private (bool success, Vector3 position) GetMousePosition() {
+
+            var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask)) {
+                // The Raycast hit something, return with the position.
+                return (success: true, position: hitInfo.point);
+            } else {
+                // The Raycast did not hit anything.
+                return (success: false, position: Vector3.zero);
+            }
+  
     }
 
     //helpers

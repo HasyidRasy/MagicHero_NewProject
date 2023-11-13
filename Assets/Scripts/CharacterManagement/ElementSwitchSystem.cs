@@ -6,6 +6,7 @@ public class ElementSwitchSystem : MonoBehaviour
     [SerializeField] private Sprite[] elementSprites = new Sprite[3]; // Array sprite untuk elemen
     [SerializeField] private Image[] elementIndicatorImages = new Image[3]; // Array Image untuk menampilkan elemen saat ini
     [SerializeField] private GameObject[] elementPanel = new GameObject[3];
+    [SerializeField] private Button[] elementButton = new Button[3];
     public ElementUnlockedInfo unlockedElementInfo = new ElementUnlockedInfo();
     
     private ElementalType element;
@@ -34,6 +35,7 @@ public class ElementSwitchSystem : MonoBehaviour
     {
         // Cari dan simpan referensi ke NewPlayerController1 saat awal mulai
         playerController = FindObjectOfType<NewPlayerController1>();
+        //GetComponent<Button>();
     }
 
     private void Start()
@@ -125,6 +127,7 @@ public class ElementSwitchSystem : MonoBehaviour
             for (int i = 0; i < elementIndex; i++)
             {
                 elementPanel[i].SetActive(true);
+                elementUnlockedChecker();
             }
         }
     }
@@ -136,6 +139,36 @@ public class ElementSwitchSystem : MonoBehaviour
             {
                 elementPanel[i].SetActive(false);
             }
+        }
+    }
+
+    // Set interactable sesuai dengan status unlocked
+    public void elementUnlockedChecker()
+    {
+        if (unlockedElementInfo.isFireUnlocked)
+        {
+            elementButton[0].interactable = true;
+        } else
+        {
+            elementButton[0].interactable = false;
+        }
+
+        if (unlockedElementInfo.isWaterUnlocked)
+        {
+            elementButton[1].interactable = true;
+        }
+        else
+        {
+            elementButton[1].interactable = false;
+        }
+
+        if (unlockedElementInfo.isWindUnlocked)
+        {
+            elementButton[2].interactable = true;
+        }
+        else
+        {
+            elementButton[2].interactable = false;
         }
     }
 }

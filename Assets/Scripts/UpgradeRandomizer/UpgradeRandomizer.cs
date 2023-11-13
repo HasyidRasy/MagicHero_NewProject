@@ -36,8 +36,6 @@ public class UpgradeRandomizer : MonoBehaviour
             return;
         }
 
-        RandomizeUpgrades();
-        UpdateUI();
         StartUpgrade();
     }
 
@@ -55,7 +53,7 @@ public class UpgradeRandomizer : MonoBehaviour
         availableUpgrades.AddRange(upgradeDatabase.commonUpgrades);
         availableUpgrades.AddRange(upgradeDatabase.rareUpgrades);
 
-        //InitializeRarityCounts();
+        InitializeRarityCounts();
         RandomizeUpgrades();
         UpdateUI();
     }
@@ -67,6 +65,7 @@ public class UpgradeRandomizer : MonoBehaviour
         foreach (var rarity in System.Enum.GetValues(typeof(UpgradeRarity)))
         {
             rarityCounts[(UpgradeRarity)rarity] = 0;
+            
         }
 
         foreach (var upgrade in availableUpgrades)
@@ -74,6 +73,7 @@ public class UpgradeRandomizer : MonoBehaviour
             rarityCounts[upgrade.rarity]++;
         }
     }
+
 
    public void RandomizeUpgrades()
 {
@@ -147,7 +147,7 @@ public class UpgradeRandomizer : MonoBehaviour
         }
         else
         {
-            return 0;
+            return UpgradeRarity.Common;
         }
     }
     private UpgradeData GetRandomUpgrade(UpgradeRarity rarity)

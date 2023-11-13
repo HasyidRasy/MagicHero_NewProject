@@ -22,23 +22,25 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.OnPlayerDeath += EnableDeathPanel;
+        NewPlayerController1.OnPlayerDeath += EnableDeathPanel;
     }
     private void OnDisable()
     {
-        PlayerController.OnPlayerDeath -= EnableDeathPanel;
+        NewPlayerController1.OnPlayerDeath -= EnableDeathPanel;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !isConfirmPanelActive)
         {
-            Time.timeScale = 0;
+            Pause();
             EnableConfirmPanel();
+        } else if (Input.GetKeyDown(KeyCode.Escape) && isConfirmPanelActive) {
+            Continue();
+            DisableConfirmPanel();
         }
         if (Input.GetKeyDown(KeyCode.Tab) && !isSwitchElementPanelActive)
         {
-
             EnableSwitchElementPanel();
         }
         else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive)
@@ -108,13 +110,14 @@ public class UIManager : MonoBehaviour
             confirmPanel.SetActive(false);
         }
     }
+
     public void EnableSwitchElementPanel()
     {
         if (switchElementPanel != null)
         {
             elementSwitchSystem.UpdateAttackPatternIndicator();
             switchElementPanel.SetActive(true);
-            Time.timeScale = 0;
+            Pause();
             isSwitchElementPanelActive = true;
         }
     }
@@ -123,10 +126,21 @@ public class UIManager : MonoBehaviour
         if (switchElementPanel != null)
         {
             switchElementPanel.SetActive(false);
-            Time.timeScale = 1;
+            elementSwitchSystem.DisableElementPanel();
+            Continue();
             isSwitchElementPanelActive = false;
         }
     }
+
+
+    public void Pause() {
+        Time.timeScale = 0;
+    }
+
+    public void Continue() {
+        Time.timeScale = 1f;
+    }
+
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
