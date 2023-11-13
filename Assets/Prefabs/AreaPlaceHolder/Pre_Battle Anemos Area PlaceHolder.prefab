@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 5518966155421124071}
   - component: {fileID: 109773546028702385}
   - component: {fileID: 1645199583376387021}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall Invisible (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -498,7 +498,7 @@ GameObject:
   - component: {fileID: 3233854813854513277}
   - component: {fileID: 1418038934225950295}
   - component: {fileID: 7157131293506391866}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall Invisible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -743,7 +743,7 @@ GameObject:
   - component: {fileID: 1508931654909978335}
   - component: {fileID: 6358449786196867685}
   - component: {fileID: 5684851961348769568}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1326,7 +1326,7 @@ GameObject:
   - component: {fileID: 1570922694804967098}
   - component: {fileID: 3125804311850793698}
   - component: {fileID: 2323394983921026830}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2267,6 +2267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openHeight: 5
+  doorSpeed: 4.5
   id: 0
 --- !u!1 &3747459009724910180
 GameObject:
@@ -2280,7 +2281,7 @@ GameObject:
   - component: {fileID: 8787547056706009229}
   - component: {fileID: 8104769674295469409}
   - component: {fileID: 734609558092915611}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall Invisible (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2898,16 +2899,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c032fed1f9898f46835a3e9415770ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPool: {fileID: 0}
   enemyPrefabs:
-  - {fileID: 8693549782459797256, guid: eaa1426e5ad86f34e828276656203ed9, type: 3}
+  - {fileID: 8693549782459797256, guid: 064e3b5974392a44abef4d458e837424, type: 3}
   spawnPoints:
   - {fileID: 3433528049534543612}
   safeZones: []
   spawnInterval: 20
   minY: 3
-  maxDistanceFromSpawnPoint: 50
-  maxEnemies: 5
+  maxDistanceFromSpawnPoint: 70
+  maxEnemies: 7
   id: 0
+  spawnEnemy: 0
   checkInterval: 1
 --- !u!1 &4727959470068076422
 GameObject:
@@ -2921,7 +2924,7 @@ GameObject:
   - component: {fileID: 5405555408459265240}
   - component: {fileID: 4866236700511315092}
   - component: {fileID: 5674087099390628892}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall Invisible (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4074,7 +4077,7 @@ GameObject:
   - component: {fileID: 8969349586036908258}
   - component: {fileID: 9210523535823040476}
   - component: {fileID: 931613307366613458}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5031,7 +5034,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6170621559132918778}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}

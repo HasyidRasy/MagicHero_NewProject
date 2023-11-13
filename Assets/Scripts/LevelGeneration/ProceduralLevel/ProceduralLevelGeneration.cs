@@ -7,8 +7,9 @@ public class ProceduralLevelGenerator : MonoBehaviour
     [Header("Prefabs Assign")]
     [SerializeField] private GameObject[] playerSpawnAreas;      // Array prefab area spawn pemain
     [SerializeField] private GameObject[] challengeAreaPrefabs;  // Array prefab area tantangan
+    [SerializeField] private GameObject[] lastAreaPrefabs;       // Array prefab last area
     [SerializeField] private GameObject corridorPrefab;          // Prefab lorong
-    [SerializeField] private GameObject lastAreaPrefab;
+
 
     //public GameObject[] obstaclePrefabs; // Array prefab rintangan
     //public int maxObstaclesPerArea = 5; // Jumlah maksimum rintangan per area
@@ -19,6 +20,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
     [SerializeField] private int maxChallengeAreas = 5;          // Jumlah maksimum area tantangan
     [SerializeField] private float roomSpacing = 40f;            // Jarak antara area
 
+    //corridor properties jg diapus aja
     [Header("Corridor Properties")]
     [SerializeField] private float corridorWidth = 5f;           // Lebar lorong
     [SerializeField] private float corridorLenght = 20f;         // Panjang lorong
@@ -34,7 +36,8 @@ public class ProceduralLevelGenerator : MonoBehaviour
     void GenerateLevel()
     {
         // Memilih secara acak prefab area spawn pemain
-        GameObject playerSpawnArea = playerSpawnAreas[Random.Range(0, playerSpawnAreas.Length)];
+        int spawnAreaIndex = Random.Range(0, playerSpawnAreas.Length);
+        GameObject playerSpawnArea = playerSpawnAreas[spawnAreaIndex];
 
         // Instantiate area spawn pemain di posisi awal
         Instantiate(playerSpawnArea, Vector3.zero, Quaternion.identity);
@@ -44,6 +47,8 @@ public class ProceduralLevelGenerator : MonoBehaviour
         Vector3 spawnPosition = Vector3.forward * roomSpacing;
 
         GameObject previousArea = playerSpawnArea;
+        int lastAreaIndex = spawnAreaIndex; // Simpan indeks area spawn pemain
+
 
         for (int i = 0; i < numChallengeAreas; i++)
         {
@@ -58,14 +63,13 @@ public class ProceduralLevelGenerator : MonoBehaviour
             challengeArea.GetComponentInChildren<TriggerArea>().id = currentAreaID;
             challengeArea.GetComponentInChildren<DoorController>().id = currentAreaID;
             challengeArea.GetComponentInChildren<EnemySpawnManagerTrigger>().id = currentAreaID;
-
             // Update ID area saat ini
             currentAreaID++;
 
             // Membuat lorong antara area sebelumnya dan area saat ini
             Vector3 corridorPosition = (spawnPosition + Vector3.back * roomSpacing/2);
             GameObject corridor = Instantiate(corridorPrefab, corridorPosition, Quaternion.identity);
-            corridor.transform.localScale = new Vector3(corridorWidth, 0.1f, corridorLenght);
+            corridor.transform.localScale = new Vector3(corridorWidth, 0.1f, corridorLenght); //hapus ini biar scale corridor ga berubah
 
 
             // Update posisi spawn untuk area berikutnya
@@ -79,11 +83,12 @@ public class ProceduralLevelGenerator : MonoBehaviour
 
             if (i == numChallengeAreas-1)
             {
-                GameObject _lastArea = Instantiate(lastAreaPrefab, spawnPosition, Quaternion.identity);
+                GameObject _lastAreaPrefab = lastAreaPrefabs[lastAreaIndex];
+                GameObject _lastArea = Instantiate(_lastAreaPrefab, spawnPosition, Quaternion.identity);
 
                 Vector3 lastCorridorPosition = (spawnPosition + Vector3.back * roomSpacing / 2);
                 GameObject lastCorridor = Instantiate(corridorPrefab, lastCorridorPosition, Quaternion.identity);
-                lastCorridor.transform.localScale = new Vector3(corridorWidth, 0.1f, corridorLenght);
+                lastCorridor.transform.localScale = new Vector3(corridorWidth, 0.1f, corridorLenght); //hapus ini juga biar scale corridor ga berubah
             }
         }
     }

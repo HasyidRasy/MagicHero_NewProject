@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 2089322653008942864}
   - component: {fileID: 4225536280156978344}
   - component: {fileID: 1027685000521628191}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall Invisible (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -424,6 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openHeight: 5
+  doorSpeed: 4.5
   id: 0
 --- !u!1 &674762477907096993
 GameObject:
@@ -756,7 +757,7 @@ GameObject:
   - component: {fileID: 1805452600414739672}
   - component: {fileID: 7250747252529269649}
   - component: {fileID: 3228034468649529634}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1119,16 +1120,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c032fed1f9898f46835a3e9415770ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPool: {fileID: 0}
   enemyPrefabs:
-  - {fileID: 8693549782459797256, guid: 0f2f4cacb6692034286c062fdc0d77f0, type: 3}
+  - {fileID: 8693549782459797256, guid: f041d4bace276064abb5b0adbb152885, type: 3}
   spawnPoints:
   - {fileID: 5806660117956682035}
   safeZones: []
   spawnInterval: 20
   minY: 3
-  maxDistanceFromSpawnPoint: 50
+  maxDistanceFromSpawnPoint: 70
   maxEnemies: 5
   id: 0
+  spawnEnemy: 0
   checkInterval: 1
 --- !u!1 &1775607138828689095
 GameObject:
@@ -1341,7 +1344,7 @@ GameObject:
   - component: {fileID: 5678335336762652210}
   - component: {fileID: 2837636848251200464}
   - component: {fileID: 8071871936355064918}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1775,7 +1778,7 @@ GameObject:
   - component: {fileID: 4670122823312759814}
   - component: {fileID: 8474194409839821}
   - component: {fileID: 2243464834662661359}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall Invisible (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2121,7 +2124,7 @@ GameObject:
   - component: {fileID: 8720228275688001862}
   - component: {fileID: 8811070805408287376}
   - component: {fileID: 4411539952339759030}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2729,7 +2732,7 @@ GameObject:
   - component: {fileID: 5036198284722802698}
   - component: {fileID: 2368428686185154142}
   - component: {fileID: 1672131650814643660}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall Invisible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2834,7 +2837,7 @@ GameObject:
   - component: {fileID: 3858523590053582695}
   - component: {fileID: 415503026562102603}
   - component: {fileID: 5285833983255627939}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall Invisible (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3219,7 +3222,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8261557511033875446}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -3,9 +3,9 @@ using UnityEngine;
 public class AutoCameraBoundary : MonoBehaviour
 {
     [Header("Player Follow")]
-    [SerializeField] private Transform target;
+    [SerializeField] private GameObject target;
     [SerializeField] private float smoothTime;
-    [SerializeField] private string boundaryName = "Cam Anchor";
+    [SerializeField] private GameObject boundaryName;
 
     private Vector3 _offset;
     private Vector3 _currentVelocity = Vector3.zero;
@@ -19,23 +19,23 @@ public class AutoCameraBoundary : MonoBehaviour
     private Transform maxXPosition; // Maximum X coordinate of the boundary
     private Transform minZPosition; // Minimum Z coordinate of the boundary
     private Transform maxZPosition; // Maximum Z coordinate of the boundary
-    private Transform frontTrigger; // Maximum Z coordinate of the boundary
-    private Transform backTrigger; // Maximum Z coordinate of the boundary
+    private Transform frontTrigger; // Maximum front coordinate of the boundary
+    private Transform backTrigger; // Maximum back coordinate of the boundary
 
     [SerializeField] private float offsetCenterFront; // Offset for frontTrigger relative to centerMov
     [SerializeField] private float offsetCenterBack;  // Offset for backTrigger relative to centerMov
 
     private bool blankArea = false;
 
-    private void Awake()
-    {
-        _offset = transform.position - target.position;
+    private void Start() {
+        target = GameObject.FindWithTag("Player");
+
+        _offset = transform.position - target.transform.position;
 
         // Find the centerMov GameObject based on the specified name
-        GameObject centerMovObject = GameObject.Find(boundaryName);
+        GameObject centerMovObject = boundaryName;
 
-        if (centerMovObject)
-        {
+        if (centerMovObject) {
             // Set centerMov to the found GameObject's transform
             centerMov = centerMovObject.transform;
 
@@ -46,16 +46,24 @@ public class AutoCameraBoundary : MonoBehaviour
             maxZPosition = centerMov.Find("maxZ");
             frontTrigger = centerMov.Find("FrontTrigger");
             backTrigger = centerMov.Find("BackTrigger");
-        }
-        else
-        {
+        } else {
             Debug.LogError("GameObject with name '" + boundaryName + "' not found.");
         }
+        //play audio
+        //NewAudioManager.Instance.PlayBGM("Safezone");
+    }
+
+    private void Awake()
+    {
+        
+    }
+
+    private void FixedUpdate() {
+        CameraMovement();
     }
 
     private void LateUpdate()
     {
-        CameraMovement();
         TurnOffVisual();
     }
 
@@ -69,9 +77,9 @@ public class AutoCameraBoundary : MonoBehaviour
             return;
         }
 
-        Vector3 targetPosition = target.position;
+        Vector3 targetPosition = target.transform.position;
 
-        if (target.position.z < backTrigger.position.z)
+        if (target.transform.position.z < backTrigger.position.z)
         {
             // Use the offsetCenterBack to set the position of centerMov
             centerMov.position = new Vector3(
@@ -90,7 +98,7 @@ public class AutoCameraBoundary : MonoBehaviour
             );
             blankArea = true;
         }
-        else if (target.position.z > backTrigger.position.z)
+        else if (target.transform.position.z > backTrigger.position.z)
         {
             blankArea = false;
         }
@@ -108,5 +116,5 @@ public class AutoCameraBoundary : MonoBehaviour
         {
             renderer.enabled = enableFeature;
         }
-    } 
+    }
 }

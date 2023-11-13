@@ -8,7 +8,7 @@ public class EnemyModel : MonoBehaviour{
     public float moveSpeed = 3f;
     public int attack = 20;
     public int elementalBonus = 10;
-    public int currentHealth;
+    public float currentHealth;
 
     public int HealthPoint{
 
@@ -42,7 +42,7 @@ public class EnemyModel : MonoBehaviour{
         set { elementalBonus = value; }
     }
 
-    public int CurrentHealth
+    public float CurrentHealth
     {
 
         get { return currentHealth; }
