@@ -22,23 +22,25 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.OnPlayerDeath += EnableDeathPanel;
+        NewPlayerController1.OnPlayerDeath += EnableDeathPanel;
     }
     private void OnDisable()
     {
-        PlayerController.OnPlayerDeath -= EnableDeathPanel;
+        NewPlayerController1.OnPlayerDeath -= EnableDeathPanel;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !isConfirmPanelActive)
         {
-            Time.timeScale = 0;
+            Pause();
             EnableConfirmPanel();
+        } else if (Input.GetKeyDown(KeyCode.Escape) && isConfirmPanelActive) {
+            Continue();
+            DisableConfirmPanel();
         }
         if (Input.GetKeyDown(KeyCode.Tab) && !isSwitchElementPanelActive)
         {
-
             EnableSwitchElementPanel();
         }
         else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive)
@@ -115,6 +117,7 @@ public class UIManager : MonoBehaviour
         {
             elementSwitchSystem.UpdateAttackPatternIndicator();
             switchElementPanel.SetActive(true);
+            Pause();
             isSwitchElementPanelActive = true;
         }
     }
@@ -123,6 +126,8 @@ public class UIManager : MonoBehaviour
         if (switchElementPanel != null)
         {
             switchElementPanel.SetActive(false);
+            elementSwitchSystem.DisableElementPanel();
+            Continue();
             isSwitchElementPanelActive = false;
         }
     }
