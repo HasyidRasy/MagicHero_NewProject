@@ -20,11 +20,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
     [SerializeField] private int maxChallengeAreas = 5;          // Jumlah maksimum area tantangan
     [SerializeField] private float roomSpacing = 40f;            // Jarak antara area
 
-    //corridor properties jg diapus aja
-    [Header("Corridor Properties")]
-    [SerializeField] private float corridorWidth = 5f;           // Lebar lorong
-    [SerializeField] private float corridorLenght = 20f;         // Panjang lorong
-
     [Header("Current Area Id")]
     [SerializeField] private int currentAreaID = 1;
 
@@ -69,7 +64,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
             // Membuat lorong antara area sebelumnya dan area saat ini
             Vector3 corridorPosition = (spawnPosition + Vector3.back * roomSpacing/2);
             GameObject corridor = Instantiate(corridorPrefab, corridorPosition, Quaternion.identity);
-            corridor.transform.localScale = new Vector3(corridorWidth, 0.1f, corridorLenght); //hapus ini biar scale corridor ga berubah
 
 
             // Update posisi spawn untuk area berikutnya
@@ -88,7 +82,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
 
                 Vector3 lastCorridorPosition = (spawnPosition + Vector3.back * roomSpacing / 2);
                 GameObject lastCorridor = Instantiate(corridorPrefab, lastCorridorPosition, Quaternion.identity);
-                lastCorridor.transform.localScale = new Vector3(corridorWidth, 0.1f, corridorLenght); //hapus ini juga biar scale corridor ga berubah
             }
         }
     }
