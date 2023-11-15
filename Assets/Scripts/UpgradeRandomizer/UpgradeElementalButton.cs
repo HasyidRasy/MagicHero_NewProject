@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ public class UpgradeElementalButton : MonoBehaviour
     private UpgradeData upgrade;
     private UpgradeElemental upgradeElemental;
     private ElementSwitchSystem elementSwitchSystem;
+    private Button button;
     
     // Start is called before the first frame update
     void Start()
@@ -19,6 +21,7 @@ public class UpgradeElementalButton : MonoBehaviour
         upgradeElemental = FindObjectOfType<UpgradeElemental>();
         upgradeManager = FindObjectOfType<UpgradeManager>();
         elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
+        button = GetComponent<Button>();
 
         if(elementSwitchSystem == null)
         {
@@ -31,8 +34,6 @@ public class UpgradeElementalButton : MonoBehaviour
             Debug.Log("Upgrade not found");
             return;
         }
-        
-
     }
 
    public void OnButtonClick()
@@ -53,7 +54,6 @@ public class UpgradeElementalButton : MonoBehaviour
                 elementSwitchSystem.unlockedElementInfo.isFireUnlocked = true;
             }
         
-            
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
             Debug.Log("Upgrade Description: " + upgradeElemental.GetUpgradeDescription(upgrade));
         

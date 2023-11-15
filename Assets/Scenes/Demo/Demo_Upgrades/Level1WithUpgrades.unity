@@ -9809,6 +9809,7 @@ MonoBehaviour:
   dashSpeed: 70
   dashDuration: 0.45
   dashCooldown: 0
+  chosenUpgrades: []
 --- !u!114 &1228064676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9916,6 +9917,7 @@ GameObject:
   - component: {fileID: 1251161305}
   - component: {fileID: 1251161309}
   - component: {fileID: 1251161310}
+  - component: {fileID: 1251161311}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -10041,6 +10043,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeRandomizer: {fileID: 1073666329}
   upgradeElemental: {fileID: 2951721752395706669}
+--- !u!114 &1251161311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251161303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a691106b76088444a83571e6079daa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  elementIndicatorImages:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  elementPanel:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  elementButton:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  unlockedElementInfo:
+    isFireUnlocked: 0
+    isWaterUnlocked: 0
+    isWindUnlocked: 0
+  currentButtonIndex: 0
 --- !u!1 &1291745828
 GameObject:
   m_ObjectHideFlags: 0

@@ -195,6 +195,7 @@ public class UpgradeRandomizer : MonoBehaviour
 
             UpgradeButton upgradeButton = upgradeButtons[i].GetComponent<UpgradeButton>();
             upgradeButton.SetUpgrade(randomizedUpgrades[i]);
+            Debug.Log(randomizedUpgrades[i]);
 
             upgradeButtons[i].interactable = true;
 

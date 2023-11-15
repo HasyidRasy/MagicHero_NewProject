@@ -19,12 +19,13 @@ public class UpgradeElemental : MonoBehaviour
     private CharacterModel upgradedCharacter;
 
     public List<UpgradeData> availableUpgrades = new List<UpgradeData>();
+    private ElementSwitchSystem elementSwitchSystem;
     
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
         upgradedCharacter = FindObjectOfType<CharacterModel>();
 
         if (upgradedCharacter == null)
@@ -42,6 +43,11 @@ public class UpgradeElemental : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
+            UpgradeElementalButton upgradeButton = upgradeButtons[i].GetComponent<UpgradeElementalButton>();
+            upgradeButton.SetUpgrade(availableUpgrades[i]);
+
+            upgradeButtons[i].interactable = true;
+
             upgradeNameText[i].text = availableUpgrades[i].upgradeName;
             
             if (availableUpgrades[i].upgradeID == 0)
@@ -67,16 +73,26 @@ public class UpgradeElemental : MonoBehaviour
             upgradeNameText[i].color = Color.white;
             upgradeDescText[i].text = GetUpgradeDescription(availableUpgrades[i]);
             upgradeImage[i].sprite = availableUpgrades[i].upgradeIcon;
-
-            UpgradeElementalButton upgradeButton = upgradeButtons[i].GetComponent<UpgradeElementalButton>();
-            upgradeButton.SetUpgrade(availableUpgrades[i]);
-
-            upgradeButtons[i].interactable = true;
-
+            
             foreach (var upgrade in availableUpgrades)
             {
                 upgradeManager.AddSelectedUpgrade(upgrade);
             }
+        }
+                 
+        if(elementSwitchSystem.unlockedElementInfo.isWaterUnlocked == true)
+        {
+            upgradeButtons[0].gameObject.SetActive(false);
+        }
+
+        if(elementSwitchSystem.unlockedElementInfo.isFireUnlocked == true)
+        {
+            upgradeButtons[2].gameObject.SetActive(false);
+        }
+
+        if(elementSwitchSystem.unlockedElementInfo.isWindUnlocked == true)
+        {
+            upgradeButtons[1].gameObject.SetActive(false);
         }
     }
 

@@ -32,6 +32,7 @@ public class EnemyPool : MonoBehaviour
         if (spawnedEnemies <= 0)
         {
             elementTrigger++;
+            Invoke("TriggerElementalUI", 3f);
             Invoke("TriggerUpgradeUI", 3f);
         }
     }

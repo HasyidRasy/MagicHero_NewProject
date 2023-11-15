@@ -10,6 +10,7 @@ public class UpgradeButton : MonoBehaviour
     private UpgradeManager upgradeManager;
     private CharacterModel upgradedCharacter;
     private UpgradeData upgrade;
+    private int upgradeNum = 0;
     public static int id = 1;
 
     void Start()
@@ -48,12 +49,11 @@ public class UpgradeButton : MonoBehaviour
 
     public void OnButtonClick()
     {
-        Debug.Log("Button clicked");
         if (upgrade != null)
         {
-            UpgradeData selectedUpgrade = UpgradeManager.instance.GetSelectedUpgrade(upgrade.upgradeID);
-
             upgradedCharacter.ApplyUpgrade(upgrade);
+            upgradedCharacter.chosenUpgrades.Add(upgrade);
+            upgradeNum++;
 
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
             Debug.Log("Upgrade Description: " + GetUpgradeDescription(upgrade));
