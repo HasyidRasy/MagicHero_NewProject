@@ -27,6 +27,6 @@ public class UpgradeUIManager : MonoBehaviour
     public void TriggerElementalUI()
     {
         upgradeElemental.gameObject.SetActive(true);
-        
+        upgradeElemental.UpdateUI();
     }
 }

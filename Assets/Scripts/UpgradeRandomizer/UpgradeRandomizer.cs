@@ -76,7 +76,7 @@ public class UpgradeRandomizer : MonoBehaviour
 
 
    public void RandomizeUpgrades()
-{
+    {
     randomizedUpgrades.Clear();
 
     if (rarityCounts[UpgradeRarity.Common] < 1 || rarityCounts[UpgradeRarity.Rare] < 1)
@@ -89,6 +89,13 @@ public class UpgradeRandomizer : MonoBehaviour
     {
         UpgradeRarity selectedRarity = GetRandomRarityWithWeightedDistribution();
         UpgradeData selectedUpgrade = GetRandomUpgrade(selectedRarity);
+
+        // Ensure that the selected upgrade is not already in the list
+        while (randomizedUpgrades.Contains(selectedUpgrade))
+        {
+            selectedUpgrade = GetRandomUpgrade(selectedRarity);
+        }
+
         randomizedUpgrades.Add(selectedUpgrade);
     }
 }
