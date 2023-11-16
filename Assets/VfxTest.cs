@@ -6,6 +6,11 @@ using UnityEngine.AI;
 
 public class VfxTest : MonoBehaviour
 {
+    //[Header("Attack Effect")]
+    //public GameObject attackEffect;
+    //private GameObject attackVfxIns;
+    //public float attackDespawnDuration;
+
     [Header("Freeze Effect")]
     public GameObject FreezeEffect;
     public GameObject FreezeOff;
@@ -117,6 +122,10 @@ public class VfxTest : MonoBehaviour
         skinnedMeshRenderer.materials = originalMaterials.ToArray();
     }
 
+    //public void AttackVFX() {
+    //    attackVfxIns = Instantiate(attackEffect, this.transform.position, attackEffect.transform.rotation, this.transform);
+    //    Destroy(attackVfxIns, attackDespawnDuration);
+    //}
 
 
     //void Steam()

@@ -2902,13 +2902,15 @@ MonoBehaviour:
   enemyPool: {fileID: 0}
   enemyPrefabs:
   - {fileID: 8693549782459797256, guid: 064e3b5974392a44abef4d458e837424, type: 3}
+  - {fileID: 8693549782459797256, guid: 38802fde60458ab43b1baa560194c4cb, type: 3}
+  - {fileID: 8693549782459797256, guid: f041d4bace276064abb5b0adbb152885, type: 3}
   spawnPoints:
   - {fileID: 3433528049534543612}
   safeZones: []
   spawnInterval: 20
   minY: 3
   maxDistanceFromSpawnPoint: 70
-  maxEnemies: 7
+  maxEnemies: 15
   id: 0
   spawnEnemy: 0
   checkInterval: 1
@@ -3216,7 +3218,7 @@ GameObject:
   - component: {fileID: 6626181570997329987}
   - component: {fileID: 2282879293144233028}
   m_Layer: 0
-  m_Name: Pre_Battle Anemos Area PlaceHolder
+  m_Name: Pre_BattleEnemyMix
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
