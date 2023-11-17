@@ -8,7 +8,7 @@ public class UIPopupElementHP : MonoBehaviour
     public GameObject elementalPopupPrefab;
     private GameObject elementalPopupInstance;
     private Camera mainCamera;
-    private Vector3 offset = new Vector3(0, 6, 0);
+    private Vector3 offset = new Vector3(0, 6, 0); //Adjust Popup UI Position above enemy
     private Vector3 scale = new Vector3(0.01f, 0.01f, 0.01f); //Adjust Popup UI Scale
     private Vector3 elementScale = new Vector3(0.5f, 0.5f, 0.5f); // Change element UI Scale
 
@@ -34,9 +34,9 @@ public class UIPopupElementHP : MonoBehaviour
 
     //Fading Healthbar
     private Slider fadeHealthSlider;
-    private float lerpSpeed = 0.05f;
+    private float lerpSpeed = 0.05f; //HP fade animation duration
 
-    private float durationPopupUI = 3f;
+    private float durationPopupUI = 3f; //Element PopupUI Duration
 
     private void Awake()
     {
@@ -74,21 +74,23 @@ public class UIPopupElementHP : MonoBehaviour
         //Fading Healthbar
         fadeHealthSlider = healtBarPopupUI.transform.GetChild(0).gameObject.GetComponent<Slider>();
 
+        //Hide PopupUI
         secondElementPopupUI.SetActive(false);
         firstElementPopupUI.SetActive(false);
         middleElementPopupUI.SetActive(false);
         healtBarPopupUI.SetActive(false);
-        Debug.Log(fadeHealthSlider.value);
     }
 
 
     private void Update()
     {
+        // Popup UI camera follow
         if (elementalPopupInstance)
         {
             elementalPopupInstance.transform.rotation = mainCamera.transform.rotation;
         }
 
+        // Fading Health when damaged
         if (healtBarSlider.value != fadeHealthSlider.value)
         {
             fadeHealthSlider.value = Mathf.Lerp(fadeHealthSlider.value, healtBarSlider.value, lerpSpeed);

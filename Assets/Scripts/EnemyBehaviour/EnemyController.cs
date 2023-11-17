@@ -189,9 +189,6 @@ public class EnemyController : MonoBehaviour
             uiPopupElementHP.ShowReactionPopupUI(elementSprite, elementScrptObj.elementSprite);
             isElementApplied = StartCoroutine(uiPopupElementHP.ResetReactionPopupUI());
             HandleElementalInteraction(elementStatus, elementType);
-            /*
-            elementStatus = ElementalType.Null;
-            */
             ResetElementalStatus();
         }
     }
