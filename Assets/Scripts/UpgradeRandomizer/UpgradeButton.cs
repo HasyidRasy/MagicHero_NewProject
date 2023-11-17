@@ -14,6 +14,7 @@ public class UpgradeButton : MonoBehaviour
 
     void Start()
     {
+        ResetId();
         upgradeManager = FindObjectOfType<UpgradeManager>();
         upgradedCharacter = FindObjectOfType<CharacterModel>();
 
@@ -31,7 +32,9 @@ public class UpgradeButton : MonoBehaviour
            
         hoverImage.gameObject.SetActive(false);
     }
-
+    public static void ResetId() {
+        id = 1;
+    }
     public void SetUpgrade(UpgradeData upgradeData)
     {
         upgrade = upgradeData;
