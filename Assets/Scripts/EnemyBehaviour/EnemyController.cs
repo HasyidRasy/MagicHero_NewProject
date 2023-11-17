@@ -39,6 +39,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float attackRange;
     [SerializeField] private float attackCooldown = 2.0f; // Adjust the cooldown time as needed
 
+    [SerializeField] private float attackVfxWait = 0f;
+
     private void Awake()
     {
         characterModel = FindObjectOfType<CharacterModel>();
@@ -73,7 +75,7 @@ public class EnemyController : MonoBehaviour
             float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
             if (distanceToPlayer <= attackRange) {
-                if (canAttack) StartCoroutine(AttackPlayer());
+                if (canAttack) StartCoroutine(StartAttackPlayer());
             } else {
                 if (!isAttacking && !freezing) ChasePlayer();
             }
@@ -98,7 +100,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private IEnumerator AttackPlayer()
+    private IEnumerator StartAttackPlayer()
     {
         canAttack = false;
         isAttacking = true;
@@ -106,8 +108,9 @@ public class EnemyController : MonoBehaviour
         animator.SetBool("isWalking", false);
         animator.SetBool("isHopping", false);
         animator.SetBool("isAttacking", true);
-        NewAudioManager.Instance.PlaySFX("EnemyAtk");
         // Implement your attack logic here, e.g., dealing damage to the player
+        //Invoke(nameof(AttackPlayer), attackVfxWait);
+        NewAudioManager.Instance.PlaySFX("EnemyAtk");
         yield return new WaitForSeconds(attackCooldown); // Wait for the attack animation to finish
 
         animator.SetBool("isAttacking", false);
@@ -115,18 +118,38 @@ public class EnemyController : MonoBehaviour
         canAttack = true;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            NewPlayerController1 playerController = collision.gameObject.GetComponent<NewPlayerController1>();
+    //private void AttackPlayer() {
+    //    AttackVfx();
+    //    Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
+    //    foreach (Collider collider in hitColliders) {
+    //        if (collider.gameObject.CompareTag("Player")) {
+    //            NewPlayerController1 playerController = collider.gameObject.GetComponent<NewPlayerController1>();
+    //            if (playerController != null) {
+    //                playerController.TakeDamage(damageAmount);
+    //                Debug.Log("Player attacked");
+    //            }
+    //        }
+    //    }
+    //}
 
-            if (playerController != null)
-            {
-                playerController.TakeDamage(damageAmount);
-            }
-        }
-    }
+    //private void AttackVfx() {
+    //    //vfx.AttackVFX();     
+    //    //Debug.Log("Bam");
+    //}
+
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //        NewPlayerController1 playerController = collision.gameObject.GetComponent<NewPlayerController1>();
+
+    //        if (playerController != null)
+    //        {
+                //playerController.TakeDamage(damageAmount);
+    //        }
+    //    }
+    //}
 
     public void TakeDamage(float damageAmount)
     {       

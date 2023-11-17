@@ -220,7 +220,7 @@ AnimatorStateMachine:
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: -360, y: 300, z: 0}
+  m_AnyStatePosition: {x: -420, y: 300, z: 0}
   m_EntryPosition: {x: -350, y: 160, z: 0}
   m_ExitPosition: {x: -110, y: 450, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
@@ -364,6 +364,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: isHurt
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: isDeath
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6816279677321432813}
