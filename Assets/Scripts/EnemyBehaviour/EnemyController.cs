@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -19,6 +20,12 @@ public class EnemyController : MonoBehaviour
 
     private ElementalType elementStatus = ElementalType.Null;
     private bool isActive = false;
+
+    //elemental PopupUI
+    private UIPopupElementHP uiPopupElementHP;
+    private Sprite elementSprite;
+    private Element elementScrptObj;
+    private Coroutine isElementApplied;
 
     private Animator animator;
     public float minSpeed = 3f;
@@ -42,6 +49,7 @@ public class EnemyController : MonoBehaviour
     private void Awake()
     {
         characterModel = FindObjectOfType<CharacterModel>();
+        uiPopupElementHP = GetComponent<UIPopupElementHP>();
         enemyPool = FindObjectOfType<EnemyPool>();
         enemySpawnManagerTrigger = FindObjectOfType<EnemySpawnManagerTrigger>();
         enemyModel = GetComponent<EnemyModel>();
@@ -66,6 +74,13 @@ public class EnemyController : MonoBehaviour
     private void Update()
     {
         Invoke("EnemyBehavior", spawnDuration);
+
+        //Logic for Showing HP Bar
+        if (enemyModel.currentHealth != enemyModel.HealthPoint)
+        {
+            // Show HP Bar
+            uiPopupElementHP.ShowUpdateHealthBarUI(enemyModel.currentHealth, enemyModel.healthPoint);
+        }
     }
 
     private void EnemyBehavior() {
@@ -145,13 +160,46 @@ public class EnemyController : MonoBehaviour
     }
 
     public void ApplyElementalStatus(ElementalType elementType) {
+        elementScrptObj = ElementalReactionController.Instance.GetElementScrptObj(elementType); //Get Element Scriptable Object
+
         if (elementStatus == ElementalType.Null) {
             elementStatus = elementType;
             Debug.Log("Applied Status " + elementStatus);
-        } else if (elementStatus != elementType) {
-            HandleElementalInteraction(elementStatus, elementType);
-            elementStatus = ElementalType.Null;
+
+            //PopupUI
+            //Show Popup UI When No Element Appllied
+            if (isElementApplied != null)
+            {
+                StopCoroutine(isElementApplied);
+                uiPopupElementHP.ResetPopupUI();
+            }
+            elementSprite = elementScrptObj.elementSprite;
+            uiPopupElementHP.ShowElementalPopup(elementSprite);
+            isElementApplied = StartCoroutine(uiPopupElementHP.ElementPopupDuration());
         }
+        else if (elementStatus == elementType)
+        {
+            //Reset Applied Element Duration if Same Type
+            StopCoroutine(isElementApplied);
+            isElementApplied = StartCoroutine(uiPopupElementHP.ElementPopupDuration());
+        } else if (elementStatus != elementType) {
+            //Trigger Elemental Reaction & Popup 2 Element
+            uiPopupElementHP.ResetPopupUI();
+            StopCoroutine(isElementApplied);
+            uiPopupElementHP.ShowReactionPopupUI(elementSprite, elementScrptObj.elementSprite);
+            isElementApplied = StartCoroutine(uiPopupElementHP.ResetReactionPopupUI());
+            HandleElementalInteraction(elementStatus, elementType);
+            /*
+            elementStatus = ElementalType.Null;
+            */
+            ResetElementalStatus();
+        }
+    }
+
+    // Function for resetting element
+    public void ResetElementalStatus()
+    {
+        elementStatus = ElementalType.Null;
     }
 
     // Function to handle elemental interactions
