@@ -31,7 +31,6 @@ public class EnemyPool : MonoBehaviour
         spawnedEnemies--;
         if (spawnedEnemies <= 0)
         {
-            elementTrigger++;
             Invoke("TriggerElementalUI", 3f);
             Invoke("TriggerUpgradeUI", 3f);
         }
@@ -44,10 +43,12 @@ public class EnemyPool : MonoBehaviour
 
     private void TriggerElementalUI()
     {
-        if(elementTrigger >= 3)
-        {
-            upgradeUIManager.TriggerElementalUI();
+        
+        elementTrigger++;
+        if(elementTrigger == 3)
+        {           
             elementTrigger = 0;
+            upgradeUIManager.TriggerElementalUI();
         }
     }
 

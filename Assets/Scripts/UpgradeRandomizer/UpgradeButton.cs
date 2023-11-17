@@ -10,7 +10,6 @@ public class UpgradeButton : MonoBehaviour
     private UpgradeManager upgradeManager;
     private CharacterModel upgradedCharacter;
     private UpgradeData upgrade;
-    private int upgradeNum = 0;
     public static int id = 1;
 
     void Start()
@@ -30,15 +29,6 @@ public class UpgradeButton : MonoBehaviour
             return;
         }
            
-        if(upgrade.rarity == UpgradeRarity.Common)
-        {
-            hoverImage.color = new Color(0.545f, 0.761f, 0.808f);
-        }
-        else if(upgrade.rarity == UpgradeRarity.Rare)
-        {
-            hoverImage.color = new Color(0.518f, 0.157f, 0.741f);
-        }
-
         hoverImage.gameObject.SetActive(false);
     }
 
@@ -53,7 +43,6 @@ public class UpgradeButton : MonoBehaviour
         {
             upgradedCharacter.ApplyUpgrade(upgrade);
             upgradedCharacter.chosenUpgrades.Add(upgrade);
-            upgradeNum++;
 
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
             Debug.Log("Upgrade Description: " + GetUpgradeDescription(upgrade));

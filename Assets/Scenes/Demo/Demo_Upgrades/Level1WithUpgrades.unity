@@ -9273,8 +9273,6 @@ MonoBehaviour:
   minChallengeAreas: 5
   maxChallengeAreas: 7
   roomSpacing: 165
-  corridorWidth: 20
-  corridorLenght: 40
   currentAreaID: 1
 --- !u!4 &980354186
 Transform:
@@ -9554,6 +9552,10 @@ PrefabInstance:
     - target: {fileID: 2390877489587423289, guid: bb2b8a204e2c408468c0d4e126216ba7, type: 3}
       propertyPath: m_Name
       value: Pre_UpgradesWithUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 2390877489587423289, guid: bb2b8a204e2c408468c0d4e126216ba7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4644403198561878170, guid: bb2b8a204e2c408468c0d4e126216ba7, type: 3}
       propertyPath: m_Pivot.x

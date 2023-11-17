@@ -17,6 +17,7 @@ public class UpgradeRandomizer : MonoBehaviour
     public Image[] upgradeRarity;
     public Image[] upgradeBgColor;
     public Button[] upgradeButtons;
+    public Image[] hoverImage;
     public Button upgradeSkip;
 
     private List<UpgradeData> availableUpgrades = new List<UpgradeData>();
@@ -183,18 +184,21 @@ public class UpgradeRandomizer : MonoBehaviour
                 //upgradeNameText[i].color = new Color(0.545f, 0.761f, 0.808f); // Cyan color
                 upgradeRarity[i].color = new Color(0.545f, 0.761f, 0.808f);
                 upgradeBgColor[i].color = new Color(0.545f, 0.761f, 0.808f);
+                hoverImage[i].color = new Color(0.545f, 0.761f, 0.808f);
             }
             else if (randomizedUpgrades[i].rarity == UpgradeRarity.Rare)
             {
                 //upgradeNameText[i].color = new Color(0.518f, 0.157f, 0.741f); // Purple color
                 upgradeRarity[i].color = new Color(0.518f, 0.157f, 0.741f);
                 upgradeBgColor[i].color = new Color(0.518f, 0.157f, 0.741f);
+                hoverImage[i].color = new Color(0.518f, 0.157f, 0.741f);
             }
             else
             {
                 //upgradeNameText[i].color = Color.white;
                 upgradeRarity[i].color = Color.white;
                 upgradeBgColor[i].color = Color.white;
+                hoverImage[i].color = Color.white;
             }
             upgradeNameText[i].color = Color.white;
             upgradeDescText[i].text = GetUpgradeDescription(randomizedUpgrades[i]);

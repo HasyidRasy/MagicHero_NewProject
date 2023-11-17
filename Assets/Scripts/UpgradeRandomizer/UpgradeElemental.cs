@@ -17,16 +17,16 @@ public class UpgradeElemental : MonoBehaviour
     public Button upgradeSkip;
 
     private CharacterModel upgradedCharacter;
+    private ElementSwitchSystem elementSwitchSystem;
 
     public List<UpgradeData> availableUpgrades = new List<UpgradeData>();
-    private ElementSwitchSystem elementSwitchSystem;
     
 
     // Start is called before the first frame update
     void Start()
     {
-        elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
         upgradedCharacter = FindObjectOfType<CharacterModel>();
+        elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
 
         if (upgradedCharacter == null)
         {
@@ -36,6 +36,8 @@ public class UpgradeElemental : MonoBehaviour
 
         availableUpgrades.AddRange(upgradeDatabase.elementalUpgrades);
         UpdateUI();
+
+        
     }
 
     // Update is called once per frame
@@ -54,16 +56,29 @@ public class UpgradeElemental : MonoBehaviour
             {
                 upgradeRarity[i].color = new Color(86f / 255f, 139f / 255f, 200f / 255f);
                 upgradeBgColor[i].color = new Color(86f / 255f, 139f / 255f, 200f / 255f);
+                if(elementSwitchSystem.unlockedElementInfo.isWaterUnlocked == true)
+                {
+                    upgradeButtons[i].interactable = false;
+                }
+                                       
             }
             else if (availableUpgrades[i].upgradeID == 1)
             {
                 upgradeRarity[i].color = new Color(0f / 255f, 169f / 255f, 157f / 255f);
                 upgradeBgColor[i].color = new Color(0f / 255f, 169f / 255f, 157f / 255f);
+                if(elementSwitchSystem.unlockedElementInfo.isWindUnlocked == true)
+                {
+                    upgradeButtons[i].interactable = false;
+                }
             }
             else if (availableUpgrades[i].upgradeID == 2)
             {
                 upgradeRarity[i].color = new Color(199f / 255f, 56f / 255f, 56f / 255f);
                 upgradeBgColor[i].color = new Color(199f / 255f, 56f / 255f, 56f / 255f);
+                if(elementSwitchSystem.unlockedElementInfo.isFireUnlocked == true)
+                {
+                    upgradeButtons[i].interactable = false;
+                }
             }
             else
             {
@@ -78,21 +93,6 @@ public class UpgradeElemental : MonoBehaviour
             {
                 upgradeManager.AddSelectedUpgrade(upgrade);
             }
-        }
-                 
-        if(elementSwitchSystem.unlockedElementInfo.isWaterUnlocked == true)
-        {
-            upgradeButtons[0].gameObject.SetActive(false);
-        }
-
-        if(elementSwitchSystem.unlockedElementInfo.isFireUnlocked == true)
-        {
-            upgradeButtons[2].gameObject.SetActive(false);
-        }
-
-        if(elementSwitchSystem.unlockedElementInfo.isWindUnlocked == true)
-        {
-            upgradeButtons[1].gameObject.SetActive(false);
         }
     }
 
