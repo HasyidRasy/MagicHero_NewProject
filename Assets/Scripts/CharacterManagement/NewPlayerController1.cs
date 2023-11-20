@@ -76,7 +76,6 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void Start()
     {
-
         mainCamera = Camera.main;
         attackPattern[0] = elementalSlots[0];
     }

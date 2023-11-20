@@ -16,11 +16,15 @@ public class UIManager : MonoBehaviour
     private bool isConfirmPanelActive = false;
     private bool isSwitchElementPanelActive = false;
     private ElementSwitchSystem elementSwitchSystem;
+    private NewPlayerController1 newPlayerController1;
+    private InventoryManagement inventoryManagement;
 
     private void Start() {
         NewAudioManager.Instance.bgmSource.Stop();
         NewAudioManager.Instance.PlayBGM("MainMenu");
         elementSwitchSystem = GetComponent<ElementSwitchSystem>();
+        newPlayerController1 = GetComponent<NewPlayerController1>();
+        inventoryManagement = GetComponent<InventoryManagement>();
     }
 
     private void OnEnable()
@@ -45,6 +49,7 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab) && !isSwitchElementPanelActive)
         {
             EnableSwitchElementPanel();
+            inventoryManagement.UpdateBuffDisplay(CharacterModel.Instance.chosenUpgrades);
         }
         else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive)
         {
