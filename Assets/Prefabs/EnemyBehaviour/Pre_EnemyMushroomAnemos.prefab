@@ -805,6 +805,7 @@ GameObject:
   - component: {fileID: 3434123458926408392}
   - component: {fileID: 3411600930524984232}
   - component: {fileID: 391569849032127248}
+  - component: {fileID: -7521721347497337537}
   - component: {fileID: 4425454995608835221}
   - component: {fileID: 3122808084488387725}
   - component: {fileID: 8089879816901790824}
@@ -870,7 +871,21 @@ MonoBehaviour:
   damageAmount: 20
   attackRange: 5
   attackCooldown: 2
+
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8693549782459797256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f353a7c6860eb343a8e87fd19beb30a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementalPopupPrefab: {fileID: 3380654122138427042, guid: 73001d36d79954346b85cdfd57711f76, type: 3}
   attackVfxWait: 0
+
 --- !u!195 &4425454995608835221
 NavMeshAgent:
   m_ObjectHideFlags: 0
