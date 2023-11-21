@@ -51,11 +51,13 @@ public class NewPlayerController1 : MonoBehaviour
     [SerializeField] private bool isAttacking = true;
 
     public static event Action OnPlayerDeath;
+    public static event Action OnPlayerHurt;
 
     [Header("Player Info")]
     public Slider _dashCooldownSlider;
     private float _currentDashCd;
     private bool _isIncrease;
+    private bool isDeath = false;
 
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -236,8 +238,12 @@ public class NewPlayerController1 : MonoBehaviour
     {
         characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
         animator.SetTrigger("isHurt");
+        if (isDeath == false) {
+            OnPlayerHurt?.Invoke();
+        }
         if (characterModel.HealthPoint <= 0)
-        {          
+        {
+            isDeath = true;
             Death(); // If health drops to or below zero, call a method to handle enemy death
             ShowDeathPanel();
         }

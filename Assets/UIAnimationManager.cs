@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIAnimationManager : MonoBehaviour {
+    [Header("Player Panel Hurt Animation")]
+    [SerializeField] private RectTransform playerStatusBar;
+    [SerializeField] private float shakeDuration;
+    [SerializeField] private float shakeStrenght;
+
     [Header("Upgrade Animation")]
     [SerializeField] private RectTransform upgradeTitle;
     [SerializeField] private RectTransform[] upgradeButton;
@@ -20,15 +25,22 @@ public class UIAnimationManager : MonoBehaviour {
     [SerializeField] private CanvasGroup deathCanvasGroup;
 
 
+
+    private void OnEnable() {
+        NewPlayerController1.OnPlayerHurt += HpBarShake;
+    }
+
+    private void OnDisable() {
+        NewPlayerController1.OnPlayerHurt -= HpBarShake;
+    }
     void Start() {
         //TransitionDeathPanel();
-        
 
     }
 
     void Update() {
         RestartAnimation();
-            }
+    }
 
 
     void RestartAnimation() {
@@ -37,6 +49,12 @@ public class UIAnimationManager : MonoBehaviour {
             TransitionDeathPanel();
         }
     }
+
+    [ContextMenu("HpBarShake")]
+    public void HpBarShake() {
+        playerStatusBar.DOShakeAnchorPos(shakeDuration, new Vector3(shakeStrenght, shakeStrenght, 0.0f), 10, 90);
+    }
+    [ContextMenu("UpgradeUIAnimation")]
     public void UpgradeUIAnimation() {
         //Debug.Log("UiUpgradeAnimation");
         float duration = 1f;
@@ -49,21 +67,21 @@ public class UIAnimationManager : MonoBehaviour {
 
             // Punch Rotation animation
             upgradeButton[i].DOPunchRotation(new Vector3(0f, 90f, 0f), duration, 0, 1f)
-                .SetEase(Ease.OutBack);
-                //.SetUpdate(true);
+                .SetEase(Ease.OutBack)
+                .SetUpdate(true);
 
             // Move animation
             upgradeButton[i].DOAnchorPosY(currentTargetY, duration)
                 .From(new Vector2(0f, initialY))
                 .SetEase(Ease.OutQuad) // change the ease type
-                .SetDelay(i * 0.2f); // adjust the delay between animations
-                //.SetUpdate(true);
+                .SetDelay(i * 0.2f)// adjust the delay between animations
+                .SetUpdate(true);
         }
 
         upgradeTitle.DOAnchorPosY(0f, 1f)
             .From(new Vector2(0f, 500f))
-            .SetEase(Ease.OutBack);
-            //.SetUpdate(true);
+            .SetEase(Ease.OutBack)
+            .SetUpdate(true);
     }
 
     public void FadeOutUIUpgrade() {
@@ -96,7 +114,7 @@ public class UIAnimationManager : MonoBehaviour {
                             .From(0f);
             });
     }
-
+    [ContextMenu("DeathPanelTransition")]
     public void TransitionDeathPanel() {
         deathCanvasGroup.DOFade(0f, 0f);
 
