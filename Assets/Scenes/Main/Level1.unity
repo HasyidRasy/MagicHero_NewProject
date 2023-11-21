@@ -13239,6 +13239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f653adb7fd15e5447aa68e9fc209f219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextLevel: Level1
   loadingScreen: {fileID: 1484546876}
   mainMenu: {fileID: 1251161303}
   transition: {fileID: 2045201514}
@@ -13776,10 +13777,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a0acd07551326429324b54ca6411e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  duration: 1.5
   playerStatusBar: {fileID: 1665063993}
   shakeDuration: 1.5
   shakeStrenght: 7.5
   upgradeTitle: {fileID: 116048366}
+  upgradeBg: {fileID: 1545496040}
   upgradeButton:
   - {fileID: 1507603043}
   - {fileID: 309838137}
@@ -14964,10 +14967,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -15100,6 +15103,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5084764219898802546, guid: cbed24d16ea982b48bdca4f8637d7da6, type: 3}
   m_PrefabInstance: {fileID: 730913081}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1545496040 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7223568234698209060, guid: cbed24d16ea982b48bdca4f8637d7da6, type: 3}
+  m_PrefabInstance: {fileID: 730913081}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1547422415
 GameObject:
   m_ObjectHideFlags: 0
@@ -16816,8 +16830,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Loading . . .
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bf1f0c95ac718be4b9325cf32f2a8b4a, type: 2}
-  m_sharedMaterial: {fileID: -162959271886739300, guid: bf1f0c95ac718be4b9325cf32f2a8b4a, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

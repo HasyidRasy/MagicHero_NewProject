@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIAnimationManager : MonoBehaviour {
+    [Header("Start Transiton")]
+    [SerializeField] private float duration;
+
     [Header("Player Panel Hurt Animation")]
     [SerializeField] private RectTransform playerStatusBar;
     [SerializeField] private float shakeDuration;
@@ -11,6 +14,7 @@ public class UIAnimationManager : MonoBehaviour {
 
     [Header("Upgrade Animation")]
     [SerializeField] private RectTransform upgradeTitle;
+    [SerializeField] private Image upgradeBg;
     [SerializeField] private RectTransform[] upgradeButton;
     [SerializeField] private CanvasGroup upgradeCanvasGroup;
 
@@ -28,14 +32,22 @@ public class UIAnimationManager : MonoBehaviour {
 
     private void OnEnable() {
         NewPlayerController1.OnPlayerHurt += HpBarShake;
+        LoadLevelOnCollision.OnTeleport += FadeIn;
     }
 
     private void OnDisable() {
         NewPlayerController1.OnPlayerHurt -= HpBarShake;
+        LoadLevelOnCollision.OnTeleport -= FadeIn;
     }
     void Start() {
         //TransitionDeathPanel();
+        StartTransition();
 
+    }
+
+    void StartTransition() {
+        vignette2.DOFade(0f, duration)
+                 .From(1f);
     }
 
     void Update() {
@@ -60,6 +72,10 @@ public class UIAnimationManager : MonoBehaviour {
         float duration = 1f;
         float initialY = -Screen.height - 1000f;
         float targetY = -390f;
+
+        upgradeBg.DOFade(1f, duration)
+                 .From(0f)
+                 .SetUpdate(true);
 
         // Loop through each upgradeButton element and animate its position
         for (int i = 0; i < upgradeButton.Length; i++) {
@@ -126,5 +142,10 @@ public class UIAnimationManager : MonoBehaviour {
                                    DeathPanelAnimation();
                                });
                  });
+    }
+
+    public void FadeIn() {
+    vignette2.DOFade(1f, duration)
+                    .From(0f);
     }
 }
