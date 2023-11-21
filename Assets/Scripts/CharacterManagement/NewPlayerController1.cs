@@ -54,10 +54,12 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        UIManager.OnRestart += RestartPlayer;
     }
 
     private void OnDisable() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        UIManager.OnRestart -= RestartPlayer;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
@@ -74,7 +76,6 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void Start()
     {
-
         mainCamera = Camera.main;
         attackPattern[0] = elementalSlots[0];
     }
@@ -201,6 +202,9 @@ public class NewPlayerController1 : MonoBehaviour
     }
     private void ShowDeathPanel() {
         OnPlayerDeath?.Invoke();
+    }
+    private void RestartPlayer() {
+        Destroy(gameObject);
     }
 
     private void ShootMagic(ElementalType element)

@@ -14,6 +14,7 @@ public class UpgradeButton : MonoBehaviour
 
     void Start()
     {
+        ResetId();
         upgradeManager = FindObjectOfType<UpgradeManager>();
         upgradedCharacter = FindObjectOfType<CharacterModel>();
 
@@ -31,7 +32,9 @@ public class UpgradeButton : MonoBehaviour
            
         hoverImage.gameObject.SetActive(false);
     }
-
+    public static void ResetId() {
+        id = 1;
+    }
     public void SetUpgrade(UpgradeData upgradeData)
     {
         upgrade = upgradeData;
@@ -43,15 +46,17 @@ public class UpgradeButton : MonoBehaviour
         {
             upgradedCharacter.ApplyUpgrade(upgrade);
             upgradedCharacter.chosenUpgrades.Add(upgrade);
-
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
             Debug.Log("Upgrade Description: " + GetUpgradeDescription(upgrade));
-        
-            upgradeRandomizer.gameObject.SetActive(false);
+            Invoke(nameof(SetFalseUpgradeCanvas), 0.5f);
             Time.timeScale = 1f;
             GameEvents.current.DoorwayTriggerEnter(id);
             id++;
         }
+    }
+
+    void SetFalseUpgradeCanvas() {
+        upgradeRandomizer.gameObject.SetActive(false);
     }
 
     private string GetUpgradeDescription(UpgradeData upgrade)
