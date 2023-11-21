@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class NewPlayerController1 : MonoBehaviour
 {
@@ -51,6 +52,10 @@ public class NewPlayerController1 : MonoBehaviour
 
     public static event Action OnPlayerDeath;
 
+    [Header("Player Info")]
+    public Slider _dashCooldownSlider;
+    private float _currentDashCd;
+    private bool _isIncrease;
 
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -85,6 +90,7 @@ public class NewPlayerController1 : MonoBehaviour
         PlayerStat();
         attackCooldown -= Time.deltaTime;
         stepCooldown -= Time.deltaTime;
+        _currentDashCd += Time.deltaTime;
 
         Aim();
 
@@ -93,6 +99,44 @@ public class NewPlayerController1 : MonoBehaviour
             Stepping(stepCooldown);
             stepCooldown = timeBetweenSteps;
             StartCoroutine(Stepping(stepCooldown));
+        }
+
+        //if (!isDashing) {
+        //    if (_isIncrease && isDashing) {
+        //        float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
+        //        _dashCooldownSlider.value = cdValue;
+
+        //        if (_currentDashCd >= characterModel.DashCooldown) {
+        //            _currentDashCd = 0f;
+        //            _isIncrease = false;
+        //        }
+        //    } else {
+        //        float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
+        //        _dashCooldownSlider.value = cdValue;
+
+        //        if (_currentDashCd >= characterModel.DashDuration) {
+        //            _currentDashCd = 0f;
+        //            _isIncrease = true;
+        //        }
+        //    }
+        //}
+
+        if (_isIncrease) {
+            float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
+            _dashCooldownSlider.value = cdValue;
+
+            if (_currentDashCd >= characterModel.DashCooldown) {
+                _currentDashCd = 0f;
+                _isIncrease = false;
+            }
+        } else if (!_isIncrease && Input.GetKey(KeyCode.LeftShift)) {
+            float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
+            _dashCooldownSlider.value = cdValue;
+
+            if (_currentDashCd >= characterModel.DashDuration) {
+                _currentDashCd = 0f;
+                _isIncrease = true;
+            }
         }
     }
 
