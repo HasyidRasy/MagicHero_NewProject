@@ -13677,6 +13677,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1665063993}
   - {fileID: 1766296258}
   - {fileID: 1557909783}
   - {fileID: 779108174}
@@ -13691,7 +13692,6 @@ RectTransform:
   - {fileID: 1204882904}
   - {fileID: 1155482936}
   - {fileID: 1846250254}
-  - {fileID: 1665063993}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -13776,6 +13776,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a0acd07551326429324b54ca6411e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStatusBar: {fileID: 1665063993}
+  shakeDuration: 1.5
+  shakeStrenght: 7.5
   upgradeTitle: {fileID: 116048366}
   upgradeButton:
   - {fileID: 1507603043}
