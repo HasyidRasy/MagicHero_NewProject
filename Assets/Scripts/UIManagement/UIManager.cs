@@ -18,6 +18,9 @@ public class UIManager : MonoBehaviour
     private ElementSwitchSystem elementSwitchSystem;
     private NewPlayerController1 newPlayerController1;
     private InventoryManagement inventoryManagement;
+    private UIAnimationManager animationManager;
+
+    private bool isDeath = false;
 
     private void Start() {
         NewAudioManager.Instance.bgmSource.Stop();
@@ -25,6 +28,7 @@ public class UIManager : MonoBehaviour
         elementSwitchSystem = GetComponent<ElementSwitchSystem>();
         newPlayerController1 = GetComponent<NewPlayerController1>();
         inventoryManagement = GetComponent<InventoryManagement>();
+        animationManager = GetComponent<UIAnimationManager>();
     }
 
     private void OnEnable()
@@ -59,8 +63,10 @@ public class UIManager : MonoBehaviour
 
     public void EnableDeathPanel()
     {
-        if (deathPanel != null)
+        if (deathPanel != null && isDeath == false)
         {
+            isDeath = true;
+            animationManager.TransitionDeathPanel();
             deathPanel.SetActive(true);
             NewAudioManager.Instance.bgmSource.Stop();
             NewAudioManager.Instance.PlaySFX("Death");

@@ -190,7 +190,7 @@ public class NewPlayerController1 : MonoBehaviour
         if (characterModel.HealthPoint <= 0)
         {          
             Death(); // If health drops to or below zero, call a method to handle enemy death
-            Invoke("ShowDeathPanel", 3f);
+            ShowDeathPanel();
         }
     }
 
