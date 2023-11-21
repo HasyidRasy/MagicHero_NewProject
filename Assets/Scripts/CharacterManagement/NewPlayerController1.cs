@@ -156,9 +156,14 @@ public class NewPlayerController1 : MonoBehaviour
         // Check if the character is walking
         bool isWalking = moveDir != Vector3.zero;
 
+        if (!isWalking) {
+            animator.SetBool("isDashing", false);
+        }
+
+
         // Set the "isWalking" parameter in the animator
         animator.SetBool("isWalking", isWalking);
-        animator.SetBool("isDashing", isDashing);
+        animator.SetBool("isDashing", false);
 
         // Calculate the desired velocity
         Vector3 velocity = moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed;
