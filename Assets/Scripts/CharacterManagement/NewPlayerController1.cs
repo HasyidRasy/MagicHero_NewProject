@@ -101,27 +101,7 @@ public class NewPlayerController1 : MonoBehaviour
             StartCoroutine(Stepping(stepCooldown));
         }
 
-        //if (!isDashing) {
-        //    if (_isIncrease && isDashing) {
-        //        float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
-        //        _dashCooldownSlider.value = cdValue;
-
-        //        if (_currentDashCd >= characterModel.DashCooldown) {
-        //            _currentDashCd = 0f;
-        //            _isIncrease = false;
-        //        }
-        //    } else {
-        //        float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
-        //        _dashCooldownSlider.value = cdValue;
-
-        //        if (_currentDashCd >= characterModel.DashDuration) {
-        //            _currentDashCd = 0f;
-        //            _isIncrease = true;
-        //        }
-        //    }
-        //}
-
-        if (_isIncrease && isDashing) {
+        if (_isIncrease && isDashing) { //ketika cooldown
             float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
             _dashCooldownSlider.value = cdValue;
 
@@ -129,7 +109,7 @@ public class NewPlayerController1 : MonoBehaviour
                 _currentDashCd = 0f;
                 _isIncrease = false;
             }
-        } else if (Input.GetKey(KeyCode.LeftShift) && !isDashing) {
+        } else if (Input.GetKey(KeyCode.LeftShift) && !isDashing) { //ketika dash
             float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
             _dashCooldownSlider.value = cdValue;
 
