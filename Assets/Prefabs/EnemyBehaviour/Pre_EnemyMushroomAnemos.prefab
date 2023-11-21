@@ -805,11 +805,11 @@ GameObject:
   - component: {fileID: 3434123458926408392}
   - component: {fileID: 3411600930524984232}
   - component: {fileID: 391569849032127248}
-  - component: {fileID: -7521721347497337537}
   - component: {fileID: 4425454995608835221}
   - component: {fileID: 3122808084488387725}
   - component: {fileID: 8089879816901790824}
   - component: {fileID: 7788925379478589466}
+  - component: {fileID: 5699124471289647762}
   m_Layer: 0
   m_Name: Pre_EnemyMushroomAnemos
   m_TagString: Enemy
@@ -871,21 +871,7 @@ MonoBehaviour:
   damageAmount: 20
   attackRange: 5
   attackCooldown: 2
-
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8693549782459797256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f353a7c6860eb343a8e87fd19beb30a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  elementalPopupPrefab: {fileID: 3380654122138427042, guid: 73001d36d79954346b85cdfd57711f76, type: 3}
   attackVfxWait: 0
-
 --- !u!195 &4425454995608835221
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -979,6 +965,19 @@ MonoBehaviour:
   steamMovementAnimation: 0.5
   CombustionEffect: {fileID: 6774532628602444555, guid: b3eab4e39c1463842a7ad06d85dd0b2e, type: 3}
   combustionOverlay: {fileID: 2100000, guid: 88f2246454568864297fd3e9e970014a, type: 2}
+--- !u!114 &5699124471289647762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8693549782459797256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f353a7c6860eb343a8e87fd19beb30a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementalPopupPrefab: {fileID: 3380654122138427042, guid: 73001d36d79954346b85cdfd57711f76, type: 3}
 --- !u!1 &8853150581868435938
 GameObject:
   m_ObjectHideFlags: 0
