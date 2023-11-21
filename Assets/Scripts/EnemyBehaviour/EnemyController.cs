@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -19,6 +20,12 @@ public class EnemyController : MonoBehaviour
 
     private ElementalType elementStatus = ElementalType.Null;
     private bool isActive = false;
+
+    //elemental PopupUI
+    private UIPopupElementHP uiPopupElementHP;
+    private Sprite elementSprite;
+    private Element elementScrptObj;
+    private Coroutine isElementApplied;
 
     private Animator animator;
     public float minSpeed = 3f;
@@ -39,9 +46,12 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float attackRange;
     [SerializeField] private float attackCooldown = 2.0f; // Adjust the cooldown time as needed
 
+    [SerializeField] private float attackVfxWait = 0f;
+
     private void Awake()
     {
         characterModel = FindObjectOfType<CharacterModel>();
+        uiPopupElementHP = GetComponent<UIPopupElementHP>();
         enemyPool = FindObjectOfType<EnemyPool>();
         enemySpawnManagerTrigger = FindObjectOfType<EnemySpawnManagerTrigger>();
         enemyModel = GetComponent<EnemyModel>();
@@ -66,6 +76,13 @@ public class EnemyController : MonoBehaviour
     private void Update()
     {
         Invoke("EnemyBehavior", spawnDuration);
+
+        //Logic for Showing HP Bar
+        if (enemyModel.currentHealth != enemyModel.HealthPoint)
+        {
+            // Show HP Bar
+            uiPopupElementHP.ShowUpdateHealthBarUI(enemyModel.currentHealth, enemyModel.healthPoint);
+        }
     }
 
     private void EnemyBehavior() {
@@ -73,7 +90,7 @@ public class EnemyController : MonoBehaviour
             float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
             if (distanceToPlayer <= attackRange) {
-                if (canAttack) StartCoroutine(AttackPlayer());
+                if (canAttack) StartCoroutine(StartAttackPlayer());
             } else {
                 if (!isAttacking && !freezing) ChasePlayer();
             }
@@ -98,7 +115,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private IEnumerator AttackPlayer()
+    private IEnumerator StartAttackPlayer()
     {
         canAttack = false;
         isAttacking = true;
@@ -106,8 +123,9 @@ public class EnemyController : MonoBehaviour
         animator.SetBool("isWalking", false);
         animator.SetBool("isHopping", false);
         animator.SetBool("isAttacking", true);
-        NewAudioManager.Instance.PlaySFX("EnemyAtk");
         // Implement your attack logic here, e.g., dealing damage to the player
+        //Invoke(nameof(AttackPlayer), attackVfxWait);
+        NewAudioManager.Instance.PlaySFX("EnemyAtk");
         yield return new WaitForSeconds(attackCooldown); // Wait for the attack animation to finish
 
         animator.SetBool("isAttacking", false);
@@ -115,18 +133,38 @@ public class EnemyController : MonoBehaviour
         canAttack = true;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            NewPlayerController1 playerController = collision.gameObject.GetComponent<NewPlayerController1>();
+    //private void AttackPlayer() {
+    //    AttackVfx();
+    //    Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
+    //    foreach (Collider collider in hitColliders) {
+    //        if (collider.gameObject.CompareTag("Player")) {
+    //            NewPlayerController1 playerController = collider.gameObject.GetComponent<NewPlayerController1>();
+    //            if (playerController != null) {
+    //                playerController.TakeDamage(damageAmount);
+    //                Debug.Log("Player attacked");
+    //            }
+    //        }
+    //    }
+    //}
 
-            if (playerController != null)
-            {
-                playerController.TakeDamage(damageAmount);
-            }
-        }
-    }
+    //private void AttackVfx() {
+    //    //vfx.AttackVFX();     
+    //    //Debug.Log("Bam");
+    //}
+
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //        NewPlayerController1 playerController = collision.gameObject.GetComponent<NewPlayerController1>();
+
+    //        if (playerController != null)
+    //        {
+                //playerController.TakeDamage(damageAmount);
+    //        }
+    //    }
+    //}
 
     public void TakeDamage(float damageAmount)
     {       
@@ -145,13 +183,43 @@ public class EnemyController : MonoBehaviour
     }
 
     public void ApplyElementalStatus(ElementalType elementType) {
+        elementScrptObj = ElementalReactionController.Instance.GetElementScrptObj(elementType); //Get Element Scriptable Object
+
         if (elementStatus == ElementalType.Null) {
             elementStatus = elementType;
             Debug.Log("Applied Status " + elementStatus);
-        } else if (elementStatus != elementType) {
-            HandleElementalInteraction(elementStatus, elementType);
-            elementStatus = ElementalType.Null;
+
+            //PopupUI
+            //Show Popup UI When No Element Appllied
+            if (isElementApplied != null)
+            {
+                StopCoroutine(isElementApplied);
+                uiPopupElementHP.ResetPopupUI();
+            }
+            elementSprite = elementScrptObj.elementSprite;
+            uiPopupElementHP.ShowElementalPopup(elementSprite);
+            isElementApplied = StartCoroutine(uiPopupElementHP.ElementPopupDuration());
         }
+        else if (elementStatus == elementType)
+        {
+            //Reset Applied Element Duration if Same Type
+            StopCoroutine(isElementApplied);
+            isElementApplied = StartCoroutine(uiPopupElementHP.ElementPopupDuration());
+        } else if (elementStatus != elementType) {
+            //Trigger Elemental Reaction & Popup 2 Element
+            uiPopupElementHP.ResetPopupUI();
+            StopCoroutine(isElementApplied);
+            uiPopupElementHP.ShowReactionPopupUI(elementSprite, elementScrptObj.elementSprite);
+            isElementApplied = StartCoroutine(uiPopupElementHP.ResetReactionPopupUI());
+            HandleElementalInteraction(elementStatus, elementType);
+            ResetElementalStatus();
+        }
+    }
+
+    // Function for resetting element
+    public void ResetElementalStatus()
+    {
+        elementStatus = ElementalType.Null;
     }
 
     // Function to handle elemental interactions
