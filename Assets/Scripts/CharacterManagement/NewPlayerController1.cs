@@ -121,7 +121,7 @@ public class NewPlayerController1 : MonoBehaviour
         //    }
         //}
 
-        if (_isIncrease && isDashing) {
+        if (_isIncrease) {
             float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
             _dashCooldownSlider.value = cdValue;
 
@@ -129,7 +129,7 @@ public class NewPlayerController1 : MonoBehaviour
                 _currentDashCd = 0f;
                 _isIncrease = false;
             }
-        } else if (Input.GetKey(KeyCode.LeftShift) && !isDashing) {
+        } else if (!_isIncrease && Input.GetKey(KeyCode.LeftShift)) {
             float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
             _dashCooldownSlider.value = cdValue;
 
