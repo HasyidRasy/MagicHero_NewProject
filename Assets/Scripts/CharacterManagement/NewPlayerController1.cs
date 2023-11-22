@@ -59,6 +59,9 @@ public class NewPlayerController1 : MonoBehaviour
     private bool _isIncrease;
     private bool isDeath = false;
 
+    [HideInInspector]
+    public int currentButtonIndex = 0;
+
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
         UIManager.OnRestart += RestartPlayer;
@@ -290,8 +293,8 @@ public class NewPlayerController1 : MonoBehaviour
     }
     public void ResetAttackIndex()
     {
-        attackPattern[currentAttackIndex] = elementalSlots[0];
         currentSlotIndex = 0;
+        attackPattern[currentAttackIndex] = elementalSlots[currentAttackIndex];
     }
 
     private void ChangeActiveElement()
@@ -385,11 +388,13 @@ public class NewPlayerController1 : MonoBehaviour
     {
         // Here you can call ShootMagic with the attack pattern.
         ShootMagic(attackPattern[currentAttackIndex]);
+        Debug.Log("current attack index = " + currentSlotIndex);
     }
 
     public void SetAttackPattern(ElementalType newElement)
     {
-        elementalSlots[elementSwitchSystem.currentButtonIndex] = newElement;
+        elementalSlots[currentButtonIndex] = newElement;
+        //Debug.Log("curent button index = " + currentButtonIndex);
     }
     
     public void GetCamera(Camera cam) {
@@ -401,7 +406,8 @@ public class NewPlayerController1 : MonoBehaviour
     {
         elementalSlots[0] = ElementalType.Fire; 
         elementalSlots[1] = ElementalType.Fire; 
-        elementalSlots[2] = ElementalType.Fire; 
+        elementalSlots[2] = ElementalType.Fire;
+        elementalSlots[3] = ElementalType.Fire;
         SaveElementalSlots();
     }
     private void SaveElementalSlots()
