@@ -413,6 +413,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 20754241}
   m_CullTransparentMesh: 1
+--- !u!1 &21268454 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6238733700115061000, guid: fc06bf9fe4b548f4da5816e28c39d850, type: 3}
+  m_PrefabInstance: {fileID: 31728423}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &21268458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21268454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90139983c2d57284b8c0c37dab077d64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireMaterial: {fileID: 2100000, guid: e13af483ba9cd96458893c31f82cbdad, type: 2}
+  waterMaterial: {fileID: 2100000, guid: f1e4fe1b4c6fd8644a2197a39882eee6, type: 2}
+  windMaterial: {fileID: 2100000, guid: 6e710b5637fcb7c4b9b7ec571b587b6d, type: 2}
 --- !u!1001 &31728423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3327,7 +3347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3382098936999962853, guid: fc06bf9fe4b548f4da5816e28c39d850, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.793
       objectReference: {fileID: 0}
     - target: {fileID: 3382098936999962853, guid: fc06bf9fe4b548f4da5816e28c39d850, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8240,6 +8260,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6837078594191211094, guid: fc06bf9fe4b548f4da5816e28c39d850, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1650508851}
+    - targetCorrespondingSourceObject: {fileID: 6238733700115061000, guid: fc06bf9fe4b548f4da5816e28c39d850, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 21268458}
   m_SourcePrefab: {fileID: 100100000, guid: fc06bf9fe4b548f4da5816e28c39d850, type: 3}
 --- !u!1 &39971633
 GameObject:
@@ -12075,6 +12098,7 @@ GameObject:
   m_Component:
   - component: {fileID: 781679607}
   - component: {fileID: 781679608}
+  - component: {fileID: 781679609}
   m_Layer: 0
   m_Name: Colldown Atk
   m_TagString: Untagged
@@ -12150,10 +12174,33 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.493
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &781679609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781679606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af73956be2393e64ab3e5436583df057, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackCooldownSlider: {fileID: 781679608}
+  Element: {fileID: 1381089008}
+  backgroundElement: {fileID: 928538137}
+  elementActive:
+  - {fileID: 21300000, guid: 99bdff06e72b7bf48a18760715652f9b, type: 3}
+  - {fileID: 21300000, guid: 5f01d1c5b1b081b46bd74acebf3c95de, type: 3}
+  - {fileID: 21300000, guid: 50457d5c54ace6a4582536935785f0e0, type: 3}
+  backgroundElementActive:
+  - {fileID: 21300000, guid: c64a4e579149a8b408314905e04127ea, type: 3}
+  - {fileID: 21300000, guid: 32c4704d0619aee44ba50ef0e7661bb9, type: 3}
+  - {fileID: 21300000, guid: 90a0325dcc840794e90a1dcff6fb4f83, type: 3}
 --- !u!1 &787094644
 GameObject:
   m_ObjectHideFlags: 0
@@ -14388,6 +14435,7 @@ MonoBehaviour:
   magicProSpeed: 45
   timeBetweenAttacks: 0.3
   timeBetweenSteps: 0.5
+  attackCooldown: 0
   groundMask:
     serializedVersion: 2
     m_Bits: 8
@@ -14674,8 +14722,8 @@ MonoBehaviour:
   - {fileID: 1889538363}
   unlockedElementInfo:
     isFireUnlocked: 1
-    isWaterUnlocked: 0
-    isWindUnlocked: 0
+    isWaterUnlocked: 1
+    isWindUnlocked: 1
 --- !u!114 &1251161312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15736,7 +15784,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
-  m_FillAmount: 0.493
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
