@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class NewPlayerController1 : MonoBehaviour
 {
@@ -50,14 +51,25 @@ public class NewPlayerController1 : MonoBehaviour
     [SerializeField] private bool isAttacking = true;
 
     public static event Action OnPlayerDeath;
+    public static event Action OnPlayerHurt;
 
+    [Header("Player Info")]
+    public Slider _dashCooldownSlider;
+    private float _currentDashCd;
+    private bool _isIncrease;
+    private bool isDeath = false;
+
+    [HideInInspector]
+    public int currentButtonIndex = 0;
 
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        UIManager.OnRestart += RestartPlayer;
     }
 
     private void OnDisable() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        UIManager.OnRestart -= RestartPlayer;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
@@ -83,6 +95,7 @@ public class NewPlayerController1 : MonoBehaviour
         PlayerStat();
         attackCooldown -= Time.deltaTime;
         stepCooldown -= Time.deltaTime;
+        _currentDashCd += Time.deltaTime;
 
         Aim();
 
@@ -91,6 +104,44 @@ public class NewPlayerController1 : MonoBehaviour
             Stepping(stepCooldown);
             stepCooldown = timeBetweenSteps;
             StartCoroutine(Stepping(stepCooldown));
+        }
+
+        //if (!isDashing) {
+        //    if (_isIncrease && isDashing) {
+        //        float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
+        //        _dashCooldownSlider.value = cdValue;
+
+        //        if (_currentDashCd >= characterModel.DashCooldown) {
+        //            _currentDashCd = 0f;
+        //            _isIncrease = false;
+        //        }
+        //    } else {
+        //        float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
+        //        _dashCooldownSlider.value = cdValue;
+
+        //        if (_currentDashCd >= characterModel.DashDuration) {
+        //            _currentDashCd = 0f;
+        //            _isIncrease = true;
+        //        }
+        //    }
+        //}
+
+        if (_isIncrease) {
+            float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
+            _dashCooldownSlider.value = cdValue;
+
+            if (_currentDashCd >= characterModel.DashCooldown) {
+                _currentDashCd = 0f;
+                _isIncrease = false;
+            }
+        } else if (!_isIncrease && Input.GetKey(KeyCode.LeftShift)) {
+            float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
+            _dashCooldownSlider.value = cdValue;
+
+            if (_currentDashCd >= characterModel.DashDuration) {
+                _currentDashCd = 0f;
+                _isIncrease = true;
+            }
         }
     }
 
@@ -110,9 +161,14 @@ public class NewPlayerController1 : MonoBehaviour
         // Check if the character is walking
         bool isWalking = moveDir != Vector3.zero;
 
+        if (!isWalking) {
+            animator.SetBool("isDashing", false);
+        }
+
+
         // Set the "isWalking" parameter in the animator
         animator.SetBool("isWalking", isWalking);
-        animator.SetBool("isDashing", isDashing);
+        animator.SetBool("isDashing", false);
 
         // Calculate the desired velocity
         Vector3 velocity = moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed;
@@ -185,10 +241,14 @@ public class NewPlayerController1 : MonoBehaviour
     {
         characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
         animator.SetTrigger("isHurt");
+        if (isDeath == false) {
+            OnPlayerHurt?.Invoke();
+        }
         if (characterModel.HealthPoint <= 0)
-        {          
+        {
+            isDeath = true;
             Death(); // If health drops to or below zero, call a method to handle enemy death
-            Invoke("ShowDeathPanel", 3f);
+            ShowDeathPanel();
         }
     }
 
@@ -200,6 +260,9 @@ public class NewPlayerController1 : MonoBehaviour
     }
     private void ShowDeathPanel() {
         OnPlayerDeath?.Invoke();
+    }
+    private void RestartPlayer() {
+        Destroy(gameObject);
     }
 
     private void ShootMagic(ElementalType element)
@@ -230,8 +293,8 @@ public class NewPlayerController1 : MonoBehaviour
     }
     public void ResetAttackIndex()
     {
-        attackPattern[currentAttackIndex] = elementalSlots[0];
         currentSlotIndex = 0;
+        attackPattern[currentAttackIndex] = elementalSlots[currentAttackIndex];
     }
 
     private void ChangeActiveElement()
@@ -325,11 +388,13 @@ public class NewPlayerController1 : MonoBehaviour
     {
         // Here you can call ShootMagic with the attack pattern.
         ShootMagic(attackPattern[currentAttackIndex]);
+        Debug.Log("current attack index = " + currentSlotIndex);
     }
 
     public void SetAttackPattern(ElementalType newElement)
     {
-        elementalSlots[elementSwitchSystem.currentButtonIndex] = newElement;
+        elementalSlots[currentButtonIndex] = newElement;
+        //Debug.Log("curent button index = " + currentButtonIndex);
     }
     
     public void GetCamera(Camera cam) {
@@ -341,7 +406,8 @@ public class NewPlayerController1 : MonoBehaviour
     {
         elementalSlots[0] = ElementalType.Fire; 
         elementalSlots[1] = ElementalType.Fire; 
-        elementalSlots[2] = ElementalType.Fire; 
+        elementalSlots[2] = ElementalType.Fire;
+        elementalSlots[3] = ElementalType.Fire;
         SaveElementalSlots();
     }
     private void SaveElementalSlots()
