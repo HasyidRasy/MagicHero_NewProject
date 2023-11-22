@@ -17,6 +17,8 @@ public class FTUEManager : MonoBehaviour {
     public GameObject _sceneChangeElement;
     public GameObject _sceneAtkElement;
     public GameObject _scenePortal;
+    private ElementSwitchSystem elementSwitchSystem;
+    private NewPlayerController1 newPlayerController1;
 
     private void Awake() {
         if (Instance == null) {
@@ -25,6 +27,15 @@ public class FTUEManager : MonoBehaviour {
         } else {
             Destroy(gameObject);
         }
+        elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
+        newPlayerController1 = FindObjectOfType<NewPlayerController1>();
+    }
+
+    private void OnDestroy()
+    {
+        elementSwitchSystem.SetDefaultElementStatus();
+        CharacterModel.Instance.ResetStats();
+        newPlayerController1.SetDefaultElementSlots();
     }
 
     private void Start() {

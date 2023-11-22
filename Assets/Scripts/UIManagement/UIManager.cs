@@ -163,6 +163,7 @@ public class UIManager : MonoBehaviour
     public void GoToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+        Continue();
     }
 
     public void GoToStory() {
