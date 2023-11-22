@@ -27,8 +27,8 @@ public class FTUEManager : MonoBehaviour {
         } else {
             Destroy(gameObject);
         }
-        elementSwitchSystem = GetComponent<ElementSwitchSystem>();
-        newPlayerController1 = GetComponent<NewPlayerController1>();
+        elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
+        newPlayerController1 = FindObjectOfType<NewPlayerController1>();
     }
 
     private void OnDestroy()
@@ -45,8 +45,6 @@ public class FTUEManager : MonoBehaviour {
         //}
         NewAudioManager.Instance.bgmSource.Stop();
         NewAudioManager.Instance.PlayBGM("Safezone");
-        elementSwitchSystem.SetDefaultElementStatus();
-        newPlayerController1.SetDefaultElementSlots();
     }
 
     public void Pause() {
