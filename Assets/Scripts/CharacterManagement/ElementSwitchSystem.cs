@@ -41,6 +41,8 @@ public class ElementSwitchSystem : MonoBehaviour
     private void Start()
     {
         elementIndex = elementPanel.Length;
+        LoadElementStatus();
+        playerController.LoadElementalSlots();
     }
 
     //Mengatur elemen proyektil
@@ -83,20 +85,20 @@ public class ElementSwitchSystem : MonoBehaviour
     }
     public void OnFireButtonClick()
     {
-        // Saat tombol Fire diklik, atur elemen ke Fire.
         SetElement(ElementalType.Fire);
+        playerController.ResetAttackIndex();
         UpdateAttackPatternIndicator();
     }
     public void OnWaterButtonClick()
     {
-        // Saat tombol Water diklik, atur elemen ke Water.
         SetElement(ElementalType.Water);
+        playerController.ResetAttackIndex();
         UpdateAttackPatternIndicator();
     }
     public void OnWindButtonClick()
     {
-        // Saat tombol Wind diklik, atur elemen ke Wind.
         SetElement(ElementalType.Wind);
+        playerController.ResetAttackIndex();
         UpdateAttackPatternIndicator();
     }
     public void UpdateAttackPatternIndicator()
@@ -170,5 +172,26 @@ public class ElementSwitchSystem : MonoBehaviour
         {
             elementButton[2].interactable = false;
         }
+    }
+    private void SaveElementStatus()
+    {
+        PlayerPrefs.SetInt("IsFireUnlocked", unlockedElementInfo.isFireUnlocked ? 1 : 0);
+        PlayerPrefs.SetInt("IsWaterUnlocked", unlockedElementInfo.isWaterUnlocked ? 1 : 0);
+        PlayerPrefs.SetInt("IsWindUnlocked", unlockedElementInfo.isWindUnlocked ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    private void LoadElementStatus()
+    {
+        unlockedElementInfo.isFireUnlocked = PlayerPrefs.GetInt("IsFireUnlocked", 0) == 1;
+        unlockedElementInfo.isWaterUnlocked = PlayerPrefs.GetInt("IsWaterUnlocked", 0) == 1;
+        unlockedElementInfo.isWindUnlocked = PlayerPrefs.GetInt("IsWindUnlocked", 0) == 1;
+    }
+    public void SetDefaultElementStatus()
+    {
+        unlockedElementInfo.isFireUnlocked = true;
+        unlockedElementInfo.isWaterUnlocked = false;
+        unlockedElementInfo.isWindUnlocked = false;
+        SaveElementStatus();
     }
 }
