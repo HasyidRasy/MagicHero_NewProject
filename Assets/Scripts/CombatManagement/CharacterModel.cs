@@ -146,4 +146,22 @@ public class CharacterModel : MonoBehaviour
         }
         
     }
+
+    public void ResetStats()
+    {
+        healthPoint = 100f;
+        maxHealthPoint = 100f;
+        defence = 0f;
+        attackSpeed = 1f;
+        moveSpeed = 20.0f;
+        attack = 35f;
+        elementalBonus = 0f;
+        move = 0f;
+
+        // Dashi
+        rotationSpeed = 500f;
+        dashSpeed = 25000f;
+        dashDuration = 0.35f;
+        dashCooldown = 1f;
+    }
 }

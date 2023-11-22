@@ -51,11 +51,13 @@ public class NewPlayerController1 : MonoBehaviour
     [SerializeField] private bool isAttacking = true;
 
     public static event Action OnPlayerDeath;
+    public static event Action OnPlayerHurt;
 
     [Header("Player Info")]
     public Slider _dashCooldownSlider;
     private float _currentDashCd;
     private bool _isIncrease;
+    private bool isDeath = false;
 
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -236,8 +238,12 @@ public class NewPlayerController1 : MonoBehaviour
     {
         characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
         animator.SetTrigger("isHurt");
+        if (isDeath == false) {
+            OnPlayerHurt?.Invoke();
+        }
         if (characterModel.HealthPoint <= 0)
-        {          
+        {
+            isDeath = true;
             Death(); // If health drops to or below zero, call a method to handle enemy death
             ShowDeathPanel();
         }
@@ -281,6 +287,11 @@ public class NewPlayerController1 : MonoBehaviour
             ChangeActiveElement();
             // Menonaktifkan isShooting setelah menembak
             StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
+    }
+    public void ResetAttackIndex()
+    {
+        attackPattern[currentAttackIndex] = elementalSlots[0];
+        currentSlotIndex = 0;
     }
 
     private void ChangeActiveElement()
@@ -385,6 +396,30 @@ public class NewPlayerController1 : MonoBehaviour
         var newCamera = cam;
         mainCamera = newCamera;
         Debug.Log("A key pressed. Camera: " + (cam != null ? cam.name : "null"));
+    }
+    public void SetDefaultElementSlots()
+    {
+        elementalSlots[0] = ElementalType.Fire; 
+        elementalSlots[1] = ElementalType.Fire; 
+        elementalSlots[2] = ElementalType.Fire; 
+        SaveElementalSlots();
+    }
+    private void SaveElementalSlots()
+    {
+        for (int i = 0; i < elementalSlots.Length; i++)
+        {
+            PlayerPrefs.SetInt("ElementalSlot_" + i, (int)elementalSlots[i]);
+        }
+        PlayerPrefs.Save();
+    }
+    public void LoadElementalSlots()
+    {
+        for (int i = 0; i < elementalSlots.Length; i++)
+        {
+            // Baca data PlayerPrefs dan konversi ke enum ElementalType
+            int savedElement = PlayerPrefs.GetInt("ElementalSlot_" + i, 0);
+            elementalSlots[i] = (ElementalType)savedElement;
+        }
     }
     private (bool success, Vector3 position) GetMousePosition() {
 
