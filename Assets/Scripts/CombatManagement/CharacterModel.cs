@@ -5,9 +5,11 @@ using UnityEngine;
 public class CharacterModel : MonoBehaviour
 {
     public static CharacterModel Instance {get; private set;}
+    private PlayerController playerController;
 
     // Private fields to store character properties
     public float healthPoint;
+    public float maxHealthPoint = 100;
     public float defence;
     public float attackSpeed;
     public float moveSpeed = 5.0f;
@@ -22,6 +24,8 @@ public class CharacterModel : MonoBehaviour
     public float dashDuration = 0.5f;
     public float dashCooldown = 2.0f;
 
+    public List<UpgradeData> chosenUpgrades = new List<UpgradeData>();
+
     private void Awake()
     {
         if (Instance == null)
@@ -33,6 +37,8 @@ public class CharacterModel : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        playerController = FindObjectOfType<PlayerController>();
     }
 
     // Getter and setter for healthPoint
@@ -40,6 +46,13 @@ public class CharacterModel : MonoBehaviour
         get { return healthPoint; }
         set {
             healthPoint = Mathf.Clamp(value, 0, 100); // Health should be between 0 and 100
+        }
+    }
+
+    public float MaxHealthPoint{
+        get { return maxHealthPoint; }
+        set { 
+            maxHealthPoint = value; 
         }
     }
 
@@ -100,53 +113,30 @@ public class CharacterModel : MonoBehaviour
     //Apply Upgrades (Avin)
     public void ApplyUpgrade(UpgradeData upgrade)
     {
+
         foreach(var stat in upgrade.stats)
         {
             switch (stat.upgradeType)
             {
             case UpgradeType.ElementalAttack:
-                elementalBonus += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = elementalBonus * (stat.upgradeValuePercent/100);
-                    elementalBonus += increaseStat;
-                }
-                    Debug.Log("Elemental Bonus: "+elementalBonus);
+                ElementalBonus += stat.upgradeValueStatic;
                 break;
             case UpgradeType.BasicAttack:
-                attack += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = attack * (stat.upgradeValuePercent/100);
-                    attack += increaseStat;
-                }
-                Debug.Log("Attack: "+Attack);
+                Attack += stat.upgradeValueStatic;
                 break;
-            case UpgradeType.HealthPoint:
-                healthPoint += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = healthPoint * (stat.upgradeValuePercent/100);
-                    healthPoint += increaseStat;
+            case UpgradeType.MaxHealthPoint:
+                if(maxHealthPoint == 0){
+                    maxHealthPoint = healthPoint;
                 }
-                Debug.Log("Health Point: "+healthPoint);
+                MaxHealthPoint += stat.upgradeValueStatic;
+                Debug.Log("Max Health Point: "+maxHealthPoint);
                 break;
             case UpgradeType.AttackSpeed:
-                attackSpeed += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = attackSpeed * (stat.upgradeValuePercent/100);
-                    attackSpeed += increaseStat;
-                }
+                AttackSpeed += stat.upgradeValueStatic;
                 Debug.Log("Attack Speed :"+AttackSpeed);
                 break;
             case UpgradeType.Defense:
-                defence += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = defence * (stat.upgradeValuePercent/100);
-                    defence += increaseStat;
-                }
+                Defence += stat.upgradeValueStatic;
                 Debug.Log("Defense: "+defence);
                 break;
             default:
