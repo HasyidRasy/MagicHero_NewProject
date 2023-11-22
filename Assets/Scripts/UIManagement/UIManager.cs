@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    public static event Action OnRestart;
-
     public GameObject deathPanel;
     public GameObject creditPanel;
     public GameObject controlPanel;
@@ -16,19 +13,11 @@ public class UIManager : MonoBehaviour
     private bool isConfirmPanelActive = false;
     private bool isSwitchElementPanelActive = false;
     private ElementSwitchSystem elementSwitchSystem;
-    private NewPlayerController1 newPlayerController1;
-    private InventoryManagement inventoryManagement;
-    private UIAnimationManager animationManager;
-
-    private bool isDeath = false;
 
     private void Start() {
         NewAudioManager.Instance.bgmSource.Stop();
         NewAudioManager.Instance.PlayBGM("MainMenu");
         elementSwitchSystem = GetComponent<ElementSwitchSystem>();
-        newPlayerController1 = GetComponent<NewPlayerController1>();
-        inventoryManagement = GetComponent<InventoryManagement>();
-        animationManager = GetComponent<UIAnimationManager>();
     }
 
     private void OnEnable()
@@ -53,7 +42,6 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab) && !isSwitchElementPanelActive)
         {
             EnableSwitchElementPanel();
-            inventoryManagement.UpdateBuffDisplay(CharacterModel.Instance.chosenUpgrades);
         }
         else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive)
         {
@@ -63,10 +51,8 @@ public class UIManager : MonoBehaviour
 
     public void EnableDeathPanel()
     {
-        if (deathPanel != null && isDeath == false)
+        if (deathPanel != null)
         {
-            isDeath = true;
-            animationManager.TransitionDeathPanel();
             deathPanel.SetActive(true);
             NewAudioManager.Instance.bgmSource.Stop();
             NewAudioManager.Instance.PlaySFX("Death");
@@ -158,7 +144,6 @@ public class UIManager : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        OnRestart?.Invoke();
     }
     public void GoToMainMenu()
     {

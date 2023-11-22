@@ -8,10 +8,10 @@ public class TriggerArea : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.K)) //untuk membuka pintu selama testing
-        //{
-        //    GameEvents.current.DoorwayTriggerEnter(id); 
-        //}
+        if (Input.GetKeyDown(KeyCode.K)) //untuk membuka pintu selama testing
+        {
+            GameEvents.current.DoorwayTriggerEnter(id); 
+        }
     }
 
     private void OnTriggerEnter(Collider other)

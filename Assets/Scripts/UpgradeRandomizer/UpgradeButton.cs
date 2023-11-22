@@ -1,20 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UpgradeButton : MonoBehaviour
 {
     public UpgradeRandomizer upgradeRandomizer;
-    public Image hoverImage;
     private UpgradeManager upgradeManager;
     private CharacterModel upgradedCharacter;
     private UpgradeData upgrade;
     public static int id = 1;
-
     void Start()
     {
-        ResetId();
         upgradeManager = FindObjectOfType<UpgradeManager>();
         upgradedCharacter = FindObjectOfType<CharacterModel>();
 
@@ -29,12 +25,8 @@ public class UpgradeButton : MonoBehaviour
             Debug.Log("Upgrade not found");
             return;
         }
-           
-        hoverImage.gameObject.SetActive(false);
     }
-    public static void ResetId() {
-        id = 1;
-    }
+
     public void SetUpgrade(UpgradeData upgradeData)
     {
         upgrade = upgradeData;
@@ -44,22 +36,21 @@ public class UpgradeButton : MonoBehaviour
     {
         if (upgrade != null)
         {
+            UpgradeData selectedUpgrade = UpgradeManager.instance.GetSelectedUpgrade(upgrade.upgradeID);
+
             upgradedCharacter.ApplyUpgrade(upgrade);
-            upgradedCharacter.chosenUpgrades.Add(upgrade);
+
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
             Debug.Log("Upgrade Description: " + GetUpgradeDescription(upgrade));
-            Invoke(nameof(SetFalseUpgradeCanvas), 0.5f);
+        
+            upgradeRandomizer.gameObject.SetActive(false);
             Time.timeScale = 1f;
             GameEvents.current.DoorwayTriggerEnter(id);
             id++;
         }
     }
 
-    void SetFalseUpgradeCanvas() {
-        upgradeRandomizer.gameObject.SetActive(false);
-    }
-
-    private string GetUpgradeDescription(UpgradeData upgrade)
+     private string GetUpgradeDescription(UpgradeData upgrade)
     {
         string description = "";
         foreach (var stat in upgrade.stats)
@@ -72,25 +63,12 @@ public class UpgradeButton : MonoBehaviour
             {
                 description += stat.upgradeType.ToString() + " -" + stat.upgradeValueStatic + "\n";
             }
-        }
 
-        if(upgrade.upgradeDesc != null)
-        {
-            description += upgrade.upgradeDesc;
+            if(stat.upgradeValuePercent != 0)
+            {
+                description += stat.upgradeType.ToString() + " +" + stat.upgradeValuePercent + "%\n";
+            }
         }
         return description;
     }
-
-    public void OnPointerEnterButton()
-    {
-        // Activate the hover image here
-        hoverImage.gameObject.SetActive(true);
-    }
-
-    public void OnPointerExitButton()
-    {
-        // Deactivate the hover image here
-        hoverImage.gameObject.SetActive(false);
-    }
-
 }

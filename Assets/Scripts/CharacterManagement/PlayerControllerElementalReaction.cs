@@ -29,10 +29,6 @@ public class PlayerControllerElementalReaction : MonoBehaviour {
     [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     private float attackCooldown = 0f;
 
-    [Header("Stats Stuff")]
-    private float playerHp;
-    private float playerDef;
-
 
     private void Awake()
     {
@@ -40,7 +36,7 @@ public class PlayerControllerElementalReaction : MonoBehaviour {
     }
     private void Start() 
     {       
-        PlayerStat();
+        
     }
 
     private void Update() {
@@ -52,10 +48,7 @@ public class PlayerControllerElementalReaction : MonoBehaviour {
         if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f)
         {
             ShootMagic(attackPattern[currentAttackIndex]);          // Menembakkan sihir sesuai dengan pola serangan saat ini
-            if(characterModel.attackSpeed > 0)
-                attackCooldown = timeBetweenAttacks / (characterModel.attackSpeed);
-            else
-                attackCooldown = timeBetweenAttacks;
+            attackCooldown = timeBetweenAttacks;
             currentAttackIndex = (currentAttackIndex + 1) % 4;      // Pindah ke elemen berikutnya dalam pola serangan
             ChangeActiveElement();
             //CheckElementalReaction();
@@ -111,14 +104,12 @@ public class PlayerControllerElementalReaction : MonoBehaviour {
 
     //Player Stat
     private void PlayerStat() {
-        playerHp = characterModel.HealthPoint;
-        playerDef = characterModel.Defence;
+        float playerHp = characterModel.HealthPoint;
+        float playerDef = characterModel.Defence;
     }
 
     public void TakeDamage(float damageAmount)
     {
-        damageAmount -= playerDef;
-
         characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
 
         if (characterModel.HealthPoint <= 0)

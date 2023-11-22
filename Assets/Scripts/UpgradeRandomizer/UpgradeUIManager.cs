@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class UpgradeUIManager : MonoBehaviour
 {
     public UpgradeRandomizer upgradeRandomizer;
-    public UpgradeElemental upgradeElemental;
 
     private void Start()
     {
@@ -22,11 +21,6 @@ public class UpgradeUIManager : MonoBehaviour
 
         NewAudioManager.Instance.bgmSource.Stop();
         NewAudioManager.Instance.PlayBGM("Safezone"); // Play BGM Safezone
-    }
 
-    public void TriggerElementalUI()
-    {
-        upgradeElemental.gameObject.SetActive(true);
-        upgradeElemental.UpdateUI();
     }
 }

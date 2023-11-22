@@ -7,7 +7,7 @@ public class UpgradeDatabase : ScriptableObject
 {
     public List<UpgradeData> commonUpgrades = new List<UpgradeData>();
     public List<UpgradeData> rareUpgrades = new List<UpgradeData>();  
-    public List<UpgradeData> elementalUpgrades = new List<UpgradeData>();  
+    public List<UpgradeData> legendUpgrades = new List<UpgradeData>();  
 
     public UpgradeData GetUpgradeByID(int id)
     {
