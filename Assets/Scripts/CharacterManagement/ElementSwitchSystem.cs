@@ -11,12 +11,8 @@ public class ElementSwitchSystem : MonoBehaviour
     
     private ElementalType element;
     private int elementIndex;
-
     private NewPlayerController1 playerController;
     
-    [HideInInspector]
-    public int currentButtonIndex = 0;
-
     [System.Serializable] //[System.Serializable] akan dihapus setelah masa pengembangan
     public class ElementUnlockedInfo
     {
@@ -123,7 +119,9 @@ public class ElementSwitchSystem : MonoBehaviour
     }
     public void EnableElementPanel(int buttonIndex)
     {
-        currentButtonIndex = buttonIndex;
+        playerController.currentButtonIndex = buttonIndex;
+        //Debug.Log("button index = " + buttonIndex);
+        //Debug.Log("current button index = " + playerController.currentButtonIndex);
         if (elementPanel != null)
         {
             for (int i = 0; i < elementIndex; i++)
