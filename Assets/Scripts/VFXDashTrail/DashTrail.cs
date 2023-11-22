@@ -24,9 +24,16 @@ public class DashTrail : MonoBehaviour
     bool isTrailActive;
     SkinnedMeshRenderer[] skinnedMeshRenderers;
     GameObject FX;
+
+    private NewPlayerController1 playerController1;
+
+    private void Awake() {
+        playerController1 = GetComponent<NewPlayerController1>();
+    }
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isTrailActive)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isTrailActive && playerController1._dashCooldownSlider.value == 1f)
         {
             isTrailActive = true;
             StartCoroutine(ActivateTrail(activeTime));
