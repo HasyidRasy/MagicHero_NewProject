@@ -184,7 +184,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
+        characterModel.HealthPoint -= (damageAmount-characterModel.defence); // Reduce current health by the damage amount
         animator.SetTrigger("isHurt");
         if (characterModel.HealthPoint <= 0)
         {          
@@ -227,6 +227,23 @@ public class NewPlayerController1 : MonoBehaviour
             }
             ChangeActiveElement();
             // Menonaktifkan isShooting setelah menembak
+            // Modify timeBetweenAttacks based on attackSpeed, with a cap
+            if (characterModel.attackSpeed != 0)
+            {
+                float startTimeBetweenAttacks = 0.75f;
+                // Use attack speed to derive a factor (e.g., 1 / attackSpeed) and multiply it with timeBetweenAttacks
+                float attackSpeedFactor = characterModel.attackSpeed / 100;
+
+                // Introduce a cap to avoid too drastic changes
+                float minModifiedTimeBetweenAttacks = 0.001f; // You can adjust this value
+
+                float curTimeBetweenAttacks = startTimeBetweenAttacks - attackSpeedFactor;
+                timeBetweenAttacks = Mathf.Max(minModifiedTimeBetweenAttacks, curTimeBetweenAttacks);
+            }
+            else
+            {
+                timeBetweenAttacks = 0.75f;
+            }
             StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
     }
 
