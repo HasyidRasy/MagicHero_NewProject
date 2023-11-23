@@ -31,7 +31,7 @@ public class CharacterModel : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -163,5 +163,58 @@ public class CharacterModel : MonoBehaviour
         dashSpeed = 25000f;
         dashDuration = 0.35f;
         dashCooldown = 1f;
+    }
+    // Save player stats to PlayerPrefs
+    public void SavePlayerStats()
+    {
+        PlayerPrefs.SetFloat("PlayerHealth", HealthPoint);
+        PlayerPrefs.SetFloat("PlayerMaxHealth", MaxHealthPoint);
+        PlayerPrefs.SetFloat("PlayerDefence", Defence);
+        PlayerPrefs.SetFloat("PlayerAttackSpeed", AttackSpeed);
+        PlayerPrefs.SetFloat("PlayerMoveSpeed", MoveSpeed);
+        PlayerPrefs.SetFloat("PlayerAttack", Attack);
+        PlayerPrefs.SetFloat("PlayerElementalBonus", ElementalBonus);
+
+        // Save PlayerPrefs
+        PlayerPrefs.Save();
+    }
+
+    // Load player stats from PlayerPrefs
+    public void LoadPlayerStats()
+    {
+        if (PlayerPrefs.HasKey("PlayerHealth"))
+        {
+            HealthPoint = PlayerPrefs.GetFloat("PlayerHealth");
+        }
+
+        if (PlayerPrefs.HasKey("PlayerMaxHealth"))
+        {
+            MaxHealthPoint = PlayerPrefs.GetFloat("PlayerMaxHealth");
+        }
+
+        if (PlayerPrefs.HasKey("PlayerDefence"))
+        {
+            Defence = PlayerPrefs.GetFloat("PlayerDefence");
+        }
+
+        if (PlayerPrefs.HasKey("PlayerAttackSpeed"))
+        {
+            AttackSpeed = PlayerPrefs.GetFloat("PlayerAttackSpeed");
+        }
+
+        if (PlayerPrefs.HasKey("PlayerMoveSpeed"))
+        {
+            MoveSpeed = PlayerPrefs.GetFloat("PlayerMoveSpeed");
+        }
+
+        if (PlayerPrefs.HasKey("PlayerAttack"))
+        {
+            Attack = PlayerPrefs.GetFloat("PlayerAttack");
+        }
+
+        if (PlayerPrefs.HasKey("PlayerElementalBonus"))
+        {
+            ElementalBonus = PlayerPrefs.GetFloat("PlayerElementalBonus");
+        }
     }
 }

@@ -62,6 +62,11 @@ public class NewPlayerController1 : MonoBehaviour
     [HideInInspector]
     public int currentButtonIndex = 0;
 
+    private void OnDestroy()
+    {
+        CharacterModel.Instance.SavePlayerStats();
+    }
+
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
         UIManager.OnRestart += RestartPlayer;
@@ -88,6 +93,7 @@ public class NewPlayerController1 : MonoBehaviour
     {
         mainCamera = Camera.main;
         attackPattern[0] = elementalSlots[0];
+        CharacterModel.Instance.LoadPlayerStats();
     }
 
     private void Update()
@@ -257,6 +263,7 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isDeath", true);
         characterModel.rotationSpeed = 0;
         characterModel.moveSpeed = 0;
+        CharacterModel.Instance.ResetStats();
     }
     private void ShowDeathPanel() {
         OnPlayerDeath?.Invoke();
