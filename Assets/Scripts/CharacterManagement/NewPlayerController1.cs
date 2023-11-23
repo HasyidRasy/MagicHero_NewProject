@@ -221,7 +221,8 @@ public class NewPlayerController1 : MonoBehaviour
         _rb.velocity = dashVelocity;
 
         DashTrail dashvfx = GetComponent<DashTrail>();
-        dashvfx.StartDashVfx();
+
+        if(dashvfx != null) dashvfx.StartDashVfx();
 
         yield return new WaitForSeconds(characterModel.dashDuration);
 

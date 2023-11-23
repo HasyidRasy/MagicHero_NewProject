@@ -134,6 +134,7 @@ public class UIPopupElementHP : MonoBehaviour
         firstImagePopupUI.rectTransform.DOAnchorPosX(33f, 0.5f)
                                        .SetEase(Ease.InOutBack);
 
+        firstImagePopupUI.rectTransform.DOScale(0.5f,0f);
         secondImagePopupUI.rectTransform.DOScale(0.5f, 0.5f)
                                         .SetEase(Ease.InOutBack)
                                         .From(0f);
