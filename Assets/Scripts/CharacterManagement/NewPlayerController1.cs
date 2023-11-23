@@ -221,7 +221,8 @@ public class NewPlayerController1 : MonoBehaviour
         _rb.velocity = dashVelocity;
 
         DashTrail dashvfx = GetComponent<DashTrail>();
-        dashvfx.StartDashVfx();
+
+        if(dashvfx != null) dashvfx.StartDashVfx();
 
         yield return new WaitForSeconds(characterModel.dashDuration);
 
@@ -283,8 +284,7 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isDeath", true);
         characterModel.rotationSpeed = 0;
         characterModel.moveSpeed = 0;
-        Destroy(_collider);
-        CharacterModel.Instance.ResetStats();
+        //CharacterModel.Instance.ResetStats();
     }
     private void ShowDeathPanel() {
         OnPlayerDeath?.Invoke();
