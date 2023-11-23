@@ -11,6 +11,7 @@ public class NewPlayerController1 : MonoBehaviour
     private CharacterModel characterModel;
     private Animator animator;
     private ElementSwitchSystem elementSwitchSystem;
+    private CooldownAttackUI cooldownAtkUI;
     //cek dash logic
     private bool isDashing = false;
     //rigidbody
@@ -35,9 +36,9 @@ public class NewPlayerController1 : MonoBehaviour
     [SerializeField] private float magicProSpeed = 10f;         // Kecepatan proyektil
 
     [Header("Casting Speed")]
-    [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
+    public float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     [SerializeField] private float timeBetweenSteps = 0.5f;   // Waktu antara serangan
-    private float attackCooldown = 0f;
+    public float attackCooldown = 0f;
     private float stepCooldown = 0f;
 
     [SerializeField] private LayerMask groundMask;
@@ -87,6 +88,7 @@ public class NewPlayerController1 : MonoBehaviour
         characterModel = GetComponent<CharacterModel>();
         animator = GetComponentInChildren<Animator>();
         elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
+        cooldownAtkUI = FindObjectOfType<CooldownAttackUI>();
     }
 
     private void Start()
@@ -94,12 +96,15 @@ public class NewPlayerController1 : MonoBehaviour
         mainCamera = Camera.main;
         attackPattern[0] = elementalSlots[0];
         CharacterModel.Instance.LoadPlayerStats();
+        cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
     }
 
     private void Update()
     {
         PlayerStat();
-        attackCooldown -= Time.deltaTime;
+        if (attackCooldown > 0) {
+            attackCooldown -= Time.deltaTime;
+        }
         stepCooldown -= Time.deltaTime;
         _currentDashCd += Time.deltaTime;
 
@@ -212,6 +217,9 @@ public class NewPlayerController1 : MonoBehaviour
 
         _rb.velocity = dashVelocity;
 
+        DashTrail dashvfx = GetComponent<DashTrail>();
+        dashvfx.StartDashVfx();
+
         yield return new WaitForSeconds(characterModel.dashDuration);
 
         _rb.velocity = Vector3.zero;
@@ -295,8 +303,10 @@ public class NewPlayerController1 : MonoBehaviour
                 rb.velocity = targetDirection * magicProSpeed;
             }
             ChangeActiveElement();
-            // Menonaktifkan isShooting setelah menembak
-            StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
+            cooldownAtkUI.SetElement(elementalSlots[currentSlotIndex]);
+            Debug.Log(elementalSlots[currentSlotIndex]);
+        // Menonaktifkan isShooting setelah menembak
+        StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
     }
     public void ResetAttackIndex()
     {
