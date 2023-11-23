@@ -45,7 +45,7 @@ public class CharacterModel : MonoBehaviour
     public float HealthPoint {
         get { return healthPoint; }
         set {
-            healthPoint = Mathf.Clamp(value, 0, 100); // Health should be between 0 and 100
+            healthPoint = value; // Health should be between 0 and 100
         }
     }
 
