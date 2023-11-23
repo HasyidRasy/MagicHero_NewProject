@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class NewPlayerController1 : MonoBehaviour
 {
@@ -50,14 +51,22 @@ public class NewPlayerController1 : MonoBehaviour
     [SerializeField] private bool isAttacking = true;
 
     public static event Action OnPlayerDeath;
+    public static event Action OnPlayerHurt;
 
+    [Header("Player Info")]
+    public Slider _dashCooldownSlider;
+    private float _currentDashCd;
+    private bool _isIncrease;
+    private bool isDeath = false;
 
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        UIManager.OnRestart += RestartPlayer;
     }
 
     private void OnDisable() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        UIManager.OnRestart -= RestartPlayer;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
@@ -74,7 +83,6 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void Start()
     {
-
         mainCamera = Camera.main;
         attackPattern[0] = elementalSlots[0];
     }
@@ -84,6 +92,7 @@ public class NewPlayerController1 : MonoBehaviour
         PlayerStat();
         attackCooldown -= Time.deltaTime;
         stepCooldown -= Time.deltaTime;
+        _currentDashCd += Time.deltaTime;
 
         Aim();
 
@@ -92,6 +101,44 @@ public class NewPlayerController1 : MonoBehaviour
             Stepping(stepCooldown);
             stepCooldown = timeBetweenSteps;
             StartCoroutine(Stepping(stepCooldown));
+        }
+
+        //if (!isDashing) {
+        //    if (_isIncrease && isDashing) {
+        //        float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
+        //        _dashCooldownSlider.value = cdValue;
+
+        //        if (_currentDashCd >= characterModel.DashCooldown) {
+        //            _currentDashCd = 0f;
+        //            _isIncrease = false;
+        //        }
+        //    } else {
+        //        float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
+        //        _dashCooldownSlider.value = cdValue;
+
+        //        if (_currentDashCd >= characterModel.DashDuration) {
+        //            _currentDashCd = 0f;
+        //            _isIncrease = true;
+        //        }
+        //    }
+        //}
+
+        if (_isIncrease) {
+            float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
+            _dashCooldownSlider.value = cdValue;
+
+            if (_currentDashCd >= characterModel.DashCooldown) {
+                _currentDashCd = 0f;
+                _isIncrease = false;
+            }
+        } else if (!_isIncrease && Input.GetKey(KeyCode.LeftShift)) {
+            float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
+            _dashCooldownSlider.value = cdValue;
+
+            if (_currentDashCd >= characterModel.DashDuration) {
+                _currentDashCd = 0f;
+                _isIncrease = true;
+            }
         }
     }
 
@@ -111,9 +158,14 @@ public class NewPlayerController1 : MonoBehaviour
         // Check if the character is walking
         bool isWalking = moveDir != Vector3.zero;
 
+        if (!isWalking) {
+            animator.SetBool("isDashing", false);
+        }
+
+
         // Set the "isWalking" parameter in the animator
         animator.SetBool("isWalking", isWalking);
-        animator.SetBool("isDashing", isDashing);
+        animator.SetBool("isDashing", false);
 
         // Calculate the desired velocity
         Vector3 velocity = moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed;
@@ -186,10 +238,14 @@ public class NewPlayerController1 : MonoBehaviour
     {
         characterModel.HealthPoint -= (damageAmount-characterModel.defence); // Reduce current health by the damage amount
         animator.SetTrigger("isHurt");
+        if (isDeath == false) {
+            OnPlayerHurt?.Invoke();
+        }
         if (characterModel.HealthPoint <= 0)
-        {          
+        {
+            isDeath = true;
             Death(); // If health drops to or below zero, call a method to handle enemy death
-            Invoke("ShowDeathPanel", 3f);
+            ShowDeathPanel();
         }
     }
 
@@ -201,6 +257,9 @@ public class NewPlayerController1 : MonoBehaviour
     }
     private void ShowDeathPanel() {
         OnPlayerDeath?.Invoke();
+    }
+    private void RestartPlayer() {
+        Destroy(gameObject);
     }
 
     private void ShootMagic(ElementalType element)
@@ -245,6 +304,11 @@ public class NewPlayerController1 : MonoBehaviour
                 timeBetweenAttacks = 0.75f;
             }
             StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
+    }
+    public void ResetAttackIndex()
+    {
+        attackPattern[currentAttackIndex] = elementalSlots[0];
+        currentSlotIndex = 0;
     }
 
     private void ChangeActiveElement()
@@ -349,6 +413,30 @@ public class NewPlayerController1 : MonoBehaviour
         var newCamera = cam;
         mainCamera = newCamera;
         Debug.Log("A key pressed. Camera: " + (cam != null ? cam.name : "null"));
+    }
+    public void SetDefaultElementSlots()
+    {
+        elementalSlots[0] = ElementalType.Fire; 
+        elementalSlots[1] = ElementalType.Fire; 
+        elementalSlots[2] = ElementalType.Fire; 
+        SaveElementalSlots();
+    }
+    private void SaveElementalSlots()
+    {
+        for (int i = 0; i < elementalSlots.Length; i++)
+        {
+            PlayerPrefs.SetInt("ElementalSlot_" + i, (int)elementalSlots[i]);
+        }
+        PlayerPrefs.Save();
+    }
+    public void LoadElementalSlots()
+    {
+        for (int i = 0; i < elementalSlots.Length; i++)
+        {
+            // Baca data PlayerPrefs dan konversi ke enum ElementalType
+            int savedElement = PlayerPrefs.GetInt("ElementalSlot_" + i, 0);
+            elementalSlots[i] = (ElementalType)savedElement;
+        }
     }
     private (bool success, Vector3 position) GetMousePosition() {
 

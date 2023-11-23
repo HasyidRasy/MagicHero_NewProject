@@ -6,6 +6,7 @@ public class EnemyPool : MonoBehaviour
 {
     public static EnemyPool Instance {get; private set;}
     private UpgradeUIManager upgradeUIManager;
+    private UIAnimationManager aniUIManager;
     private EnemySpawnManagerTrigger trigger;
 
     [Header("Spawn Shenanigans")]
@@ -17,6 +18,7 @@ public class EnemyPool : MonoBehaviour
     private void Start()
     {
         upgradeUIManager = FindObjectOfType<UpgradeUIManager>();
+        aniUIManager = FindObjectOfType<UIAnimationManager>();
         trigger = FindObjectOfType<EnemySpawnManagerTrigger>();
 
     }
@@ -39,6 +41,7 @@ public class EnemyPool : MonoBehaviour
     private void TriggerUpgradeUI()
     {
         upgradeUIManager.TriggerUI();
+        aniUIManager.UpgradeUIAnimation();
     }
 
     private void TriggerElementalUI()
