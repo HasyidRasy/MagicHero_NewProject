@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UpgradeButton : MonoBehaviour
 {
@@ -11,14 +12,18 @@ public class UpgradeButton : MonoBehaviour
     private CharacterModel upgradedCharacter;
     private UpgradeData upgrade;
     public static int id = 1;
+    private RectTransform rectTransform;
+    [SerializeField] private float hoverHighValue = 10f;
+
 
     void Start()
     {
         ResetId();
         upgradeManager = FindObjectOfType<UpgradeManager>();
         upgradedCharacter = FindObjectOfType<CharacterModel>();
+        rectTransform = GetComponent<RectTransform>();
 
-        if(upgradedCharacter == null)
+        if (upgradedCharacter == null)
         {
             Debug.Log("Characracter not found");
             return;
@@ -44,6 +49,7 @@ public class UpgradeButton : MonoBehaviour
     {
         if (upgrade != null)
         {
+            NewAudioManager.Instance.PlayUpgradeSFX("UpgradeSuccess");
             upgradedCharacter.ApplyUpgrade(upgrade);
             upgradedCharacter.chosenUpgrades.Add(upgrade);
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
@@ -83,14 +89,19 @@ public class UpgradeButton : MonoBehaviour
 
     public void OnPointerEnterButton()
     {
+        NewAudioManager.Instance.PlaySFX("Hover");
         // Activate the hover image here
         hoverImage.gameObject.SetActive(true);
+        rectTransform.DOAnchorPosY(-390f + hoverHighValue, .5f)
+                     .SetUpdate(true);
     }
 
     public void OnPointerExitButton()
     {
         // Deactivate the hover image here
         hoverImage.gameObject.SetActive(false);
+        rectTransform.DOAnchorPosY(-390f, .5f)
+                     .SetUpdate(true);
     }
 
 }

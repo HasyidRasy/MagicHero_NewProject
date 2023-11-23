@@ -14,7 +14,8 @@ public class UpgradeUIManager : MonoBehaviour
     }
 
     public void TriggerUI()
-    {   
+    {
+        NewAudioManager.Instance.PlayUpgradeSFX("UpgradeOpen");
         // Activate the UpgradeRandomizer UI
         upgradeRandomizer.gameObject.SetActive(true);
         upgradeRandomizer.StartUpgrade();    

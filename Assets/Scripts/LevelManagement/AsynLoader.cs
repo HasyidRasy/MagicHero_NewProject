@@ -63,6 +63,8 @@ public class AsynLoader : MonoBehaviour {
             loadingSlider.value = progressValue;
             yield return null;
         }
+
+        yield return new WaitForSeconds(1f);
         //transitionAnim.SetTrigger("TransitionStart");
         //loadingScreen.SetActive(false);
     }
