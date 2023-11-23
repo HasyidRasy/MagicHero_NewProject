@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UIPopupElementHP : MonoBehaviour
 {
@@ -109,6 +110,14 @@ public class UIPopupElementHP : MonoBehaviour
     {
         middleElementPopupUI.SetActive(true);
         middleImagePopupUI.sprite = elementalSprite;
+
+        middleImagePopupUI.rectTransform.DOScale(0.5f, 0.5f)
+                                        .SetEase(Ease.InOutBack)
+                                        .From(0f);
+
+        middleImagePopupUI.rectTransform.DOScale(0f, 0.5f)
+                                        .SetEase(Ease.InOutBack)
+                                        .SetDelay(durationPopupUI - 0.6f);
     }
 
     //Show two elemental reaction Popup
@@ -118,6 +127,29 @@ public class UIPopupElementHP : MonoBehaviour
         secondElementPopupUI.SetActive(true);
         firstImagePopupUI.sprite = firstElementSprite;
         secondImagePopupUI.sprite = secondElementSprite;
+
+        //Popup Animation
+
+        firstImagePopupUI.rectTransform.anchoredPosition = new Vector2(0f, firstImagePopupUI.rectTransform.anchoredPosition.y);
+        firstImagePopupUI.rectTransform.DOAnchorPosX(33f, 0.5f)
+                                       .SetEase(Ease.InOutBack);
+
+        secondImagePopupUI.rectTransform.DOScale(0.5f, 0.5f)
+                                        .SetEase(Ease.InOutBack)
+                                        .From(0f);
+
+        secondImagePopupUI.rectTransform.anchoredPosition = new Vector2(0f, secondImagePopupUI.rectTransform.anchoredPosition.y);
+        secondImagePopupUI.rectTransform.DOAnchorPosX(-33f, 0.5f)
+                                        .SetEase(Ease.InOutBack);
+
+        //DepopupAnimation
+        secondImagePopupUI.rectTransform.DOScale(0f, 0.5f)
+                                        .SetEase(Ease.InOutBack)
+                                        .SetDelay(1.3f);
+
+        firstImagePopupUI.rectTransform.DOScale(0f, 0.5f)
+                                        .SetEase(Ease.InOutBack)
+                                        .SetDelay(1.5f);
     }
 
     //Applied element duration
@@ -132,7 +164,7 @@ public class UIPopupElementHP : MonoBehaviour
     //Reaction Popup Duration
     public IEnumerator ResetReactionPopupUI()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         ResetPopupUI();
     }
 
