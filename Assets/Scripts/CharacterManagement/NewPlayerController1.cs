@@ -284,8 +284,7 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isDeath", true);
         characterModel.rotationSpeed = 0;
         characterModel.moveSpeed = 0;
-        Destroy(_collider);
-        CharacterModel.Instance.ResetStats();
+        //CharacterModel.Instance.ResetStats();
     }
     private void ShowDeathPanel() {
         OnPlayerDeath?.Invoke();

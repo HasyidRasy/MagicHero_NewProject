@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIAnimationManager : MonoBehaviour {
+    private UIManager manager;
+
     [Header("Start Transiton")]
     [SerializeField] private float duration;
 
@@ -28,6 +30,13 @@ public class UIAnimationManager : MonoBehaviour {
     [SerializeField] private Image vignette2;
     [SerializeField] private CanvasGroup deathCanvasGroup;
 
+    [Header("Attribute tab animation")]
+    [SerializeField] private RectTransform attributeTab;
+    [SerializeField] private RectTransform textChangeElement;
+    [SerializeField] private Image backgroundAttribute;
+    [SerializeField] private Image backgroundDownAttribute;
+
+
 
 
     private void OnEnable() {
@@ -42,6 +51,7 @@ public class UIAnimationManager : MonoBehaviour {
     void Start() {
         //TransitionDeathPanel();
         StartTransition();
+        manager = GetComponent<UIManager>();
 
     }
 
@@ -148,4 +158,47 @@ public class UIAnimationManager : MonoBehaviour {
     vignette2.DOFade(1f, duration)
                     .From(0f);
     }
+
+    public void PopupAttribute() {
+        backgroundAttribute.DOFade(1f, 1f)
+                           .From(0f)
+                           .SetUpdate(true);
+
+        backgroundDownAttribute.DOFade(1f, 1.5f)
+                           .From(0f)
+                           .SetUpdate(true);
+
+        textChangeElement.DOAnchorPosX(-50f, 1f)
+                         .From(new Vector2(920f, -430f))
+                         .SetEase(Ease.OutSine)
+                         .SetUpdate(true);
+
+        attributeTab.DOAnchorPosY(0f, 1f)
+                    .From(new Vector2(0, -1100f))
+                    .SetEase(Ease.OutSine)
+                    .SetUpdate(true);
+    }
+
+    public void DepopupAttribute() {
+        backgroundAttribute.DOFade(0f, 1f)
+                           .From(1f)
+                           .SetUpdate(true);
+
+        backgroundDownAttribute.DOFade(0f, 1.5f)
+                           .From(1f)
+                           .SetUpdate(true);
+
+        textChangeElement.DOAnchorPosX(920f, 1f)
+                         .From(new Vector2(-50f, -430f))
+                         .SetEase(Ease.OutSine)
+                         .SetUpdate(true);
+
+        attributeTab.DOAnchorPosY(-1100f, 1f)
+                    .From(new Vector2(0, 0))
+                    .SetEase(Ease.OutSine)
+                    .SetUpdate(true).OnComplete(() => {
+                        manager.DisableSwitchElementPanel();
+                    });
+    }
+
 }
