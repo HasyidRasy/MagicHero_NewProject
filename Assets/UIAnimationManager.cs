@@ -111,7 +111,7 @@ public class UIAnimationManager : MonoBehaviour {
     }
 
     public void FadeOutUIUpgrade() {
-        upgradeCanvasGroup.DOFade(0f, 0.5f).
+        upgradeCanvasGroup.DOFade(0f, 1f).
             OnComplete(() => {
                 upgradeCanvasGroup.DOFade(1f, 0f);
             })
