@@ -49,6 +49,7 @@ public class UpgradeButton : MonoBehaviour
     {
         if (upgrade != null)
         {
+            NewAudioManager.Instance.PlayUpgradeSFX("UpgradeSuccess");
             upgradedCharacter.ApplyUpgrade(upgrade);
             upgradedCharacter.chosenUpgrades.Add(upgrade);
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
@@ -88,6 +89,7 @@ public class UpgradeButton : MonoBehaviour
 
     public void OnPointerEnterButton()
     {
+        NewAudioManager.Instance.PlaySFX("Hover");
         // Activate the hover image here
         hoverImage.gameObject.SetActive(true);
         rectTransform.DOAnchorPosY(-390f + hoverHighValue, .5f)
