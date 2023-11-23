@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,6 +18,7 @@ public class NewPlayerController1 : MonoBehaviour
     //rigidbody
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _model;
+    [SerializeField] private Collider _collider;
 
     private Vector3 _input; 
 
@@ -194,6 +196,7 @@ public class NewPlayerController1 : MonoBehaviour
 
         // Call Coroutine Dash
         if (Input.GetKey(KeyCode.LeftShift) && !isDashing && isWalking) {
+            NewAudioManager.Instance.PlayPlayerSFX("Dash");
             StartCoroutine(Dash());
         }
     }
@@ -218,7 +221,8 @@ public class NewPlayerController1 : MonoBehaviour
         _rb.velocity = dashVelocity;
 
         DashTrail dashvfx = GetComponent<DashTrail>();
-        dashvfx.StartDashVfx();
+
+        if(dashvfx != null) dashvfx.StartDashVfx();
 
         yield return new WaitForSeconds(characterModel.dashDuration);
 
@@ -231,7 +235,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     private IEnumerator Stepping(float duration)
     {
-        NewAudioManager.Instance.PlaySFX("StepOnDirt");
+        NewAudioManager.Instance.PlayStepSFX("StepOnDirt");
         yield return new WaitForSeconds(duration);
     }
 
@@ -257,13 +261,22 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetTrigger("isHurt");
         if (isDeath == false) {
             OnPlayerHurt?.Invoke();
+            NewAudioManager.Instance.PlayPlayerSFX("PlayerHurt");
         }
         if (characterModel.HealthPoint <= 0)
         {
+            if (isDeath == false) {
+                NewAudioManager.Instance.PlayPlayerSFX("PlayerDeath");
+                Invoke(nameof(GameOver), 2f);
+            }
             isDeath = true;
             Death(); // If health drops to or below zero, call a method to handle enemy death
             ShowDeathPanel();
         }
+    }
+
+    private void GameOver() {
+        NewAudioManager.Instance.PlayPlayerSFX("GameOver");
     }
 
     private void Death()
@@ -271,7 +284,7 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isDeath", true);
         characterModel.rotationSpeed = 0;
         characterModel.moveSpeed = 0;
-        CharacterModel.Instance.ResetStats();
+        //CharacterModel.Instance.ResetStats();
     }
     private void ShowDeathPanel() {
         OnPlayerDeath?.Invoke();

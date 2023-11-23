@@ -65,7 +65,7 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         enemyModel.CurrentHealth = enemyModel.HealthPoint;
-        NewAudioManager.Instance.PlaySFX("EnemySpawn");
+        NewAudioManager.Instance.PlayEnemySFX("EnemySpawn");
         vfx = GetComponent<VfxTest>();
 
         if (vfx == null) {
@@ -125,7 +125,7 @@ public class EnemyController : MonoBehaviour
         animator.SetBool("isAttacking", true);
         // Implement your attack logic here, e.g., dealing damage to the player
         //Invoke(nameof(AttackPlayer), attackVfxWait);
-        NewAudioManager.Instance.PlaySFX("EnemyAtk");
+        NewAudioManager.Instance.PlayEnemyAtkSFX("EnemyAtk");
         yield return new WaitForSeconds(attackCooldown); // Wait for the attack animation to finish
 
         animator.SetBool("isAttacking", false);
@@ -175,7 +175,7 @@ public class EnemyController : MonoBehaviour
         animator.SetTrigger("isHurt");
         navMeshAgent.speed = 0;
         NewAudioManager.Instance.sfxSource.Stop();
-        NewAudioManager.Instance.PlaySFX("EnemyHurt");
+        NewAudioManager.Instance.PlayEnemySFX("EnemyHurt");
         if (enemyModel.CurrentHealth <= 0 && isDeath == false)
         {
             Death();
@@ -335,7 +335,7 @@ public class EnemyController : MonoBehaviour
         navMeshAgent.speed = 0;
         isDeath = true;
         animator.SetBool("Death", true);
-        NewAudioManager.Instance.PlaySFX("EnemyDeath");
+        NewAudioManager.Instance.PlayEnemySFX("EnemyDeath");
     }
 
     public void FreezeChara(bool _freeze)

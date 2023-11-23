@@ -7,6 +7,8 @@ using DG.Tweening;
 public class UpgradeButton : MonoBehaviour
 {
     public UpgradeRandomizer upgradeRandomizer;
+    private GraphicRaycaster canvasRaycast;
+
     public Image hoverImage;
     private UpgradeManager upgradeManager;
     private CharacterModel upgradedCharacter;
@@ -22,6 +24,8 @@ public class UpgradeButton : MonoBehaviour
         upgradeManager = FindObjectOfType<UpgradeManager>();
         upgradedCharacter = FindObjectOfType<CharacterModel>();
         rectTransform = GetComponent<RectTransform>();
+
+        canvasRaycast= GetComponentInParent<GraphicRaycaster>();
 
         if (upgradedCharacter == null)
         {
@@ -49,15 +53,36 @@ public class UpgradeButton : MonoBehaviour
     {
         if (upgrade != null)
         {
+            NewAudioManager.Instance.PlayUpgradeSFX("UpgradeSuccess");
             upgradedCharacter.ApplyUpgrade(upgrade);
             upgradedCharacter.chosenUpgrades.Add(upgrade);
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
             Debug.Log("Upgrade Description: " + GetUpgradeDescription(upgrade));
-            Invoke(nameof(SetFalseUpgradeCanvas), 0.5f);
+            
+            //disable raycast wile animate
+            canvasRaycast.enabled = false;
+
+            Invoke(nameof(SetFalseUpgradeCanvas), 1f);
+            ClickAnimation();
+
+            //enable canvas again after animation finished
+            Invoke(nameof(EnableCanvasAfterDelay), 1f);
+
             Time.timeScale = 1f;
             GameEvents.current.DoorwayTriggerEnter(id);
             id++;
         }
+    }
+    void EnableCanvasAfterDelay() {
+        canvasRaycast.enabled = true;
+        Debug.Log("canvas activated again");
+    }
+        public void ClickAnimation() {
+        rectTransform.DOScale(new Vector3(1.5f, 1.5f, 1.5f) , 1f)
+                     .OnComplete(() => {
+                         rectTransform.DOScale(new Vector3(1f, 1f, 1f),0f);
+                     })
+           ;
     }
 
     void SetFalseUpgradeCanvas() {
@@ -88,6 +113,7 @@ public class UpgradeButton : MonoBehaviour
 
     public void OnPointerEnterButton()
     {
+        NewAudioManager.Instance.PlaySFX("Hover");
         // Activate the hover image here
         hoverImage.gameObject.SetActive(true);
         rectTransform.DOAnchorPosY(-390f + hoverHighValue, .5f)
