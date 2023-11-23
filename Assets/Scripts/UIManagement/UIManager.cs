@@ -184,4 +184,8 @@ public class UIManager : MonoBehaviour
         Application.Quit();
     }
 
+    private void OnApplicationQuit()
+    {
+        CharacterModel.Instance.ResetStats();
+    }
 }

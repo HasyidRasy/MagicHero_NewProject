@@ -34,8 +34,9 @@ public class FTUEManager : MonoBehaviour {
     private void OnDestroy()
     {
         elementSwitchSystem.SetDefaultElementStatus();
-        CharacterModel.Instance.ResetStats();
         newPlayerController1.SetDefaultElementSlots();
+        CharacterModel.Instance.ResetStats();
+        CharacterModel.Instance.SavePlayerStats();
     }
 
     private void Start() {
