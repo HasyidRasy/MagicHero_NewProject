@@ -68,6 +68,8 @@ public class NewPlayerController1 : MonoBehaviour
     private void OnDestroy()
     {
         CharacterModel.Instance.SavePlayerStats();
+        SaveElementalSlots();
+        elementSwitchSystem.SaveElementStatus();
     }
 
     private void OnEnable() {
@@ -98,6 +100,8 @@ public class NewPlayerController1 : MonoBehaviour
         mainCamera = Camera.main;
         attackPattern[0] = elementalSlots[0];
         CharacterModel.Instance.LoadPlayerStats();
+        elementSwitchSystem.LoadElementStatus();
+        LoadElementalSlots();
         cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
     }
 

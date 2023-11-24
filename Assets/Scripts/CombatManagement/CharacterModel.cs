@@ -154,7 +154,7 @@ public class CharacterModel : MonoBehaviour
         defence = 0f;
         attackSpeed = 1f;
         moveSpeed = 20.0f;
-        attack = 35f;
+        attack = 0f;
         elementalBonus = 0f;
         move = 0f;
 
