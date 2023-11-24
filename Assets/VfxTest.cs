@@ -50,6 +50,7 @@ public class VfxTest : MonoBehaviour
 
     public void Freeze(float reactionDuration) {
             Debug.Log("Freezing VFX");
+            NewAudioManager.Instance.PlaySFX("Freeze");
             Vector3 spawnPosition = new Vector3(this.transform.position.x, freezeYPosition, this.transform.position.z);
             vfxUsed = Instantiate(FreezeEffect, spawnPosition, this.transform.rotation);
             animator.speed = freezeMovementAnimation;
@@ -76,6 +77,7 @@ public class VfxTest : MonoBehaviour
 
     public void Steam(float reactionDuration) {
         Debug.Log("Slowness VFX");
+        NewAudioManager.Instance.PlaySFX("Steam");
         vfxUsed = Instantiate(SteamEffect, this.transform.position, this.transform.rotation);
         vfxUsed.transform.SetParent(this.transform);
 
@@ -96,6 +98,7 @@ public class VfxTest : MonoBehaviour
     }
     public void Combustion(float reactionDuration) {
         Debug.Log("Combustion VFX");
+        NewAudioManager.Instance.PlaySFX("Combustion");
         vfxUsed = Instantiate(CombustionEffect, this.transform.position, this.transform.rotation);
         vfxUsed.transform.SetParent(this.transform);
 

@@ -50,14 +50,18 @@ public class UIManager : MonoBehaviour
             Continue();
             DisableConfirmPanel();
         }
-        if (Input.GetKeyDown(KeyCode.Tab) && !isSwitchElementPanelActive)
+        if (Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive == false)
         {
+            isSwitchElementPanelActive = true;
             EnableSwitchElementPanel();
             inventoryManagement.UpdateBuffDisplay(CharacterModel.Instance.chosenUpgrades);
+            animationManager.PopupAttribute();
         }
-        else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive)
+        else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive == true)
         {
-            DisableSwitchElementPanel();
+            isSwitchElementPanelActive = false;
+            animationManager.DepopupAttribute();
+
         }
     }
 
@@ -163,6 +167,7 @@ public class UIManager : MonoBehaviour
     public void GoToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+        Continue();
     }
 
     public void GoToStory() {
@@ -183,4 +188,8 @@ public class UIManager : MonoBehaviour
         Application.Quit();
     }
 
+    private void OnApplicationQuit()
+    {
+        CharacterModel.Instance.ResetStats();
+    }
 }

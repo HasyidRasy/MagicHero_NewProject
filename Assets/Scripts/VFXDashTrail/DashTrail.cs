@@ -28,19 +28,30 @@ public class DashTrail : MonoBehaviour
     private NewPlayerController1 playerController1;
 
     private void Awake() {
-        playerController1 = GetComponent<NewPlayerController1>();
+        //playerController1 = GetComponent<NewPlayerController1>();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isTrailActive && playerController1._dashCooldownSlider.value == 1f)
-        {
-            isTrailActive = true;
-            StartCoroutine(ActivateTrail(activeTime));
+    //void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.LeftShift))
+    //    {
+    //        isTrailActive = true;
+    //        StartCoroutine(ActivateTrail(activeTime));
 
-            FX = Instantiate(speedlineOverlay, overlaySpawn.transform);
-            FX = Instantiate(lightningTrail, posToSpawn.transform);
-        }
+    //        FX = Instantiate(speedlineOverlay, overlaySpawn.transform);
+    //        FX = Instantiate(lightningTrail, posToSpawn.transform);
+
+    //        Debug.Log("vfxtrail");
+    //    }
+    //}
+
+    public void StartDashVfx() {
+        StartCoroutine(ActivateTrail(activeTime));
+
+        FX = Instantiate(speedlineOverlay, overlaySpawn.transform);
+        FX = Instantiate(lightningTrail, posToSpawn.transform);
+
+        Debug.Log("vfxtrail");
     }
 
     IEnumerator ActivateTrail (float timeActive)

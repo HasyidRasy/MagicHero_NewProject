@@ -8,7 +8,7 @@ public class FTUEManager : MonoBehaviour {
     public static FTUEManager Instance;
 
     [Header("POPUP")]
-    public GameObject _sceneElementIntro;
+    public GameObject _sceneInfo;
     [Header("Prasasti")]
     public GameObject _scenePrasastiMovement;
     public GameObject _scenePrasastiDash;
@@ -27,15 +27,16 @@ public class FTUEManager : MonoBehaviour {
         } else {
             Destroy(gameObject);
         }
-        elementSwitchSystem = GetComponent<ElementSwitchSystem>();
-        newPlayerController1 = GetComponent<NewPlayerController1>();
+        elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
+        newPlayerController1 = FindObjectOfType<NewPlayerController1>();
     }
 
     private void OnDestroy()
     {
         elementSwitchSystem.SetDefaultElementStatus();
-        CharacterModel.Instance.ResetStats();
         newPlayerController1.SetDefaultElementSlots();
+        CharacterModel.Instance.ResetStats();
+        CharacterModel.Instance.SavePlayerStats();
     }
 
     private void Start() {
@@ -45,6 +46,7 @@ public class FTUEManager : MonoBehaviour {
         //}
         NewAudioManager.Instance.bgmSource.Stop();
         NewAudioManager.Instance.PlayBGM("Safezone");
+        CharacterModel.Instance.ResetStats();
         elementSwitchSystem.SetDefaultElementStatus();
         newPlayerController1.SetDefaultElementSlots();
     }
@@ -58,16 +60,9 @@ public class FTUEManager : MonoBehaviour {
     }
 
     public void FTUEActive(string nameFtue) {
-        //if (nameFtue == "Change")
-        //{
-        //    _sceneChangeElement.SetActive(true);
-        //    if (Input.GetKeyDown(KeyCode.Tab)) {
-        //        _sceneChangeElement.SetActive(false);
-        //    } 
-        //}
-        if (nameFtue == "Element") {
+        if (nameFtue == "Info") {
             Pause();
-            _sceneElementIntro.SetActive(true);
+            _sceneInfo.SetActive(true);
         }
         if (nameFtue == "GoToMainLevel") {
             NewAudioManager.Instance.bgmSource.Stop();

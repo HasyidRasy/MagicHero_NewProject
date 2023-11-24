@@ -92,25 +92,18 @@ public class NewPlayerController1 : MonoBehaviour
         characterModel = GetComponent<CharacterModel>();
         animator = GetComponentInChildren<Animator>();
         elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
-cooldownAtkUI = FindObjectOfType<CooldownAttackUI>();
     }
 
     private void Start()
     {
         mainCamera = Camera.main;
         attackPattern[0] = elementalSlots[0];
-CharacterModel.Instance.LoadPlayerStats();
-        elementSwitchSystem.LoadElementStatus();
-        LoadElementalSlots();
-        cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
     }
 
     private void Update()
     {
         PlayerStat();
-if (attackCooldown > 0) {
         attackCooldown -= Time.deltaTime;
-}
         stepCooldown -= Time.deltaTime;
         _currentDashCd += Time.deltaTime;
 
@@ -200,7 +193,6 @@ if (attackCooldown > 0) {
 
         // Call Coroutine Dash
         if (Input.GetKey(KeyCode.LeftShift) && !isDashing && isWalking) {
-NewAudioManager.Instance.PlayPlayerSFX("Dash");
             StartCoroutine(Dash());
         }
     }
@@ -272,14 +264,9 @@ if(damageAmount < characterModel.defence)
         animator.SetTrigger("isHurt");
         if (isDeath == false) {
             OnPlayerHurt?.Invoke();
-NewAudioManager.Instance.PlayPlayerSFX("PlayerHurt");
         }
         if (characterModel.HealthPoint <= 0)
         {
-if (isDeath == false) {
-                NewAudioManager.Instance.PlayPlayerSFX("PlayerDeath");
-                Invoke(nameof(GameOver), 2f);
-            }
             isDeath = true;
             Death(); // If health drops to or below zero, call a method to handle enemy death
             ShowDeathPanel();
@@ -327,32 +314,13 @@ if (isDeath == false) {
                 rb.velocity = targetDirection * magicProSpeed;
             }
             ChangeActiveElement();
-cooldownAtkUI.SetElement(elementalSlots[currentSlotIndex]);
-            Debug.Log(elementalSlots[currentSlotIndex]);
             // Menonaktifkan isShooting setelah menembak
-            // Modify timeBetweenAttacks based on attackSpeed, with a cap
-            if (characterModel.attackSpeed != 0)
-            {
-                float startTimeBetweenAttacks = 0.75f;
-                // Use attack speed to derive a factor (e.g., 1 / attackSpeed) and multiply it with timeBetweenAttacks
-                float attackSpeedFactor = characterModel.attackSpeed / 100;
-
-                // Introduce a cap to avoid too drastic changes
-                float minModifiedTimeBetweenAttacks = 0.001f; // You can adjust this value
-
-                float curTimeBetweenAttacks = startTimeBetweenAttacks - attackSpeedFactor;
-                timeBetweenAttacks = Mathf.Max(minModifiedTimeBetweenAttacks, curTimeBetweenAttacks);
-            }
-            else
-            {
-                timeBetweenAttacks = 0.75f;
-            }
             StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
     }
     public void ResetAttackIndex()
     {
-        attackPattern[currentAttackIndex] = elementalSlots[0];
         currentSlotIndex = 0;
+        attackPattern[currentAttackIndex] = elementalSlots[currentAttackIndex];
     }
 
     private void ChangeActiveElement()
@@ -446,6 +414,7 @@ cooldownAtkUI.SetElement(elementalSlots[currentSlotIndex]);
     {
         // Here you can call ShootMagic with the attack pattern.
         ShootMagic(attackPattern[currentAttackIndex]);
+        Debug.Log("current attack index = " + currentSlotIndex);
     }
 
     public void SetAttackPattern(ElementalType newElement)
@@ -463,7 +432,8 @@ cooldownAtkUI.SetElement(elementalSlots[currentSlotIndex]);
     {
         elementalSlots[0] = ElementalType.Fire; 
         elementalSlots[1] = ElementalType.Fire; 
-        elementalSlots[2] = ElementalType.Fire; 
+        elementalSlots[2] = ElementalType.Fire;
+        elementalSlots[3] = ElementalType.Fire;
         SaveElementalSlots();
     }
     private void SaveElementalSlots()
