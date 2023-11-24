@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,11 +12,13 @@ public class NewPlayerController1 : MonoBehaviour
     private CharacterModel characterModel;
     private Animator animator;
     private ElementSwitchSystem elementSwitchSystem;
+    private CooldownAttackUI cooldownAtkUI;
     //cek dash logic
     private bool isDashing = false;
     //rigidbody
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _model;
+    [SerializeField] private Collider _collider;
 
     private Vector3 _input; 
 
@@ -35,9 +38,9 @@ public class NewPlayerController1 : MonoBehaviour
     [SerializeField] private float magicProSpeed = 10f;         // Kecepatan proyektil
 
     [Header("Casting Speed")]
-    [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
+    public float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     [SerializeField] private float timeBetweenSteps = 0.5f;   // Waktu antara serangan
-    private float attackCooldown = 0f;
+    public float attackCooldown = 0f;
     private float stepCooldown = 0f;
 
     [SerializeField] private LayerMask groundMask;
@@ -59,6 +62,16 @@ public class NewPlayerController1 : MonoBehaviour
     private bool _isIncrease;
     private bool isDeath = false;
 
+    [HideInInspector]
+    public int currentButtonIndex = 0;
+
+    private void OnDestroy()
+    {
+        CharacterModel.Instance.SavePlayerStats();
+        SaveElementalSlots();
+        elementSwitchSystem.SaveElementStatus();
+    }
+
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
         UIManager.OnRestart += RestartPlayer;
@@ -79,18 +92,25 @@ public class NewPlayerController1 : MonoBehaviour
         characterModel = GetComponent<CharacterModel>();
         animator = GetComponentInChildren<Animator>();
         elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
+cooldownAtkUI = FindObjectOfType<CooldownAttackUI>();
     }
 
     private void Start()
     {
         mainCamera = Camera.main;
         attackPattern[0] = elementalSlots[0];
+CharacterModel.Instance.LoadPlayerStats();
+        elementSwitchSystem.LoadElementStatus();
+        LoadElementalSlots();
+        cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
     }
 
     private void Update()
     {
         PlayerStat();
+if (attackCooldown > 0) {
         attackCooldown -= Time.deltaTime;
+}
         stepCooldown -= Time.deltaTime;
         _currentDashCd += Time.deltaTime;
 
@@ -180,6 +200,7 @@ public class NewPlayerController1 : MonoBehaviour
 
         // Call Coroutine Dash
         if (Input.GetKey(KeyCode.LeftShift) && !isDashing && isWalking) {
+NewAudioManager.Instance.PlayPlayerSFX("Dash");
             StartCoroutine(Dash());
         }
     }
@@ -203,6 +224,10 @@ public class NewPlayerController1 : MonoBehaviour
 
         _rb.velocity = dashVelocity;
 
+        DashTrail dashvfx = GetComponent<DashTrail>();
+
+        if(dashvfx != null) dashvfx.StartDashVfx();
+
         yield return new WaitForSeconds(characterModel.dashDuration);
 
         _rb.velocity = Vector3.zero;
@@ -214,7 +239,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     private IEnumerator Stepping(float duration)
     {
-        NewAudioManager.Instance.PlaySFX("StepOnDirt");
+        NewAudioManager.Instance.PlayStepSFX("StepOnDirt");
         yield return new WaitForSeconds(duration);
     }
 
@@ -236,17 +261,33 @@ public class NewPlayerController1 : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
+if(damageAmount < characterModel.defence)
+        {
+            characterModel.HealthPoint -= 1;
+        }
+        else
+        {
         characterModel.HealthPoint -= (damageAmount-characterModel.defence); // Reduce current health by the damage amount
+}
         animator.SetTrigger("isHurt");
         if (isDeath == false) {
             OnPlayerHurt?.Invoke();
+NewAudioManager.Instance.PlayPlayerSFX("PlayerHurt");
         }
         if (characterModel.HealthPoint <= 0)
         {
+if (isDeath == false) {
+                NewAudioManager.Instance.PlayPlayerSFX("PlayerDeath");
+                Invoke(nameof(GameOver), 2f);
+            }
             isDeath = true;
             Death(); // If health drops to or below zero, call a method to handle enemy death
             ShowDeathPanel();
         }
+    }
+
+    private void GameOver() {
+        NewAudioManager.Instance.PlayPlayerSFX("GameOver");
     }
 
     private void Death()
@@ -254,6 +295,7 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isDeath", true);
         characterModel.rotationSpeed = 0;
         characterModel.moveSpeed = 0;
+        //CharacterModel.Instance.ResetStats();
     }
     private void ShowDeathPanel() {
         OnPlayerDeath?.Invoke();
@@ -285,6 +327,8 @@ public class NewPlayerController1 : MonoBehaviour
                 rb.velocity = targetDirection * magicProSpeed;
             }
             ChangeActiveElement();
+cooldownAtkUI.SetElement(elementalSlots[currentSlotIndex]);
+            Debug.Log(elementalSlots[currentSlotIndex]);
             // Menonaktifkan isShooting setelah menembak
             // Modify timeBetweenAttacks based on attackSpeed, with a cap
             if (characterModel.attackSpeed != 0)
@@ -406,7 +450,8 @@ public class NewPlayerController1 : MonoBehaviour
 
     public void SetAttackPattern(ElementalType newElement)
     {
-        elementalSlots[elementSwitchSystem.currentButtonIndex] = newElement;
+        elementalSlots[currentButtonIndex] = newElement;
+        //Debug.Log("curent button index = " + currentButtonIndex);
     }
     
     public void GetCamera(Camera cam) {
