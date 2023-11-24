@@ -8,7 +8,7 @@ public class FTUEManager : MonoBehaviour {
     public static FTUEManager Instance;
 
     [Header("POPUP")]
-    public GameObject _sceneElementIntro;
+    public GameObject _sceneInfo;
     [Header("Prasasti")]
     public GameObject _scenePrasastiMovement;
     public GameObject _scenePrasastiDash;
@@ -46,6 +46,9 @@ public class FTUEManager : MonoBehaviour {
         //}
         NewAudioManager.Instance.bgmSource.Stop();
         NewAudioManager.Instance.PlayBGM("Safezone");
+        CharacterModel.Instance.ResetStats();
+        elementSwitchSystem.SetDefaultElementStatus();
+        newPlayerController1.SetDefaultElementSlots();
     }
 
     public void Pause() {
@@ -57,16 +60,9 @@ public class FTUEManager : MonoBehaviour {
     }
 
     public void FTUEActive(string nameFtue) {
-        //if (nameFtue == "Change")
-        //{
-        //    _sceneChangeElement.SetActive(true);
-        //    if (Input.GetKeyDown(KeyCode.Tab)) {
-        //        _sceneChangeElement.SetActive(false);
-        //    } 
-        //}
-        if (nameFtue == "Element") {
+        if (nameFtue == "Info") {
             Pause();
-            _sceneElementIntro.SetActive(true);
+            _sceneInfo.SetActive(true);
         }
         if (nameFtue == "GoToMainLevel") {
             NewAudioManager.Instance.bgmSource.Stop();
