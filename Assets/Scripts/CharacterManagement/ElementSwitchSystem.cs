@@ -37,8 +37,8 @@ public class ElementSwitchSystem : MonoBehaviour
     private void Start()
     {
         elementIndex = elementPanel.Length;
-        LoadElementStatus();
-        playerController.LoadElementalSlots();
+        //LoadElementStatus();
+        //playerController.LoadElementalSlots();
     }
 
     //Mengatur elemen proyektil
@@ -171,7 +171,7 @@ public class ElementSwitchSystem : MonoBehaviour
             elementButton[2].interactable = false;
         }
     }
-    private void SaveElementStatus()
+    public void SaveElementStatus()
     {
         PlayerPrefs.SetInt("IsFireUnlocked", unlockedElementInfo.isFireUnlocked ? 1 : 0);
         PlayerPrefs.SetInt("IsWaterUnlocked", unlockedElementInfo.isWaterUnlocked ? 1 : 0);
@@ -179,7 +179,7 @@ public class ElementSwitchSystem : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    private void LoadElementStatus()
+    public void LoadElementStatus()
     {
         unlockedElementInfo.isFireUnlocked = PlayerPrefs.GetInt("IsFireUnlocked", 0) == 1;
         unlockedElementInfo.isWaterUnlocked = PlayerPrefs.GetInt("IsWaterUnlocked", 0) == 1;
