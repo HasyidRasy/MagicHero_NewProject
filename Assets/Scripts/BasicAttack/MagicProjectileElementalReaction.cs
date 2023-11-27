@@ -76,6 +76,9 @@ public class MagicProjectileElementalReaction : MonoBehaviour
                     onImpactVfx.Play();
                     neroOnImpact2.Play();
 
+                    Destroy(onImpactVfx.gameObject, 3.5f);
+                    Destroy(onImpactVfx2.gameObject, 3.5f);
+
                     break;
                 case ElementalType.Fire:
                     onImpactVfx = Instantiate(fotiaOnImpact, spawnPosition, transform.rotation);
@@ -84,25 +87,27 @@ public class MagicProjectileElementalReaction : MonoBehaviour
                     onImpactVfx.Play();
                     fotiaOnImpact2.Play();
 
+                    Destroy(onImpactVfx.gameObject, 3.5f);
+                    Destroy(onImpactVfx2.gameObject, 3.5f);
+
+
                     break;
                 case ElementalType.Wind:
                     onImpactVfx = Instantiate(anemosOnImpact, spawnPosition, transform.rotation);
                     onImpactVfx.Play();
+
+                    Destroy(onImpactVfx.gameObject, 3.5f);
+
                     // No second particle system for wind in the provided code
                     break;
             }
 
-            StartCoroutine(DestroyAfterDelay(onImpactVfx, 0.5f));
-            if(onImpactVfx2 != null) StartCoroutine(DestroyAfterDelay(onImpactVfx2, 0.5f));
+
+
             // Destroy the impact VFX after a delay
             Destroy(gameObject); // Destroy the projectile after collision
             Debug.Log("Attacking Enemy");
         }
-    }
-
-    private IEnumerator DestroyAfterDelay(ParticleSystem particleSystem, float delay) {
-        yield return new WaitForSeconds(delay + particleSystem.main.duration);
-        Destroy(particleSystem.gameObject);
     }
 
 
