@@ -32,6 +32,8 @@ public class UIAnimationManager : MonoBehaviour {
 
     [Header("Attribute tab animation")]
     [SerializeField] private RectTransform attributeTab;
+    [SerializeField] private RectTransform changeElementTab;
+
     [SerializeField] private RectTransform textChangeElement;
     [SerializeField] private Image backgroundAttribute;
     [SerializeField] private Image backgroundDownAttribute;
@@ -202,4 +204,16 @@ public class UIAnimationManager : MonoBehaviour {
                     });
     }
 
+    public void ChangeElementPopUp() {
+        changeElementTab.DOAnchorPosX(0f, PopupTabDuration)
+                        .From(new Vector2(540, 0))
+                        .SetEase(Ease.OutSine)
+                        .SetUpdate(true);
+    }
+
+    public void ChangeElementDePopUp() {
+        changeElementTab.DOAnchorPosX(540f, PopupTabDuration)
+                        .SetEase(Ease.OutSine)
+                        .SetUpdate(true);
+    }
 }
