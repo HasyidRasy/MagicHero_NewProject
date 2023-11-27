@@ -133,13 +133,13 @@ public class ElementSwitchSystem : MonoBehaviour
     }
     public void DisableElementPanel()
     {
-        if (elementPanel != null)
-        {
-            for (int i = 0; i < elementIndex; i++)
-            {
-                elementPanel[i].SetActive(false);
-            }
-        }
+        //if (elementPanel != null)
+        //{
+        //    for (int i = 0; i < elementIndex; i++)
+        //    {
+        //        elementPanel[i].SetActive(false);
+        //    }
+        //}
     }
 
     // Set interactable sesuai dengan status unlocked

@@ -61,6 +61,7 @@ public class UIManager : MonoBehaviour
         {
             isSwitchElementPanelActive = false;
             animationManager.DepopupAttribute();
+            animationManager.ChangeElementDePopUp();
 
         }
     }
