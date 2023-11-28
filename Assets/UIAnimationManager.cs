@@ -44,12 +44,12 @@ public class UIAnimationManager : MonoBehaviour {
 
     private void OnEnable() {
         NewPlayerController1.OnPlayerHurt += HpBarShake;
-        LoadLevelOnCollision.OnTeleport += FadeIn;
+        //LoadLevelOnCollision.OnTeleport += FadeIn;
     }
 
     private void OnDisable() {
         NewPlayerController1.OnPlayerHurt -= HpBarShake;
-        LoadLevelOnCollision.OnTeleport -= FadeIn;
+        //LoadLevelOnCollision.OnTeleport -= FadeIn;
     }
     void Start() {
         //TransitionDeathPanel();
