@@ -78,11 +78,15 @@ public class UpgradeButton : MonoBehaviour
         Debug.Log("canvas activated again");
     }
         public void ClickAnimation() {
-        rectTransform.DOScale(new Vector3(1.5f, 1.5f, 1.5f) , 1f)
+        rectTransform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 1f)
                      .OnComplete(() => {
-                         rectTransform.DOScale(new Vector3(1f, 1f, 1f),0f);
-                     })
-           ;
+                         rectTransform.DOScale(new Vector3(1f, 1f, 1f), 0f);
+                     });
+        rectTransform.DOPunchRotation(new Vector3(0f, 180f, 0f), 1f, 0, 1f)
+                     .SetEase(Ease.OutBack)
+                     .OnComplete(() => {
+                     rectTransform.DOPunchRotation(new Vector3(0f, 0f, 0f), 0f, 0, 0f);
+                     });
     }
 
     void SetFalseUpgradeCanvas() {

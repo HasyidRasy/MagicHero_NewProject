@@ -32,21 +32,24 @@ public class UIAnimationManager : MonoBehaviour {
 
     [Header("Attribute tab animation")]
     [SerializeField] private RectTransform attributeTab;
+    [SerializeField] private RectTransform changeElementTab;
+
     [SerializeField] private RectTransform textChangeElement;
     [SerializeField] private Image backgroundAttribute;
     [SerializeField] private Image backgroundDownAttribute;
+    [SerializeField] private float PopupTabDuration;
 
 
 
 
     private void OnEnable() {
         NewPlayerController1.OnPlayerHurt += HpBarShake;
-        LoadLevelOnCollision.OnTeleport += FadeIn;
+        //LoadLevelOnCollision.OnTeleport += FadeIn;
     }
 
     private void OnDisable() {
         NewPlayerController1.OnPlayerHurt -= HpBarShake;
-        LoadLevelOnCollision.OnTeleport -= FadeIn;
+        //LoadLevelOnCollision.OnTeleport -= FadeIn;
     }
     void Start() {
         //TransitionDeathPanel();
@@ -160,40 +163,40 @@ public class UIAnimationManager : MonoBehaviour {
     }
 
     public void PopupAttribute() {
-        backgroundAttribute.DOFade(1f, 1f)
+        backgroundAttribute.DOFade(1f, PopupTabDuration)
                            .From(0f)
                            .SetUpdate(true);
 
-        backgroundDownAttribute.DOFade(1f, 1.5f)
+        backgroundDownAttribute.DOFade(1f, PopupTabDuration + 0.5f)
                            .From(0f)
                            .SetUpdate(true);
 
-        textChangeElement.DOAnchorPosX(-50f, 1f)
+        textChangeElement.DOAnchorPosX(-50f, PopupTabDuration)
                          .From(new Vector2(920f, -430f))
                          .SetEase(Ease.OutSine)
                          .SetUpdate(true);
 
-        attributeTab.DOAnchorPosY(0f, 1f)
+        attributeTab.DOAnchorPosY(0f, PopupTabDuration)
                     .From(new Vector2(0, -1100f))
                     .SetEase(Ease.OutSine)
                     .SetUpdate(true);
     }
 
     public void DepopupAttribute() {
-        backgroundAttribute.DOFade(0f, 1f)
+        backgroundAttribute.DOFade(0f, PopupTabDuration)
                            .From(1f)
                            .SetUpdate(true);
 
-        backgroundDownAttribute.DOFade(0f, 1.5f)
+        backgroundDownAttribute.DOFade(0f, PopupTabDuration + 0.5f)
                            .From(1f)
                            .SetUpdate(true);
 
-        textChangeElement.DOAnchorPosX(920f, 1f)
+        textChangeElement.DOAnchorPosX(920f, PopupTabDuration)
                          .From(new Vector2(-50f, -430f))
                          .SetEase(Ease.OutSine)
                          .SetUpdate(true);
 
-        attributeTab.DOAnchorPosY(-1100f, 1f)
+        attributeTab.DOAnchorPosY(-1100f, PopupTabDuration)
                     .From(new Vector2(0, 0))
                     .SetEase(Ease.OutSine)
                     .SetUpdate(true).OnComplete(() => {
@@ -201,4 +204,16 @@ public class UIAnimationManager : MonoBehaviour {
                     });
     }
 
+    public void ChangeElementPopUp() {
+        changeElementTab.DOAnchorPosX(0f, PopupTabDuration)
+                        .From(new Vector2(540, 0))
+                        .SetEase(Ease.OutSine)
+                        .SetUpdate(true);
+    }
+
+    public void ChangeElementDePopUp() {
+        changeElementTab.DOAnchorPosX(540f, PopupTabDuration)
+                        .SetEase(Ease.OutSine)
+                        .SetUpdate(true);
+    }
 }
