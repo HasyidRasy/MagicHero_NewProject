@@ -104,7 +104,6 @@ public class NewPlayerController1 : MonoBehaviour
         characterModel = GetComponent<CharacterModel>();
         animator = GetComponentInChildren<Animator>();
         elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
-        cooldownAtkUI = FindObjectOfType<CooldownAttackUI>();
     }
 
     private void Start()
@@ -122,9 +121,7 @@ public class NewPlayerController1 : MonoBehaviour
     private void Update()
     {
         PlayerStat();
-        if (attackCooldown > 0) {
-            attackCooldown -= Time.deltaTime;
-        }
+        attackCooldown -= Time.deltaTime;
         stepCooldown -= Time.deltaTime;
         _currentDashCd += Time.deltaTime;
 
@@ -214,7 +211,6 @@ public class NewPlayerController1 : MonoBehaviour
 
         // Call Coroutine Dash
         if (Input.GetKey(KeyCode.LeftShift) && !isDashing && isWalking) {
-            NewAudioManager.Instance.PlayPlayerSFX("Dash");
             StartCoroutine(Dash());
         }
     }
@@ -275,18 +271,20 @@ public class NewPlayerController1 : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
+if(damageAmount < characterModel.defence)
+        {
+            characterModel.HealthPoint -= 1;
+        }
+        else
+        {
+        characterModel.HealthPoint -= (damageAmount-characterModel.defence); // Reduce current health by the damage amount
+}
         animator.SetTrigger("isHurt");
         if (isDeath == false) {
             OnPlayerHurt?.Invoke();
-            NewAudioManager.Instance.PlayPlayerSFX("PlayerHurt");
         }
         if (characterModel.HealthPoint <= 0)
         {
-            if (isDeath == false) {
-                NewAudioManager.Instance.PlayPlayerSFX("PlayerDeath");
-                Invoke(nameof(GameOver), 2f);
-            }
             isDeath = true;
             Death(); // If health drops to or below zero, call a method to handle enemy death
             ShowDeathPanel();
