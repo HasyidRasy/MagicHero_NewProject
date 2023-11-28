@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     private NewPlayerController1 newPlayerController1;
     private InventoryManagement inventoryManagement;
     private UIAnimationManager animationManager;
+    public UIDeathManager uiDeathManager;
 
     private bool isDeath = false;
 
@@ -61,7 +62,11 @@ public class UIManager : MonoBehaviour
         {
             isSwitchElementPanelActive = false;
             animationManager.DepopupAttribute();
+        }
 
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            EnableDeathPanel();
         }
     }
 
@@ -72,6 +77,7 @@ public class UIManager : MonoBehaviour
             isDeath = true;
             animationManager.TransitionDeathPanel();
             deathPanel.SetActive(true);
+            uiDeathManager.DeathUICall();
             NewAudioManager.Instance.bgmSource.Stop();
             NewAudioManager.Instance.PlaySFX("Death");
         }

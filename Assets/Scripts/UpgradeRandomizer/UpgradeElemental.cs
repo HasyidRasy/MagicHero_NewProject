@@ -50,7 +50,7 @@ public class UpgradeElemental : MonoBehaviour
             upgradeButton.SetUpgrade(availableUpgrades[i]);
 
             upgradeButtons[i].interactable = true;
-disabledImage[i].gameObject.SetActive(false);
+            disabledImage[i].gameObject.SetActive(false);
 
             upgradeNameText[i].text = availableUpgrades[i].upgradeName;
             

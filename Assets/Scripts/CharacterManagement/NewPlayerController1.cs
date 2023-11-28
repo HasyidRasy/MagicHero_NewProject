@@ -57,9 +57,10 @@ public class NewPlayerController1 : MonoBehaviour
     public static event Action OnPlayerHurt;
 
     [Header("Player Info")]
+    private Vector3 moveDir;
     public Slider _dashCooldownSlider;
-    private float _currentDashCd;
-    private bool _isIncrease;
+    public float _currentDashCd;
+    public bool _isIncrease;
     private bool isDeath = false;
 
     [HideInInspector]
@@ -144,7 +145,7 @@ public class NewPlayerController1 : MonoBehaviour
                 _currentDashCd = 0f;
                 _isIncrease = false;
             }
-        } else if (!_isIncrease && Input.GetKey(KeyCode.LeftShift)) {
+        } else if (!_isIncrease && Input.GetKeyDown(KeyCode.LeftShift) && moveDir != Vector3.zero) {
             float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
             _dashCooldownSlider.value = cdValue;
 
@@ -166,7 +167,7 @@ public class NewPlayerController1 : MonoBehaviour
         float vertical = Input.GetAxisRaw("Vertical");
 
         // Move direction
-        Vector3 moveDir = new Vector3(horizontal, 0f, vertical).normalized;
+        moveDir = new Vector3(horizontal, 0f, vertical).normalized;
 
         // Check if the character is walking
         bool isWalking = moveDir != Vector3.zero;
@@ -314,15 +315,20 @@ if(damageAmount < characterModel.defence)
                 rb.velocity = targetDirection * magicProSpeed;
             }
             ChangeActiveElement();
-            // Menonaktifkan isShooting setelah menembak
-            StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
+            SetAttackCooldown();
+
+            Debug.Log(elementalSlots[currentSlotIndex]);
+        // Menonaktifkan isShooting setelah menembak
+        StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
     }
     public void ResetAttackIndex()
     {
         currentSlotIndex = 0;
         attackPattern[currentAttackIndex] = elementalSlots[currentAttackIndex];
     }
-
+    public void SetAttackCooldown() {
+        cooldownAtkUI.SetElement(elementalSlots[currentSlotIndex]);
+    }
     private void ChangeActiveElement()
     {
         // Mengganti elemen aktif ke slot berikutnya
