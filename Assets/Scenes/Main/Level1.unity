@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9142,8 +9142,8 @@ MonoBehaviour:
   - {fileID: 458419985063655971, guid: 1a11a431e5f48c54bbfd0f64543058f9, type: 3}
   - {fileID: 40988261729150645, guid: 704621d14cd1644448a5ba0b01642681, type: 3}
   corridorPrefab: {fileID: 8145903803648160457, guid: 2d9bd33cb391a534c8b35698ca86dba8, type: 3}
-  minChallengeAreas: 3
-  maxChallengeAreas: 5
+  minChallengeAreas: 8
+  maxChallengeAreas: 9
   roomSpacing: 180
   currentAreaID: 1
 --- !u!4 &980354186
@@ -9793,37 +9793,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa5dfc4fa65141d4aa11ce30eec0d39d, type: 3}
---- !u!1 &1363354716 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3588028371212157389, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
+--- !u!114 &1363354724 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8697412477342513531, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
   m_PrefabInstance: {fileID: 6897677885142299909}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1363354721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1363354716}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 649103e0386233d49ac891ff596e16de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1363354722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1363354716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1205b3c00ea6817458225bd07d7b049b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buffIconContainer: {fileID: 0}
-  buffIconPrefab: {fileID: 298327333097057625, guid: dd43cdec3e2dce04bb60f14ac96ffe2e, type: 3}
 --- !u!1 &1365725441
 GameObject:
   m_ObjectHideFlags: 0
@@ -11595,6 +11575,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7068202708457394915, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
+      propertyPath: uiDeathManager
+      value: 
+      objectReference: {fileID: 1363354724}
     - target: {fileID: 7238110365181080808, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -11702,13 +11686,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3588028371212157389, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1363354722}
-    - targetCorrespondingSourceObject: {fileID: 3588028371212157389, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1363354721}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
