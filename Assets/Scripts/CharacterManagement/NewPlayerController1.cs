@@ -204,6 +204,8 @@ public class NewPlayerController1 : MonoBehaviour
         // Calculate the desired velocity
         Vector3 velocity = moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed;
 
+        velocity.y += -100f * Time.deltaTime;
+
         // Apply velocity to the Rigidbody
         _rb.velocity = velocity;
 
