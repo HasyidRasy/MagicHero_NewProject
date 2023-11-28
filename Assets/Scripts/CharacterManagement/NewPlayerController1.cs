@@ -275,7 +275,11 @@ public class NewPlayerController1 : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
+        if(damageAmount < characterModel.defence) {
+            characterModel.HealthPoint -= 1;
+            } else {
+            characterModel.HealthPoint -= (damageAmount-characterModel.defence); // Reduce current health by the damage amount
+        }
         animator.SetTrigger("isHurt");
         if (isDeath == false) {
             OnPlayerHurt?.Invoke();
@@ -284,6 +288,7 @@ public class NewPlayerController1 : MonoBehaviour
         if (characterModel.HealthPoint <= 0)
         {
             if (isDeath == false) {
+                NewAudioManager.Instance.bgmSource.Stop();
                 NewAudioManager.Instance.PlayPlayerSFX("PlayerDeath");
                 Invoke(nameof(GameOver), 2f);
             }
