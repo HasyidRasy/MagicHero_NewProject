@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -66,6 +67,13 @@ public class NewPlayerController1 : MonoBehaviour
     [HideInInspector]
     public int currentButtonIndex = 0;
 
+    [Header("TeleportVfx")]
+    [SerializeField] private GameObject vfxTeleport;
+    [SerializeField] private Material vfxTeleportMaterial;
+    private Material[] originalMaterials;
+
+    private GameObject currentVfx;
+
     private void OnDestroy()
     {
         CharacterModel.Instance.SavePlayerStats();
@@ -76,11 +84,14 @@ public class NewPlayerController1 : MonoBehaviour
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
         UIManager.OnRestart += RestartPlayer;
+        LoadLevelOnCollision.OnTeleport += VfxTeleport;
     }
 
     private void OnDisable() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         UIManager.OnRestart -= RestartPlayer;
+        LoadLevelOnCollision.OnTeleport -= VfxTeleport;
+
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
@@ -99,6 +110,12 @@ public class NewPlayerController1 : MonoBehaviour
     {
         mainCamera = Camera.main;
         attackPattern[0] = elementalSlots[0];
+        CharacterModel.Instance.LoadPlayerStats();
+        elementSwitchSystem.LoadElementStatus();
+        LoadElementalSlots();
+        cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
+
+        VfxTeleport();
     }
 
     private void Update()
@@ -472,6 +489,35 @@ if(damageAmount < characterModel.defence)
             }
   
     }
+
+    private void VfxTeleport() {
+
+        float yOffset = 1.0f;
+        Vector3 newPosition = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
+        currentVfx = Instantiate(vfxTeleport, newPosition, transform.rotation, transform);
+        //SkinnedMeshRenderer vfxRenderer = currentVfx.GetComponent<SkinnedMeshRenderer>();
+
+
+        //SetMaterialInChildren(transform, vfxTeleportMaterial);
+        Destroy(currentVfx, 3.5f);
+    }
+
+    //void SetMaterialInChildren(Transform parent, Material material) {
+
+    //    foreach (Transform child in parent) {
+    //        SkinnedMeshRenderer skinnedMeshRenderer = child.GetComponent<SkinnedMeshRenderer>();
+
+    //        if (skinnedMeshRenderer != null) {
+    //            skinnedMeshRenderer.material = material;
+    //        }
+
+    //        SetMaterialInChildren(child, material);
+    //    }
+    //}
+
+
+
+
 
     //helpers
     //public static class Helpers
