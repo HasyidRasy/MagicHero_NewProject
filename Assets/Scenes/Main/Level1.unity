@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9472,7 +9472,7 @@ MonoBehaviour:
   defence: 0
   attackSpeed: 0
   moveSpeed: 20
-  attack: 0
+  attack: 10
   elementalBonus: 0
   move: 0
   rotationSpeed: 500
@@ -9543,11 +9543,11 @@ MonoBehaviour:
   elementalSlots: 01000000010000000000000001000000
   projectileSpawnPoint: {fileID: 398592867}
   magicProjectilePrefab: {fileID: 5823638608141224870, guid: 1dd62e0380aabfd49b66238b3578a4b4, type: 3}
-  delayShoot: 0
+  delayShoot: 0.3
   magicProSpeed: 45
-  timeBetweenAttacks: 0.3
+  timeBetweenAttacks: 0.5
   timeBetweenSteps: 0.5
-  attackCooldown: 0
+  attackCooldown: 0.5
   groundMask:
     serializedVersion: 2
     m_Bits: 8
