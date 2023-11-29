@@ -11,6 +11,7 @@ public class UpgradeElemental : MonoBehaviour
     public TMP_Text[] upgradeNameText;
     public TMP_Text[] upgradeDescText;
     public Image[] upgradeImage;
+    public Image[] disabledImage;
     public Image[] upgradeRarity;
     public Image[] upgradeBgColor;
     public Button[] upgradeButtons;
@@ -49,6 +50,7 @@ public class UpgradeElemental : MonoBehaviour
             upgradeButton.SetUpgrade(availableUpgrades[i]);
 
             upgradeButtons[i].interactable = true;
+            disabledImage[i].gameObject.SetActive(false);
 
             upgradeNameText[i].text = availableUpgrades[i].upgradeName;
             
@@ -59,6 +61,7 @@ public class UpgradeElemental : MonoBehaviour
                 if(elementSwitchSystem.unlockedElementInfo.isWaterUnlocked == true)
                 {
                     upgradeButtons[i].interactable = false;
+                    disabledImage[i].gameObject.SetActive(true);
                 }
                                        
             }
@@ -69,6 +72,7 @@ public class UpgradeElemental : MonoBehaviour
                 if(elementSwitchSystem.unlockedElementInfo.isWindUnlocked == true)
                 {
                     upgradeButtons[i].interactable = false;
+                    disabledImage[i].gameObject.SetActive(true);
                 }
             }
             else if (availableUpgrades[i].upgradeID == 2)
@@ -78,6 +82,7 @@ public class UpgradeElemental : MonoBehaviour
                 if(elementSwitchSystem.unlockedElementInfo.isFireUnlocked == true)
                 {
                     upgradeButtons[i].interactable = false;
+                    disabledImage[i].gameObject.SetActive(true);
                 }
             }
             else
