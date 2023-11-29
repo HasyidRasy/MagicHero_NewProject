@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -66,6 +67,13 @@ public class NewPlayerController1 : MonoBehaviour
     [HideInInspector]
     public int currentButtonIndex = 0;
 
+    [Header("TeleportVfx")]
+    [SerializeField] private GameObject vfxTeleport;
+    [SerializeField] private Material vfxTeleportMaterial;
+    private Material[] originalMaterials;
+
+    private GameObject currentVfx;
+
     private void OnDestroy()
     {
         CharacterModel.Instance.SavePlayerStats();
@@ -76,11 +84,14 @@ public class NewPlayerController1 : MonoBehaviour
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
         UIManager.OnRestart += RestartPlayer;
+        LoadLevelOnCollision.OnTeleport += VfxTeleport;
     }
 
     private void OnDisable() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         UIManager.OnRestart -= RestartPlayer;
+        LoadLevelOnCollision.OnTeleport -= VfxTeleport;
+
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
@@ -104,6 +115,8 @@ public class NewPlayerController1 : MonoBehaviour
         elementSwitchSystem.LoadElementStatus();
         LoadElementalSlots();
         cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
+
+        VfxTeleport();
     }
 
     private void Update()
@@ -191,6 +204,8 @@ public class NewPlayerController1 : MonoBehaviour
         // Calculate the desired velocity
         Vector3 velocity = moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed;
 
+        velocity.y += -100f * Time.deltaTime;
+
         // Apply velocity to the Rigidbody
         _rb.velocity = velocity;
 
@@ -262,7 +277,11 @@ public class NewPlayerController1 : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
+        if(damageAmount < characterModel.defence) {
+            characterModel.HealthPoint -= 1;
+            } else {
+            characterModel.HealthPoint -= (damageAmount-characterModel.defence); // Reduce current health by the damage amount
+        }
         animator.SetTrigger("isHurt");
         if (isDeath == false) {
             OnPlayerHurt?.Invoke();
@@ -271,6 +290,7 @@ public class NewPlayerController1 : MonoBehaviour
         if (characterModel.HealthPoint <= 0)
         {
             if (isDeath == false) {
+                NewAudioManager.Instance.bgmSource.Stop();
                 NewAudioManager.Instance.PlayPlayerSFX("PlayerDeath");
                 Invoke(nameof(GameOver), 2f);
             }
@@ -478,6 +498,35 @@ public class NewPlayerController1 : MonoBehaviour
             }
   
     }
+
+    private void VfxTeleport() {
+
+        float yOffset = 1.0f;
+        Vector3 newPosition = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
+        currentVfx = Instantiate(vfxTeleport, newPosition, transform.rotation, transform);
+        //SkinnedMeshRenderer vfxRenderer = currentVfx.GetComponent<SkinnedMeshRenderer>();
+
+
+        //SetMaterialInChildren(transform, vfxTeleportMaterial);
+        Destroy(currentVfx, 3.5f);
+    }
+
+    //void SetMaterialInChildren(Transform parent, Material material) {
+
+    //    foreach (Transform child in parent) {
+    //        SkinnedMeshRenderer skinnedMeshRenderer = child.GetComponent<SkinnedMeshRenderer>();
+
+    //        if (skinnedMeshRenderer != null) {
+    //            skinnedMeshRenderer.material = material;
+    //        }
+
+    //        SetMaterialInChildren(child, material);
+    //    }
+    //}
+
+
+
+
 
     //helpers
     //public static class Helpers
