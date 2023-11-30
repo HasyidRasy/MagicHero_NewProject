@@ -333,6 +333,7 @@ public class EnemyController : MonoBehaviour
 
     private void Death()
     {
+        ScoreManager.Instance.EnemyKilled();
         Destroy(this.gameObject, 3f);
         enemyPool.NotifyEnemyDied();
         enemyCollider.enabled = false;

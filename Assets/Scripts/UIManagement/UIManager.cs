@@ -205,5 +205,6 @@ public class UIManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         CharacterModel.Instance.ResetStats();
+        ScoreManager.Instance.ResetScore();
     }
 }

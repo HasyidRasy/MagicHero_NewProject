@@ -76,6 +76,7 @@ public class NewPlayerController1 : MonoBehaviour
         CharacterModel.Instance.SavePlayerStats();
         SaveElementalSlots();
         elementSwitchSystem.SaveElementStatus();
+        ScoreManager.Instance.SavePlayerScore();
     }
 
     private void OnEnable() {
@@ -114,6 +115,8 @@ public class NewPlayerController1 : MonoBehaviour
         cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
 
         FirstVfxTeleport();
+        ScoreManager.Instance.StartPlayTime();
+        ScoreManager.Instance.LoadPlayerScore();
     }
 
     private void Update()
