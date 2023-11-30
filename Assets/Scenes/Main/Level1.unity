@@ -8764,6 +8764,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &747527796 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8810066445065653187, guid: 1124b5db4a592af44ad72bd07fe3b075, type: 3}
+  m_PrefabInstance: {fileID: 1745563976}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &771305673
 GameObject:
   m_ObjectHideFlags: 0
@@ -9554,12 +9559,13 @@ MonoBehaviour:
   distanceInFront: 2
   mainCamera: {fileID: 0}
   isAttacking: 1
+  canMove: 1
   _dashCooldownSlider: {fileID: 1658923080}
   _currentDashCd: 0
   _isIncrease: 0
   currentButtonIndex: 0
   vfxTeleport: {fileID: 4500983385514121861, guid: 97f8e6ba587e86247adc95df2145c929, type: 3}
-  vfxTeleportMaterial: {fileID: 2100000, guid: b5bc4f31e4c86e843964cba7dd8c1848, type: 2}
+  vfxTeleportMaterial: {fileID: 747527796}
 --- !u!114 &1228064680
 MonoBehaviour:
   m_ObjectHideFlags: 0

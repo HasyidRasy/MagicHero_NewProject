@@ -44,12 +44,12 @@ public class UIAnimationManager : MonoBehaviour {
 
     private void OnEnable() {
         NewPlayerController1.OnPlayerHurt += HpBarShake;
-        //LoadLevelOnCollision.OnTeleport += FadeIn;
+        LoadLevelOnCollision.OnTeleport += FadeIn;
     }
 
     private void OnDisable() {
         NewPlayerController1.OnPlayerHurt -= HpBarShake;
-        //LoadLevelOnCollision.OnTeleport -= FadeIn;
+        LoadLevelOnCollision.OnTeleport -= FadeIn;
     }
     void Start() {
         //TransitionDeathPanel();
@@ -158,8 +158,9 @@ public class UIAnimationManager : MonoBehaviour {
     }
 
     public void FadeIn() {
-    vignette2.DOFade(1f, duration)
-                    .From(0f);
+    vignette2.DOFade(1f, 3f)
+                    .From(0f)
+                    .SetDelay(0.5f);
     }
 
     public void PopupAttribute() {
