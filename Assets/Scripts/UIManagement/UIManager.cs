@@ -19,10 +19,12 @@ public class UIManager : MonoBehaviour
     private NewPlayerController1 newPlayerController1;
     private InventoryManagement inventoryManagement;
     private UIAnimationManager animationManager;
+    public UIDeathManager uiDeathManager;
 
     private bool isDeath = false;
 
     private void Start() {
+        Continue();
         NewAudioManager.Instance.bgmSource.Stop();
         NewAudioManager.Instance.PlayBGM("MainMenu");
         elementSwitchSystem = GetComponent<ElementSwitchSystem>();
@@ -34,10 +36,12 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         NewPlayerController1.OnPlayerDeath += EnableDeathPanel;
+        NewPlayerController1.OnPlayerDeath += PauseDelay;
     }
     private void OnDisable()
     {
         NewPlayerController1.OnPlayerDeath -= EnableDeathPanel;
+        NewPlayerController1.OnPlayerDeath -= PauseDelay;
     }
 
     private void Update()
@@ -50,14 +54,23 @@ public class UIManager : MonoBehaviour
             Continue();
             DisableConfirmPanel();
         }
-        if (Input.GetKeyDown(KeyCode.Tab) && !isSwitchElementPanelActive)
+        if (Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive == false)
         {
+            isSwitchElementPanelActive = true;
             EnableSwitchElementPanel();
             inventoryManagement.UpdateBuffDisplay(CharacterModel.Instance.chosenUpgrades);
+            animationManager.PopupAttribute();
         }
-        else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive)
+        else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive == true)
         {
-            DisableSwitchElementPanel();
+            isSwitchElementPanelActive = false;
+            animationManager.DepopupAttribute();
+            animationManager.ChangeElementDePopUp();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            EnableDeathPanel();
         }
     }
 
@@ -68,6 +81,7 @@ public class UIManager : MonoBehaviour
             isDeath = true;
             animationManager.TransitionDeathPanel();
             deathPanel.SetActive(true);
+            uiDeathManager.DeathUICall();
             NewAudioManager.Instance.bgmSource.Stop();
             NewAudioManager.Instance.PlaySFX("Death");
         }
@@ -151,6 +165,10 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 0;
     }
 
+    private void PauseDelay() {
+        Invoke("Pause", 5f);
+    }
+
     public void Continue() {
         Time.timeScale = 1f;
     }
@@ -163,6 +181,7 @@ public class UIManager : MonoBehaviour
     public void GoToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+        Continue();
     }
 
     public void GoToStory() {
@@ -183,4 +202,8 @@ public class UIManager : MonoBehaviour
         Application.Quit();
     }
 
+    private void OnApplicationQuit()
+    {
+        CharacterModel.Instance.ResetStats();
+    }
 }

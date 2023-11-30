@@ -36,7 +36,6 @@ public class AsynLoader : MonoBehaviour {
 
     public void LoadLevel() {
         string levelToLoad = nextLevel;
-        loadingScreen.SetActive(true);
         StartCoroutine(LoadLevelAsyn(levelToLoad));
     }
     public void LoadLevelBtn(string levelToLoad) {
@@ -53,9 +52,10 @@ public class AsynLoader : MonoBehaviour {
         StartCoroutine(LoadLevelAsyn(levelToLoad));
     }
 
-    IEnumerator LoadLevelAsyn(string levelToLoad) {
+    IEnumerator LoadLevelAsyn(string levelToLoad) {  
         //transitionAnim.SetTrigger("TransitionEnd");
-        //yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3.7f);
+        loadingScreen.SetActive(true);
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(levelToLoad);
         
         while (!loadOperation.isDone) {
@@ -63,6 +63,8 @@ public class AsynLoader : MonoBehaviour {
             loadingSlider.value = progressValue;
             yield return null;
         }
+
+        yield return new WaitForSeconds(1f);
         //transitionAnim.SetTrigger("TransitionStart");
         //loadingScreen.SetActive(false);
     }

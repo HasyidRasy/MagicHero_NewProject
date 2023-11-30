@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,11 +13,13 @@ public class NewPlayerController1 : MonoBehaviour
     private CharacterModel characterModel;
     private Animator animator;
     private ElementSwitchSystem elementSwitchSystem;
+    private CooldownAttackUI cooldownAtkUI;
     //cek dash logic
     private bool isDashing = false;
     //rigidbody
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _model;
+    [SerializeField] private Collider _collider;
 
     private Vector3 _input; 
 
@@ -35,9 +39,9 @@ public class NewPlayerController1 : MonoBehaviour
     [SerializeField] private float magicProSpeed = 10f;         // Kecepatan proyektil
 
     [Header("Casting Speed")]
-    [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
+    public float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     [SerializeField] private float timeBetweenSteps = 0.5f;   // Waktu antara serangan
-    private float attackCooldown = 0f;
+    public float attackCooldown = 0f;
     private float stepCooldown = 0f;
 
     [SerializeField] private LayerMask groundMask;
@@ -54,19 +58,40 @@ public class NewPlayerController1 : MonoBehaviour
     public static event Action OnPlayerHurt;
 
     [Header("Player Info")]
+    private Vector3 moveDir;
     public Slider _dashCooldownSlider;
-    private float _currentDashCd;
-    private bool _isIncrease;
+    public float _currentDashCd;
+    public bool _isIncrease;
     private bool isDeath = false;
+
+    [HideInInspector]
+    public int currentButtonIndex = 0;
+
+    [Header("TeleportVfx")]
+    [SerializeField] private GameObject vfxTeleport;
+    [SerializeField] private Material vfxTeleportMaterial;
+    private Material[] originalMaterials;
+
+    private GameObject currentVfx;
+
+    private void OnDestroy()
+    {
+        CharacterModel.Instance.SavePlayerStats();
+        SaveElementalSlots();
+        elementSwitchSystem.SaveElementStatus();
+    }
 
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
         UIManager.OnRestart += RestartPlayer;
+        LoadLevelOnCollision.OnTeleport += VfxTeleport;
     }
 
     private void OnDisable() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         UIManager.OnRestart -= RestartPlayer;
+        LoadLevelOnCollision.OnTeleport -= VfxTeleport;
+
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
@@ -79,18 +104,27 @@ public class NewPlayerController1 : MonoBehaviour
         characterModel = GetComponent<CharacterModel>();
         animator = GetComponentInChildren<Animator>();
         elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
+        cooldownAtkUI = FindObjectOfType<CooldownAttackUI>();
     }
 
     private void Start()
     {
         mainCamera = Camera.main;
         attackPattern[0] = elementalSlots[0];
+        CharacterModel.Instance.LoadPlayerStats();
+        elementSwitchSystem.LoadElementStatus();
+        LoadElementalSlots();
+        cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
+
+        VfxTeleport();
     }
 
     private void Update()
     {
         PlayerStat();
-        attackCooldown -= Time.deltaTime;
+        if (attackCooldown > 0) {
+            attackCooldown -= Time.deltaTime;
+        }
         stepCooldown -= Time.deltaTime;
         _currentDashCd += Time.deltaTime;
 
@@ -131,7 +165,7 @@ public class NewPlayerController1 : MonoBehaviour
                 _currentDashCd = 0f;
                 _isIncrease = false;
             }
-        } else if (!_isIncrease && Input.GetKey(KeyCode.LeftShift)) {
+        } else if (!_isIncrease && Input.GetKeyDown(KeyCode.LeftShift) && moveDir != Vector3.zero) {
             float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
             _dashCooldownSlider.value = cdValue;
 
@@ -153,7 +187,7 @@ public class NewPlayerController1 : MonoBehaviour
         float vertical = Input.GetAxisRaw("Vertical");
 
         // Move direction
-        Vector3 moveDir = new Vector3(horizontal, 0f, vertical).normalized;
+        moveDir = new Vector3(horizontal, 0f, vertical).normalized;
 
         // Check if the character is walking
         bool isWalking = moveDir != Vector3.zero;
@@ -170,6 +204,8 @@ public class NewPlayerController1 : MonoBehaviour
         // Calculate the desired velocity
         Vector3 velocity = moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed;
 
+        velocity.y += -100f * Time.deltaTime;
+
         // Apply velocity to the Rigidbody
         _rb.velocity = velocity;
 
@@ -180,6 +216,7 @@ public class NewPlayerController1 : MonoBehaviour
 
         // Call Coroutine Dash
         if (Input.GetKey(KeyCode.LeftShift) && !isDashing && isWalking) {
+            NewAudioManager.Instance.PlayPlayerSFX("Dash");
             StartCoroutine(Dash());
         }
     }
@@ -203,6 +240,10 @@ public class NewPlayerController1 : MonoBehaviour
 
         _rb.velocity = dashVelocity;
 
+        DashTrail dashvfx = GetComponent<DashTrail>();
+
+        if(dashvfx != null) dashvfx.StartDashVfx();
+
         yield return new WaitForSeconds(characterModel.dashDuration);
 
         _rb.velocity = Vector3.zero;
@@ -214,7 +255,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     private IEnumerator Stepping(float duration)
     {
-        NewAudioManager.Instance.PlaySFX("StepOnDirt");
+        NewAudioManager.Instance.PlayStepSFX("StepOnDirt");
         yield return new WaitForSeconds(duration);
     }
 
@@ -236,17 +277,31 @@ public class NewPlayerController1 : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
+        if(damageAmount < characterModel.defence) {
+            characterModel.HealthPoint -= 1;
+            } else {
+            characterModel.HealthPoint -= (damageAmount-characterModel.defence); // Reduce current health by the damage amount
+        }
         animator.SetTrigger("isHurt");
         if (isDeath == false) {
             OnPlayerHurt?.Invoke();
+            NewAudioManager.Instance.PlayPlayerSFX("PlayerHurt");
         }
         if (characterModel.HealthPoint <= 0)
         {
+            if (isDeath == false) {
+                NewAudioManager.Instance.bgmSource.Stop();
+                NewAudioManager.Instance.PlayPlayerSFX("PlayerDeath");
+                Invoke(nameof(GameOver), 2f);
+            }
             isDeath = true;
             Death(); // If health drops to or below zero, call a method to handle enemy death
             ShowDeathPanel();
         }
+    }
+
+    private void GameOver() {
+        NewAudioManager.Instance.PlayPlayerSFX("GameOver");
     }
 
     private void Death()
@@ -254,6 +309,7 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isDeath", true);
         characterModel.rotationSpeed = 0;
         characterModel.moveSpeed = 0;
+        //CharacterModel.Instance.ResetStats();
     }
     private void ShowDeathPanel() {
         OnPlayerDeath?.Invoke();
@@ -285,15 +341,20 @@ public class NewPlayerController1 : MonoBehaviour
                 rb.velocity = targetDirection * magicProSpeed;
             }
             ChangeActiveElement();
-            // Menonaktifkan isShooting setelah menembak
-            StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
+            SetAttackCooldown();
+
+            Debug.Log(elementalSlots[currentSlotIndex]);
+        // Menonaktifkan isShooting setelah menembak
+        StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
     }
     public void ResetAttackIndex()
     {
-        attackPattern[currentAttackIndex] = elementalSlots[0];
         currentSlotIndex = 0;
+        attackPattern[currentAttackIndex] = elementalSlots[currentAttackIndex];
     }
-
+    public void SetAttackCooldown() {
+        cooldownAtkUI.SetElement(elementalSlots[currentSlotIndex]);
+    }
     private void ChangeActiveElement()
     {
         // Mengganti elemen aktif ke slot berikutnya
@@ -385,11 +446,13 @@ public class NewPlayerController1 : MonoBehaviour
     {
         // Here you can call ShootMagic with the attack pattern.
         ShootMagic(attackPattern[currentAttackIndex]);
+        Debug.Log("current attack index = " + currentSlotIndex);
     }
 
     public void SetAttackPattern(ElementalType newElement)
     {
-        elementalSlots[elementSwitchSystem.currentButtonIndex] = newElement;
+        elementalSlots[currentButtonIndex] = newElement;
+        //Debug.Log("curent button index = " + currentButtonIndex);
     }
     
     public void GetCamera(Camera cam) {
@@ -401,7 +464,8 @@ public class NewPlayerController1 : MonoBehaviour
     {
         elementalSlots[0] = ElementalType.Fire; 
         elementalSlots[1] = ElementalType.Fire; 
-        elementalSlots[2] = ElementalType.Fire; 
+        elementalSlots[2] = ElementalType.Fire;
+        elementalSlots[3] = ElementalType.Fire;
         SaveElementalSlots();
     }
     private void SaveElementalSlots()
@@ -434,6 +498,35 @@ public class NewPlayerController1 : MonoBehaviour
             }
   
     }
+
+    private void VfxTeleport() {
+
+        float yOffset = 1.0f;
+        Vector3 newPosition = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
+        currentVfx = Instantiate(vfxTeleport, newPosition, transform.rotation, transform);
+        //SkinnedMeshRenderer vfxRenderer = currentVfx.GetComponent<SkinnedMeshRenderer>();
+
+
+        //SetMaterialInChildren(transform, vfxTeleportMaterial);
+        Destroy(currentVfx, 3.5f);
+    }
+
+    //void SetMaterialInChildren(Transform parent, Material material) {
+
+    //    foreach (Transform child in parent) {
+    //        SkinnedMeshRenderer skinnedMeshRenderer = child.GetComponent<SkinnedMeshRenderer>();
+
+    //        if (skinnedMeshRenderer != null) {
+    //            skinnedMeshRenderer.material = material;
+    //        }
+
+    //        SetMaterialInChildren(child, material);
+    //    }
+    //}
+
+
+
+
 
     //helpers
     //public static class Helpers

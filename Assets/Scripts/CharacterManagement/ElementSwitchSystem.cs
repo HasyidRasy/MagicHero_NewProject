@@ -11,12 +11,8 @@ public class ElementSwitchSystem : MonoBehaviour
     
     private ElementalType element;
     private int elementIndex;
-
     private NewPlayerController1 playerController;
     
-    [HideInInspector]
-    public int currentButtonIndex = 0;
-
     [System.Serializable] //[System.Serializable] akan dihapus setelah masa pengembangan
     public class ElementUnlockedInfo
     {
@@ -41,8 +37,8 @@ public class ElementSwitchSystem : MonoBehaviour
     private void Start()
     {
         elementIndex = elementPanel.Length;
-        LoadElementStatus();
-        playerController.LoadElementalSlots();
+        //LoadElementStatus();
+        //playerController.LoadElementalSlots();
     }
 
     //Mengatur elemen proyektil
@@ -123,7 +119,9 @@ public class ElementSwitchSystem : MonoBehaviour
     }
     public void EnableElementPanel(int buttonIndex)
     {
-        currentButtonIndex = buttonIndex;
+        playerController.currentButtonIndex = buttonIndex;
+        //Debug.Log("button index = " + buttonIndex);
+        //Debug.Log("current button index = " + playerController.currentButtonIndex);
         if (elementPanel != null)
         {
             for (int i = 0; i < elementIndex; i++)
@@ -135,13 +133,13 @@ public class ElementSwitchSystem : MonoBehaviour
     }
     public void DisableElementPanel()
     {
-        if (elementPanel != null)
-        {
-            for (int i = 0; i < elementIndex; i++)
-            {
-                elementPanel[i].SetActive(false);
-            }
-        }
+        //if (elementPanel != null)
+        //{
+        //    for (int i = 0; i < elementIndex; i++)
+        //    {
+        //        elementPanel[i].SetActive(false);
+        //    }
+        //}
     }
 
     // Set interactable sesuai dengan status unlocked
@@ -173,7 +171,7 @@ public class ElementSwitchSystem : MonoBehaviour
             elementButton[2].interactable = false;
         }
     }
-    private void SaveElementStatus()
+    public void SaveElementStatus()
     {
         PlayerPrefs.SetInt("IsFireUnlocked", unlockedElementInfo.isFireUnlocked ? 1 : 0);
         PlayerPrefs.SetInt("IsWaterUnlocked", unlockedElementInfo.isWaterUnlocked ? 1 : 0);
@@ -181,7 +179,7 @@ public class ElementSwitchSystem : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    private void LoadElementStatus()
+    public void LoadElementStatus()
     {
         unlockedElementInfo.isFireUnlocked = PlayerPrefs.GetInt("IsFireUnlocked", 0) == 1;
         unlockedElementInfo.isWaterUnlocked = PlayerPrefs.GetInt("IsWaterUnlocked", 0) == 1;
