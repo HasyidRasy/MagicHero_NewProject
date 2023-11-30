@@ -62,6 +62,7 @@ public class UIManager : MonoBehaviour
         {
             isSwitchElementPanelActive = false;
             animationManager.DepopupAttribute();
+            animationManager.ChangeElementDePopUp();
         }
 
         if (Input.GetKeyDown(KeyCode.Backspace))
