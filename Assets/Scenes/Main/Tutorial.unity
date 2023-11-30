@@ -2981,6 +2981,10 @@ PrefabInstance:
       propertyPath: id
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3180572088607866925, guid: 68609f01ae9e6da4c98641ddb37a5d87, type: 3}
+      propertyPath: maxDistanceFromSpawnPoint
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 4599857930888318346, guid: 68609f01ae9e6da4c98641ddb37a5d87, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3626,6 +3630,14 @@ PrefabInstance:
     - target: {fileID: 3090485231369508781, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3102701150455432454, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3102701150455432454, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.017334
       objectReference: {fileID: 0}
     - target: {fileID: 3285001940380666841, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
       propertyPath: upgradeManager
@@ -17624,7 +17636,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7430536936759583608, guid: eb62b1f251843b549a912624d9704e04, type: 3}
       propertyPath: maxDistanceFromSpawnPoint
-      value: 40
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
