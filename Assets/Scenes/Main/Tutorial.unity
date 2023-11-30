@@ -252,6 +252,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sceneInfo: {fileID: 2085748293}
+  _fadeInDuration: 0.15
+  _fadeOutDuration: 0.25
   _scenePrasastiMovement: {fileID: 1980503429}
   _scenePrasastiDash: {fileID: 612736878}
   _scenePrasastiAtk: {fileID: 765324801}
@@ -1559,6 +1561,7 @@ GameObject:
   - component: {fileID: 436592103}
   - component: {fileID: 436592102}
   - component: {fileID: 436592101}
+  - component: {fileID: 436592104}
   m_Layer: 0
   m_Name: Change Element Panel
   m_TagString: Untagged
@@ -1624,6 +1627,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 105}
   m_SizeDelta: {x: 1920, y: 216}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &436592104
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436592100}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &440374007 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6837078594191211094, guid: fc06bf9fe4b548f4da5816e28c39d850, type: 3}
@@ -2181,6 +2196,7 @@ GameObject:
   - component: {fileID: 612736879}
   - component: {fileID: 612736881}
   - component: {fileID: 612736880}
+  - component: {fileID: 612736882}
   m_Layer: 0
   m_Name: Dash Panel
   m_TagString: Untagged
@@ -2246,6 +2262,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 612736878}
   m_CullTransparentMesh: 1
+--- !u!225 &612736882
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612736878}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &628952603
 GameObject:
   m_ObjectHideFlags: 0
@@ -2595,6 +2623,7 @@ GameObject:
   - component: {fileID: 663915941}
   - component: {fileID: 663915943}
   - component: {fileID: 663915942}
+  - component: {fileID: 663915944}
   m_Layer: 0
   m_Name: Reward Explain Panel
   m_TagString: Untagged
@@ -2665,6 +2694,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 663915940}
   m_CullTransparentMesh: 1
+--- !u!225 &663915944
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 663915940}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &679780350
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2921,6 +2962,7 @@ GameObject:
   - component: {fileID: 765324804}
   - component: {fileID: 765324803}
   - component: {fileID: 765324802}
+  - component: {fileID: 765324805}
   m_Layer: 0
   m_Name: Atk Panel
   m_TagString: Untagged
@@ -2986,6 +3028,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 105}
   m_SizeDelta: {x: 1920, y: 216}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &765324805
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765324801}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &773732238
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3383,7 +3437,7 @@ PrefabInstance:
     - target: {fileID: 331666497330498072, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 987558330}
     - target: {fileID: 475084159998199586, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -5220,6 +5274,7 @@ GameObject:
   - component: {fileID: 1128830089}
   - component: {fileID: 1128830091}
   - component: {fileID: 1128830090}
+  - component: {fileID: 1128830092}
   m_Layer: 0
   m_Name: Go To Portal Panel
   m_TagString: Untagged
@@ -5285,6 +5340,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1128830088}
   m_CullTransparentMesh: 1
+--- !u!225 &1128830092
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128830088}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!4 &1137005446 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7718093757857440951, guid: 5eb44620a1f0a5c41869447eee05e0c0, type: 3}
@@ -6387,6 +6454,7 @@ GameObject:
   - component: {fileID: 1499332465}
   - component: {fileID: 1499332464}
   - component: {fileID: 1499332463}
+  - component: {fileID: 1499332466}
   m_Layer: 0
   m_Name: Kill Enemy Panel
   m_TagString: Untagged
@@ -6452,6 +6520,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 105}
   m_SizeDelta: {x: 1920, y: 216}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1499332466
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499332462}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1534861168
 GameObject:
   m_ObjectHideFlags: 0
@@ -6748,6 +6828,7 @@ GameObject:
   - component: {fileID: 1605168160}
   - component: {fileID: 1605168159}
   - component: {fileID: 1605168158}
+  - component: {fileID: 1605168161}
   m_Layer: 0
   m_Name: Atk Element Panel
   m_TagString: Untagged
@@ -6813,6 +6894,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 105}
   m_SizeDelta: {x: 1920, y: 216}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1605168161
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1605168157}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1626221456
 GameObject:
   m_ObjectHideFlags: 0
@@ -7894,7 +7987,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1757258175
@@ -17411,6 +17504,7 @@ GameObject:
   - component: {fileID: 1980503430}
   - component: {fileID: 1980503432}
   - component: {fileID: 1980503431}
+  - component: {fileID: 1980503433}
   m_Layer: 0
   m_Name: Movement Panel
   m_TagString: Untagged
@@ -17476,6 +17570,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1980503429}
   m_CullTransparentMesh: 1
+--- !u!225 &1980503433
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980503429}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1981439999
 GameObject:
   m_ObjectHideFlags: 0
@@ -17638,6 +17744,7 @@ GameObject:
   - component: {fileID: 2085748296}
   - component: {fileID: 2085748295}
   - component: {fileID: 2085748294}
+  - component: {fileID: 2085748297}
   m_Layer: 0
   m_Name: Info Reset Panel
   m_TagString: Untagged
@@ -17708,6 +17815,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -334.3282, y: -234.3867}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &2085748297
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2085748293}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2088090876
 GameObject:
   m_ObjectHideFlags: 0

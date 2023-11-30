@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class FTUEManager : MonoBehaviour {
     public static FTUEManager Instance;
 
     [Header("POPUP")]
     public GameObject _sceneInfo;
+
+
     [Header("Prasasti")]
+    [SerializeField] private float _fadeInDuration = 0.25f;
+    [SerializeField] private float _fadeOutDuration = 0.25f;
+
     public GameObject _scenePrasastiMovement;
     public GameObject _scenePrasastiDash;
     public GameObject _scenePrasastiAtk;
@@ -17,8 +23,13 @@ public class FTUEManager : MonoBehaviour {
     public GameObject _sceneChangeElement;
     public GameObject _sceneAtkElement;
     public GameObject _scenePortal;
+
+    private GameObject _currentActive;
+    private CanvasGroup _currentActiveCanvasGroup;
+
     private ElementSwitchSystem elementSwitchSystem;
     private NewPlayerController1 newPlayerController1;
+
 
     private void Awake() {
         if (Instance == null) {
@@ -29,7 +40,9 @@ public class FTUEManager : MonoBehaviour {
         }
         elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
         newPlayerController1 = FindObjectOfType<NewPlayerController1>();
+
     }
+
 
     private void OnDestroy()
     {
@@ -74,49 +87,45 @@ public class FTUEManager : MonoBehaviour {
 
     public void PrasastiEnable(string prasastiName) {
         if (prasastiName == "Movement") {
-            _scenePrasastiMovement.SetActive(true);
+            _currentActive = _scenePrasastiMovement;
+             FadeIn();
         }
         if (prasastiName == "Dash") {
-            _scenePrasastiDash.SetActive(true);
+            _currentActive = _scenePrasastiDash;
+            FadeIn();
         }
         if (prasastiName == "Atk") {
-            _scenePrasastiAtk.SetActive(true);
+            _currentActive = _scenePrasastiAtk;
+            FadeIn();
         }
         if (prasastiName == "Kill") {
-            _sceneKillEnemy.SetActive(true);
+            _currentActive = _sceneKillEnemy;
+            FadeIn();
         }
         if (prasastiName == "Change") {
-            _sceneChangeElement.SetActive(true);
+            _currentActive = _sceneChangeElement;
+           FadeIn();
         }
         if (prasastiName == "AtkElemental") {
-            _sceneAtkElement.SetActive(true);
+            _currentActive = _sceneAtkElement;
+            FadeIn();
         }
         if (prasastiName == "Portal") {
-            _scenePortal.SetActive(true);
+            _currentActive = _scenePortal;
+            FadeIn();
         }
+
+    }
+
+    private void FadeIn() {
+        _currentActive.SetActive(true);
+        _currentActiveCanvasGroup = _currentActive.GetComponent<CanvasGroup>();
+        _currentActiveCanvasGroup.DOFade(1f, _fadeInDuration)
+                                 .From(0f);
     }
 
     public void PrasastiDisable(string prasastiName) {
-        if (prasastiName == "Movement") {
-            _scenePrasastiMovement.SetActive(false);
-        }
-        if (prasastiName == "Dash") {
-            _scenePrasastiDash.SetActive(false);
-        }
-        if (prasastiName == "Atk") {
-            _scenePrasastiAtk.SetActive(false);
-        }
-        if (prasastiName == "Kill") {
-            _sceneKillEnemy.SetActive(false);
-        }
-        if (prasastiName == "Change") {
-            _sceneChangeElement.SetActive(false);
-        }
-        if (prasastiName == "AtkElemental") {
-            _sceneAtkElement.SetActive(false);
-        }
-        if (prasastiName == "Portal") {
-            _scenePortal.SetActive(false);
-        }
+        _currentActiveCanvasGroup.DOFade(0f, _fadeOutDuration)
+                                       .OnComplete(() => { _currentActive.SetActive(false); });
     }
 }
