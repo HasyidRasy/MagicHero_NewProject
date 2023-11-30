@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIAnimationManager : MonoBehaviour {
+    private UIManager manager;
+
     [Header("Start Transiton")]
     [SerializeField] private float duration;
 
@@ -28,6 +30,16 @@ public class UIAnimationManager : MonoBehaviour {
     [SerializeField] private Image vignette2;
     [SerializeField] private CanvasGroup deathCanvasGroup;
 
+    [Header("Attribute tab animation")]
+    [SerializeField] private RectTransform attributeTab;
+    [SerializeField] private RectTransform changeElementTab;
+
+    [SerializeField] private RectTransform textChangeElement;
+    [SerializeField] private Image backgroundAttribute;
+    [SerializeField] private Image backgroundDownAttribute;
+    [SerializeField] private float PopupTabDuration;
+
+
 
 
     private void OnEnable() {
@@ -42,6 +54,7 @@ public class UIAnimationManager : MonoBehaviour {
     void Start() {
         //TransitionDeathPanel();
         StartTransition();
+        manager = GetComponent<UIManager>();
 
     }
 
@@ -101,7 +114,7 @@ public class UIAnimationManager : MonoBehaviour {
     }
 
     public void FadeOutUIUpgrade() {
-        upgradeCanvasGroup.DOFade(0f, 0.5f).
+        upgradeCanvasGroup.DOFade(0f, 1f).
             OnComplete(() => {
                 upgradeCanvasGroup.DOFade(1f, 0f);
             })
@@ -145,7 +158,63 @@ public class UIAnimationManager : MonoBehaviour {
     }
 
     public void FadeIn() {
-    vignette2.DOFade(1f, duration)
-                    .From(0f);
+    vignette2.DOFade(1f, 3f)
+                    .From(0f)
+                    .SetDelay(0.5f);
+    }
+
+    public void PopupAttribute() {
+        backgroundAttribute.DOFade(1f, PopupTabDuration)
+                           .From(0f)
+                           .SetUpdate(true);
+
+        backgroundDownAttribute.DOFade(1f, PopupTabDuration + 0.5f)
+                           .From(0f)
+                           .SetUpdate(true);
+
+        textChangeElement.DOAnchorPosX(-50f, PopupTabDuration)
+                         .From(new Vector2(920f, -430f))
+                         .SetEase(Ease.OutSine)
+                         .SetUpdate(true);
+
+        attributeTab.DOAnchorPosY(0f, PopupTabDuration)
+                    .From(new Vector2(0, -1100f))
+                    .SetEase(Ease.OutSine)
+                    .SetUpdate(true);
+    }
+
+    public void DepopupAttribute() {
+        backgroundAttribute.DOFade(0f, PopupTabDuration)
+                           .From(1f)
+                           .SetUpdate(true);
+
+        backgroundDownAttribute.DOFade(0f, PopupTabDuration + 0.5f)
+                           .From(1f)
+                           .SetUpdate(true);
+
+        textChangeElement.DOAnchorPosX(920f, PopupTabDuration)
+                         .From(new Vector2(-50f, -430f))
+                         .SetEase(Ease.OutSine)
+                         .SetUpdate(true);
+
+        attributeTab.DOAnchorPosY(-1100f, PopupTabDuration)
+                    .From(new Vector2(0, 0))
+                    .SetEase(Ease.OutSine)
+                    .SetUpdate(true).OnComplete(() => {
+                        manager.DisableSwitchElementPanel();
+                    });
+    }
+
+    public void ChangeElementPopUp() {
+        changeElementTab.DOAnchorPosX(0f, PopupTabDuration)
+                        .From(new Vector2(540, 0))
+                        .SetEase(Ease.OutSine)
+                        .SetUpdate(true);
+    }
+
+    public void ChangeElementDePopUp() {
+        changeElementTab.DOAnchorPosX(540f, PopupTabDuration)
+                        .SetEase(Ease.OutSine)
+                        .SetUpdate(true);
     }
 }

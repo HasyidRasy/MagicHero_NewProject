@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -180,46 +180,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Fathi Annaufal Soblia
-
-
-    Alif Nimatulloh
-
-
-    Muhamad Rizki Ramadhan
-
-
-    Yusuf
-    Farid (Lead)
-
-    Febriani Ainil Fajri
-
-    Muhammad Ananta Diputra
-
-
-    Dimas
-    Ajisaka Kurniawan (Lead)
-
-    Alif Nimatulloh
-
-    Avin Chaili Salim
-
-    M Hasyid
-    Rasyidi
-
-    Muhamad Rizki Ramadhan
-
-
-    Kampus Merdeka
-
-    Agate Academy
-
-    Alexander
-    Nakarada
-
-    Emin
-
-    Shigure Nao'
+  m_text: "Fathi Annaufal Soblia\r\n\r\nAlif Nimatulloh\r\n\r\nMuhamad Rizki Ramadhan\r\n\r\nYusuf
+    Farid\r\nFebriani Ainil Fajri\r\nMuhammad Ananta Diputra\r\n\r\nDimas Ajisaka
+    Kurniawan \r\nAlif Nimatulloh\r\nAvin Chaili Salim\r\nM Hasyid Rasyidi\r\nMuhamad
+    Rizki Ramadhan\r\n\r\nFebriani Ainil Fajri\r\nMuhammad Ananta Diputra\r\nYusuf
+    Farid\r\n\r\nYusuf Farid\r\nFebriani Ainil Fajri\r\nMuhammad Ananta Diputra\r\nAlif
+    Nimatulloh\r\n\r\nDimas Ajisaka Kurniawan\r\nCjbeards\r\nAlexander Nakarada\r\nEmin\r\n\r\nShigure
+    Nao\r\n\r\nKampus Merdeka\r\nAgate Academy\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4bfbf4201ab918d4ba947bd056034cf9, type: 2}
   m_sharedMaterial: {fileID: -162959271886739300, guid: 4bfbf4201ab918d4ba947bd056034cf9, type: 2}
@@ -1527,6 +1494,103 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &661941554
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 661941555}
+  - component: {fileID: 661941558}
+  - component: {fileID: 661941557}
+  - component: {fileID: 661941556}
+  m_Layer: 5
+  m_Name: Transition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &661941555
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661941554}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2107512388}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &661941556
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661941554}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e9f6a0f75d7afd3418b227e80a9e51af, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &661941557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661941554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &661941558
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661941554}
+  m_CullTransparentMesh: 1
 --- !u!1 &696622436
 GameObject:
   m_ObjectHideFlags: 0
@@ -2110,6 +2174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f653adb7fd15e5447aa68e9fc209f219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextLevel: 
   loadingScreen: {fileID: 1259462325}
   mainMenu: {fileID: 2107512383}
   transition: {fileID: 1413083968}
@@ -3028,10 +3093,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -4761,13 +4826,19 @@ MonoBehaviour:
   m_text: 'Project Manager
 
 
+
     Game Producer
+
 
 
     Game Designer
 
 
+
     Art Division
+
+
+
 
 
 
@@ -4777,6 +4848,44 @@ MonoBehaviour:
 
 
 
+
+
+
+
+
+
+
+
+    3D & Level Artist
+
+
+
+
+
+
+
+    Animation/Graphics
+
+
+
+
+
+
+
+
+
+    Music/SFX
+
+
+
+
+
+
+
+
+
+    VA
+    August
 
 
 
@@ -5242,6 +5351,7 @@ MonoBehaviour:
   controlPanel: {fileID: 1820373971}
   confirmPanel: {fileID: 0}
   switchElementPanel: {fileID: 0}
+  uiDeathManager: {fileID: 0}
 --- !u!114 &2107512385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5327,6 +5437,7 @@ RectTransform:
   - {fileID: 498834123}
   - {fileID: 1897800192}
   - {fileID: 1350087473}
+  - {fileID: 661941555}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.277}
   m_AnchorMin: {x: 0, y: 0}
