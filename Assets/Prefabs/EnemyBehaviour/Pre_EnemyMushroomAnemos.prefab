@@ -866,11 +866,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defense: 0
   speedChase: 0
-  minSpeed: 3
+  minSpeed: 4
   maxSpeed: 6
   damageAmount: 20
-  attackRange: 5
-  attackCooldown: 2
+  attackRange: 7
+  attackCooldown: 1
   attackVfxWait: 0
 --- !u!195 &4425454995608835221
 NavMeshAgent:
@@ -1179,6 +1179,14 @@ PrefabInstance:
     - target: {fileID: 4950845125591326932, guid: 278a36f513e647543ae928555a40fea6, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312639694259206323, guid: 278a36f513e647543ae928555a40fea6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312639694259206323, guid: 278a36f513e647543ae928555a40fea6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 6312639694259206323, guid: 278a36f513e647543ae928555a40fea6, type: 3}
       propertyPath: m_LocalPosition.x
