@@ -115,7 +115,6 @@ public class NewPlayerController1 : MonoBehaviour
         cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
 
         FirstVfxTeleport();
-        ScoreManager.Instance.StartPlayTime();
         ScoreManager.Instance.LoadPlayerScore();
     }
 
@@ -309,6 +308,8 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isDeath", true);
         characterModel.rotationSpeed = 0;
         characterModel.moveSpeed = 0;
+        ScoreManager.Instance.EndGame();
+        ScoreManager.Instance.DisplayGameOverStats();
         //CharacterModel.Instance.ResetStats();
     }
     private void ShowDeathPanel() {
