@@ -76,6 +76,7 @@ public class NewPlayerController1 : MonoBehaviour
         CharacterModel.Instance.SavePlayerStats();
         SaveElementalSlots();
         elementSwitchSystem.SaveElementStatus();
+        ScoreManager.Instance.SavePlayerScore();
     }
 
     private void OnEnable() {
@@ -114,6 +115,7 @@ public class NewPlayerController1 : MonoBehaviour
         cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
 
         FirstVfxTeleport();
+        ScoreManager.Instance.LoadPlayerScore();
     }
 
     private void Update()
@@ -306,6 +308,8 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isDeath", true);
         characterModel.rotationSpeed = 0;
         characterModel.moveSpeed = 0;
+        ScoreManager.Instance.EndGame();
+        ScoreManager.Instance.DisplayGameOverStats();
         //CharacterModel.Instance.ResetStats();
     }
     private void ShowDeathPanel() {
