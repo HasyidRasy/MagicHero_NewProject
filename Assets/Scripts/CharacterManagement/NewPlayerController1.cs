@@ -1,17 +1,24 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class NewPlayerController1 : MonoBehaviour
 {
     //get model
     private CharacterModel characterModel;
+    private Animator animator;
+    private ElementSwitchSystem elementSwitchSystem;
+    private CooldownAttackUI cooldownAtkUI;
     //cek dash logic
     private bool isDashing = false;
     //rigidbody
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _model;
+    [SerializeField] private Collider _collider;
+
+    private Vector3 _input; 
 
     [Header("Attack Pattern")]
     [SerializeField] private ElementalType[] elementalSlots = new ElementalType[4]; // Set Attack Pattern
@@ -25,110 +32,239 @@ public class NewPlayerController1 : MonoBehaviour
     [SerializeField] private GameObject magicProjectilePrefab;  // Prefab untuk sihir
 
     [Header("Magic Speed")]
+    [SerializeField] private float delayShoot = 2f;
     [SerializeField] private float magicProSpeed = 10f;         // Kecepatan proyektil
 
     [Header("Casting Speed")]
-    [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
+    public float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     [SerializeField] private float timeBetweenSteps = 0.5f;   // Waktu antara serangan
-    private float attackCooldown = 0f;
+    public float attackCooldown = 0f;
     private float stepCooldown = 0f;
 
     [SerializeField] private LayerMask groundMask;
 
-    private Camera mainCamera;
+    [Header("Jarak Antara Player dan Spawn Magic ")]
+    [SerializeField] private float distanceInFront = 2.0f; // Sesuaikan dengan jarak yang Anda inginkan
+
+    [SerializeField] public Camera mainCamera;
     private bool isShooting = false;
+    private Vector3 targetDirection;
     [SerializeField] private bool isAttacking = true;
+    [SerializeField] private bool canMove = true;
 
     public static event Action OnPlayerDeath;
+    public static event Action OnPlayerHurt;
 
+    [Header("Player Info")]
+    private Vector3 moveDir;
+    public Slider _dashCooldownSlider;
+    public float _currentDashCd;
+    public bool _isIncrease;
+    private bool isDeath = false;
+
+    [HideInInspector]
+    public int currentButtonIndex = 0;
+
+    [Header("TeleportVfx")]
+    [SerializeField] private GameObject vfxTeleport;
+    [SerializeField] private GameObject vfxTeleportMaterial;
+
+    private GameObject currentVfx;
+
+    private void OnDestroy()
+    {
+        CharacterModel.Instance.SavePlayerStats();
+        SaveElementalSlots();
+        elementSwitchSystem.SaveElementStatus();
+        ScoreManager.Instance.SavePlayerScore();
+    }
+
+    private void OnEnable() {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        UIManager.OnRestart += RestartPlayer;
+        LoadLevelOnCollision.OnTeleport += VfxTeleport;
+    }
+
+    private void OnDisable() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        UIManager.OnRestart -= RestartPlayer;
+        LoadLevelOnCollision.OnTeleport -= VfxTeleport;
+
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        // Assign the mainCamera reference when a new scene is loaded
+        mainCamera = Camera.main;
+        Debug.Log("kamera : " + mainCamera);
+    }
     private void Awake()
     {
         characterModel = GetComponent<CharacterModel>();
+        animator = GetComponentInChildren<Animator>();
+        elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
+        cooldownAtkUI = FindObjectOfType<CooldownAttackUI>();
     }
 
     private void Start()
     {
         mainCamera = Camera.main;
+        attackPattern[0] = elementalSlots[0];
+        CharacterModel.Instance.LoadPlayerStats();
+        elementSwitchSystem.LoadElementStatus();
+        LoadElementalSlots();
+        cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
+
+        FirstVfxTeleport();
+        ScoreManager.Instance.LoadPlayerScore();
     }
 
     private void Update()
     {
-        //Call Function
-        if(!isShooting)
-        {
-            CharaMove();
-        }
         PlayerStat();
-        attackCooldown -= Time.deltaTime;
+        if (attackCooldown > 0) {
+            attackCooldown -= Time.deltaTime;
+        }
         stepCooldown -= Time.deltaTime;
+        _currentDashCd += Time.deltaTime;
 
         Aim();
 
         //Call sfx player walk
-        if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f) && stepCooldown <= 0f)
-        {
+        if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f) && stepCooldown <= 0f) {
             Stepping(stepCooldown);
             stepCooldown = timeBetweenSteps;
             StartCoroutine(Stepping(stepCooldown));
         }
+
+        //if (!isDashing) {
+        //    if (_isIncrease && isDashing) {
+        //        float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
+        //        _dashCooldownSlider.value = cdValue;
+
+        //        if (_currentDashCd >= characterModel.DashCooldown) {
+        //            _currentDashCd = 0f;
+        //            _isIncrease = false;
+        //        }
+        //    } else {
+        //        float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
+        //        _dashCooldownSlider.value = cdValue;
+
+        //        if (_currentDashCd >= characterModel.DashDuration) {
+        //            _currentDashCd = 0f;
+        //            _isIncrease = true;
+        //        }
+        //    }
+        //}
+
+        if (_isIncrease) {
+            float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
+            _dashCooldownSlider.value = cdValue;
+
+            if (_currentDashCd >= characterModel.DashCooldown) {
+                _currentDashCd = 0f;
+                _isIncrease = false;
+            }
+        } else if (!_isIncrease && Input.GetKeyDown(KeyCode.LeftShift) && moveDir != Vector3.zero) {
+            float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
+            _dashCooldownSlider.value = cdValue;
+
+            if (_currentDashCd >= characterModel.DashDuration) {
+                _currentDashCd = 0f;
+                _isIncrease = true;
+            }
+        }
     }
 
-    private void CharaMove()
-    {
-        //input movement
+    private void FixedUpdate() {
+        if (!isShooting && canMove) CharaMove();
+        else _rb.velocity = Vector3.zero; //stop move & sliding
+    }
+
+    private void CharaMove() {
+        // Input movement
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        //move direction
-        Vector3 moveDir = new Vector3(horizontal, 0f, vertical).normalized;
+        // Move direction
+        moveDir = new Vector3(horizontal, 0f, vertical).normalized;
 
-        //New Move Logic
-        _rb.MovePosition(transform.position + moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed * Time.deltaTime);
+        // Check if the character is walking
+        bool isWalking = moveDir != Vector3.zero;
 
-        //New Look Logic (rotation)
+        if (!isWalking) {
+            animator.SetBool("isDashing", false);
+        }
+
+
+        // Set the "isWalking" parameter in the animator
+        animator.SetBool("isWalking", isWalking);
+        animator.SetBool("isDashing", false);
+
+        // Calculate the desired velocity
+        Vector3 velocity = moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed;
+
+        velocity.y += -100f * Time.deltaTime;
+
+        // Apply velocity to the Rigidbody
+        _rb.velocity = velocity;
+
+        // New Look Logic (rotation)
         if (moveDir == Vector3.zero) return;
         Quaternion rotation = Quaternion.LookRotation(moveDir.ToIso(), Vector3.up);
         _model.rotation = Quaternion.RotateTowards(_model.rotation, rotation, characterModel.rotationSpeed * Time.deltaTime);
 
-        //Call Coroutine Dash
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && (Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f))
-        {
+        // Call Coroutine Dash
+        if (Input.GetKey(KeyCode.LeftShift) && !isDashing && isWalking) {
+            NewAudioManager.Instance.PlayPlayerSFX("Dash");
             StartCoroutine(Dash());
         }
     }
 
-    //Coroutine Dash Logic
-    private IEnumerator Dash()
-    {
+    // Coroutine Dash Logic
+    private IEnumerator Dash() {
         isDashing = true;
+        animator.SetBool("isWalking", false);
+        animator.SetBool("isDashing", true); // Set isDashing to true while dashing
+
         float startTime = Time.time;
         Vector3 pos = transform.position;
         Vector3 dashDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
 
-        while (Time.time < startTime + characterModel.DashDuration)
-        {
-            _rb.MovePosition(transform.position + dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime);
-            yield return null;
-        }
+        //while (Time.time < startTime + characterModel.DashDuration) {
+        //    _rb.MovePosition(transform.position + dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime);
+        //    yield return null;
+        //}
 
+        Vector3 dashVelocity = dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime;
+
+        _rb.velocity = dashVelocity;
+
+        DashTrail dashvfx = GetComponent<DashTrail>();
+
+        if(dashvfx != null) dashvfx.StartDashVfx();
+
+        yield return new WaitForSeconds(characterModel.dashDuration);
+
+        _rb.velocity = Vector3.zero;
+
+        animator.SetBool("isDashing", false); // Set isDashing back to false after dashing
         yield return new WaitForSeconds(characterModel.DashCooldown);
         isDashing = false;
     }
 
     private IEnumerator Stepping(float duration)
     {
-        NewAudioManager.Instance.PlaySFX("StepOnDirt");
-        Debug.Log("Player melangkah");
-
+        NewAudioManager.Instance.PlayStepSFX("StepOnDirt");
         yield return new WaitForSeconds(duration);
     }
 
     // Coroutine untuk menonaktifkan isShooting selama durasi tertentu
     private IEnumerator DisableShootingForDuration(float duration)
     {
-        isShooting = true;
+        //isShooting = true;
         yield return new WaitForSeconds(duration);
         isShooting = false;
+        animator.SetBool("isAttacking", false);
     }
 
     //Player Stat
@@ -140,33 +276,58 @@ public class NewPlayerController1 : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
-
+        if(damageAmount < characterModel.defence) {
+            characterModel.HealthPoint -= 1;
+            } else {
+            characterModel.HealthPoint -= (damageAmount-characterModel.defence); // Reduce current health by the damage amount
+        }
+        animator.SetTrigger("isHurt");
+        if (isDeath == false) {
+            OnPlayerHurt?.Invoke();
+            NewAudioManager.Instance.PlayPlayerSFX("PlayerHurt");
+        }
         if (characterModel.HealthPoint <= 0)
         {
+            if (isDeath == false) {
+                NewAudioManager.Instance.bgmSource.Stop();
+                NewAudioManager.Instance.PlayPlayerSFX("PlayerDeath");
+                Invoke(nameof(GameOver), 2f);
+            }
+            isDeath = true;
             Death(); // If health drops to or below zero, call a method to handle enemy death
-            OnPlayerDeath?.Invoke();
+            ShowDeathPanel();
         }
+    }
+
+    private void GameOver() {
+        NewAudioManager.Instance.PlayPlayerSFX("GameOver");
     }
 
     private void Death()
     {
+        animator.SetBool("isDeath", true);
+        characterModel.rotationSpeed = 0;
+        characterModel.moveSpeed = 0;
+        ScoreManager.Instance.EndGame();
+        ScoreManager.Instance.DisplayGameOverStats();
+        //CharacterModel.Instance.ResetStats();
+    }
+    private void ShowDeathPanel() {
+        OnPlayerDeath?.Invoke();
+    }
+    private void RestartPlayer() {
         Destroy(gameObject);
     }
 
     private void ShootMagic(ElementalType element)
     {
-        // Raycast dari kursor mouse ke dunia 3D
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit))
-        {
-            Vector3 targetDirection = hit.point - projectileSpawnPoint.position;    // Menghitung vektor arah ke target
             targetDirection.Normalize(); // Normalisasi agar memiliki panjang 1
 
+            // Hitung posisi spawn di depan pemain
+            Vector3 spawnPosition = projectileSpawnPoint.position + transform.forward * distanceInFront;
+
             // Instansiasi proyektil di titik spawn
-            GameObject magic = Instantiate(magicProjectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
+            GameObject magic = Instantiate(magicProjectilePrefab, spawnPosition, Quaternion.LookRotation(targetDirection));
 
             // Implementasi logika menembakkan sihir sesuai elemen
             MagicProjectileElementalReaction magicProjectile = magic.GetComponent<MagicProjectileElementalReaction>();
@@ -180,17 +341,38 @@ public class NewPlayerController1 : MonoBehaviour
             {
                 rb.velocity = targetDirection * magicProSpeed;
             }
-            // Menonaktifkan isShooting setelah menembak
-            StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
-        }
-    }
+            ChangeActiveElement();
+            SetAttackCooldown();
 
+            Debug.Log(elementalSlots[currentSlotIndex]);
+        // Menonaktifkan isShooting setelah menembak
+        StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
+    }
+    public void ResetAttackIndex()
+    {
+        currentSlotIndex = 0;
+        attackPattern[currentAttackIndex] = elementalSlots[currentAttackIndex];
+    }
+    public void SetAttackCooldown() {
+        cooldownAtkUI.SetElement(elementalSlots[currentSlotIndex]);
+    }
     private void ChangeActiveElement()
     {
         // Mengganti elemen aktif ke slot berikutnya
         currentSlotIndex = (currentSlotIndex + 1) % 4;
         // Memperbarui pola serangan berdasarkan elemen yang baru aktif
         attackPattern[currentAttackIndex] = elementalSlots[currentSlotIndex];
+    }
+    public ElementalType[] GetCurrentAttackPattern()
+    {
+        // Mengembalikan elemen yang sedang digunakan dalam pola serangan saat ini
+        return elementalSlots;
+    }
+
+    // Method untuk mendapatkan indeks attack saat ini
+    public int GetCurrentAttackIndex()
+    {
+        return currentSlotIndex;
     }
 
     private void CheckElementalReaction()
@@ -228,51 +410,144 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void Aim()
     {
-        var (success, position) = GetMousePosition();
-        if (success)
+        if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f && isAttacking && !isShooting && Time.timeScale !=0)
         {
-            var direction = position - transform.position;
-
-            // mengabaikan sumbu y
-            direction.y = 0;
-
-            //cek raycast jika berada di groundMask layer
-            RaycastHit hitInfo;
+            // Raycast dari kursor mouse ke dunia 3D
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
-            // raycast jika berada di groundMask layer maka boleh shooting
-            if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, groundMask))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
             {
-                if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f && isAttacking)
-                {
-                    ShootMagic(attackPattern[currentAttackIndex]);
-                    attackCooldown = timeBetweenAttacks;
-                    currentAttackIndex = (currentAttackIndex + 1) % 4;
-                    ChangeActiveElement();
-                    CheckElementalReaction();
 
-                    // membuat playe melihat ke arah klik mouse
-                    transform.forward = direction;
-                }
+                isShooting = true;
+                animator.SetBool("isAttacking", true);
+
+                // Menghitung vektor arah ke titik klik mouse
+                targetDirection = hit.point - transform.position;
+
+                // Mengabaikan perubahan tinggi (sumbu Y)
+                targetDirection.y = 0;
+
+                // Membuat pemain melihat ke arah klik mouse
+                transform.forward = targetDirection.normalized;
+
+                // Menembak proyektil ke arah tersebut
+                Invoke("DelayedShootMagic", delayShoot);
+                //ShootMagic(attackPattern[currentAttackIndex]);
+
+                // Mengatur waktu cooldown
+                attackCooldown = timeBetweenAttacks;
+
+                CheckElementalReaction();
             }
         }
     }
 
-    private (bool success, Vector3 position) GetMousePosition()
+    void DelayedShootMagic()
     {
-        var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        // Here you can call ShootMagic with the attack pattern.
+        ShootMagic(attackPattern[currentAttackIndex]);
+        Debug.Log("current attack index = " + currentSlotIndex);
+    }
 
-        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
+    public void SetAttackPattern(ElementalType newElement)
+    {
+        elementalSlots[currentButtonIndex] = newElement;
+        //Debug.Log("curent button index = " + currentButtonIndex);
+    }
+    
+    public void GetCamera(Camera cam) {
+        var newCamera = cam;
+        mainCamera = newCamera;
+        Debug.Log("A key pressed. Camera: " + (cam != null ? cam.name : "null"));
+    }
+    public void SetDefaultElementSlots()
+    {
+        elementalSlots[0] = ElementalType.Fire; 
+        elementalSlots[1] = ElementalType.Fire; 
+        elementalSlots[2] = ElementalType.Fire;
+        elementalSlots[3] = ElementalType.Fire;
+        SaveElementalSlots();
+    }
+    private void SaveElementalSlots()
+    {
+        for (int i = 0; i < elementalSlots.Length; i++)
         {
-            // The Raycast hit something, return with the position.
-            return (success: true, position: hitInfo.point);
+            PlayerPrefs.SetInt("ElementalSlot_" + i, (int)elementalSlots[i]);
         }
-        else
+        PlayerPrefs.Save();
+    }
+    public void LoadElementalSlots()
+    {
+        for (int i = 0; i < elementalSlots.Length; i++)
         {
-            // The Raycast did not hit anything.
-            return (success: false, position: Vector3.zero);
+            // Baca data PlayerPrefs dan konversi ke enum ElementalType
+            int savedElement = PlayerPrefs.GetInt("ElementalSlot_" + i, 0);
+            elementalSlots[i] = (ElementalType)savedElement;
         }
     }
+    private (bool success, Vector3 position) GetMousePosition() {
+
+            var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask)) {
+                // The Raycast hit something, return with the position.
+                return (success: true, position: hitInfo.point);
+            } else {
+                // The Raycast did not hit anything.
+                return (success: false, position: Vector3.zero);
+            }
+  
+    }
+
+    private void VfxTeleport() {
+        canMove = false;
+        animator.SetBool("isWalking",false);
+        vfxTeleportMaterial.SetActive(true);
+        float yOffset = 1.0f;
+        Vector3 newPosition = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
+        currentVfx = Instantiate(vfxTeleport, newPosition, transform.rotation, transform);
+        //SkinnedMeshRenderer vfxRenderer = currentVfx.GetComponent<SkinnedMeshRenderer>();
+        //SetMaterialInChildren(transform, vfxTeleportMaterial);
+        Invoke(nameof(DestroyVfxTeleport), 3f);
+        Destroy(currentVfx,3.5f);
+
+    }
+
+    private void FirstVfxTeleport() {
+        canMove = false;
+        animator.SetBool("isWalking", false);
+        vfxTeleportMaterial.SetActive(true);
+        float yOffset = 1.0f;
+        Vector3 newPosition = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
+        currentVfx = Instantiate(vfxTeleport, newPosition, transform.rotation, transform);
+        //SkinnedMeshRenderer vfxRenderer = currentVfx.GetComponent<SkinnedMeshRenderer>();
+        //SetMaterialInChildren(transform, vfxTeleportMaterial);
+        Invoke(nameof(DestroyVfxTeleport), 1.5f);
+        Destroy(currentVfx, 2f);
+    }
+
+    private void DestroyVfxTeleport() {
+        canMove = true;
+        vfxTeleportMaterial.SetActive(false);
+    }
+
+    //void SetMaterialInChildren(Transform parent, Material material) {
+
+    //    foreach (Transform child in parent) {
+    //        SkinnedMeshRenderer skinnedMeshRenderer = child.GetComponent<SkinnedMeshRenderer>();
+
+    //        if (skinnedMeshRenderer != null) {
+    //            skinnedMeshRenderer.material = material;
+    //        }
+
+    //        SetMaterialInChildren(child, material);
+    //    }
+    //}
+
+
+
+
 
     //helpers
     //public static class Helpers

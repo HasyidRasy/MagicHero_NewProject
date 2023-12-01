@@ -4,13 +4,29 @@ using UnityEngine;
 
 public class MagicProjectileElementalReaction : MonoBehaviour
 {
+    [SerializeField] private CharacterModel characterModel;
     [SerializeField] public ElementalType element; // Elemen proyektil
     [SerializeField] private float lifeTime;
     [SerializeField] private int damageAmount = 20;
+    private float offsetDistance = 0.1f;
 
+    [SerializeField] private GameObject fotiaVfx;
+    [SerializeField] private ParticleSystem fotiaOnImpact;
+    [SerializeField] private ParticleSystem fotiaOnImpact2;
+
+    [SerializeField] private GameObject neroVfx;
+    [SerializeField] private ParticleSystem neroOnImpact;
+    [SerializeField] private ParticleSystem neroOnImpact2;
+
+    [SerializeField] private GameObject anemosVfx;
+    [SerializeField] private ParticleSystem anemosOnImpact;
+
+    private ParticleSystem onImpactVfx;
+    private ParticleSystem onImpactVfx2;
     //untuk menghancurkan projectile dalam kurun waktu tertentu
     private void Awake()
     {
+        characterModel = FindObjectOfType<CharacterModel>();
         Destroy(gameObject, lifeTime);
     }
 
@@ -26,30 +42,73 @@ public class MagicProjectileElementalReaction : MonoBehaviour
         switch (element)
         {
             case ElementalType.Water:
-                material.color = Color.blue;
-                Debug.Log("tembak proyeqtil "+ element);
+                neroVfx.SetActive(true);
+                NewAudioManager.Instance.PlayAtkSFX("WaterRelease");
+              
                 break;
             case ElementalType.Fire:
-                material.color = Color.red;
-                Debug.Log("tembak proyeqtil " + element);
+                fotiaVfx.SetActive(true);
+                NewAudioManager.Instance.PlayAtkSFX("FireRelease");
                 break;
             case ElementalType.Wind:
-                material.color = Color.green;
-                Debug.Log("tembak proyeqtil " + element);
+                anemosVfx.SetActive(true);
+                NewAudioManager.Instance.PlayAtkSFX("WindRelease");
                 break;
         }
     }
 
     // Logika tabrakan proyektil dengan musuh atau objek lain
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Enemy"))
-        {
+    // Logika tabrakan proyektil dengan musuh atau objek lain
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Enemy")) {
             EnemyController enemyController = other.GetComponent<EnemyController>();
-            enemyController.TakeDamage(damageAmount);
-            enemyController.ApplyElementalStatus(element);          
-            Destroy(gameObject); // Hancurkan proyektil setelah bertabrakan
-            Debug.Log("Menyerang Musuh");
-        }        
+            float totalDamage = damageAmount + (characterModel.attack - enemyController.defense) + characterModel.elementalBonus;
+            enemyController.TakeDamage(totalDamage);
+            enemyController.ApplyElementalStatus(element);
+
+            Vector3 spawnPosition = transform.position + transform.forward * offsetDistance; // Adjust offsetDistance as needed
+
+            switch (element) {
+                case ElementalType.Water:
+                    onImpactVfx = Instantiate(neroOnImpact, spawnPosition, transform.rotation);
+                    onImpactVfx2 = Instantiate(neroOnImpact2, spawnPosition, transform.rotation);
+
+                    onImpactVfx.Play();
+                    neroOnImpact2.Play();
+
+                    Destroy(onImpactVfx.gameObject, 3.5f);
+                    Destroy(onImpactVfx2.gameObject, 3.5f);
+
+                    break;
+                case ElementalType.Fire:
+                    onImpactVfx = Instantiate(fotiaOnImpact, spawnPosition, transform.rotation);
+                    onImpactVfx2 =  Instantiate(fotiaOnImpact2, spawnPosition, transform.rotation);
+
+                    onImpactVfx.Play();
+                    fotiaOnImpact2.Play();
+
+                    Destroy(onImpactVfx.gameObject, 3.5f);
+                    Destroy(onImpactVfx2.gameObject, 3.5f);
+
+
+                    break;
+                case ElementalType.Wind:
+                    onImpactVfx = Instantiate(anemosOnImpact, spawnPosition, transform.rotation);
+                    onImpactVfx.Play();
+
+                    Destroy(onImpactVfx.gameObject, 3.5f);
+
+                    // No second particle system for wind in the provided code
+                    break;
+            }
+
+
+
+            // Destroy the impact VFX after a delay
+            Destroy(gameObject); // Destroy the projectile after collision
+            Debug.Log("Attacking Enemy");
+        }
     }
+
+
 }

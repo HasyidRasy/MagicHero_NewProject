@@ -35,6 +35,7 @@ public class DoorController : MonoBehaviour
                 targetPosition = transform.position - new Vector3(0f, openHeight, 0f);
                 isDoorOpen = true;
                 NewAudioManager.Instance.PlaySFX("DoorOpen");
+                ScoreManager.Instance.AreaCleared();
             }
         }
     }

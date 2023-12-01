@@ -5,9 +5,11 @@ using UnityEngine;
 public class CharacterModel : MonoBehaviour
 {
     public static CharacterModel Instance {get; private set;}
+    private PlayerController playerController;
 
     // Private fields to store character properties
     public float healthPoint;
+    public float maxHealthPoint = 100;
     public float defence;
     public float attackSpeed;
     public float moveSpeed = 5.0f;
@@ -22,24 +24,35 @@ public class CharacterModel : MonoBehaviour
     public float dashDuration = 0.5f;
     public float dashCooldown = 2.0f;
 
+    public List<UpgradeData> chosenUpgrades = new List<UpgradeData>();
+
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
+
+        playerController = FindObjectOfType<PlayerController>();
     }
 
     // Getter and setter for healthPoint
     public float HealthPoint {
         get { return healthPoint; }
         set {
-            healthPoint = Mathf.Clamp(value, 0, 100); // Health should be between 0 and 100
+            healthPoint = value; // Health should be between 0 and 100
+        }
+    }
+
+    public float MaxHealthPoint{
+        get { return maxHealthPoint; }
+        set { 
+            maxHealthPoint = value; 
         }
     }
 
@@ -100,53 +113,31 @@ public class CharacterModel : MonoBehaviour
     //Apply Upgrades (Avin)
     public void ApplyUpgrade(UpgradeData upgrade)
     {
+
         foreach(var stat in upgrade.stats)
         {
             switch (stat.upgradeType)
             {
             case UpgradeType.ElementalAttack:
-                elementalBonus += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = elementalBonus * (stat.upgradeValuePercent/100);
-                    elementalBonus += increaseStat;
-                }
-                    Debug.Log("Elemental Bonus: "+elementalBonus);
+                ElementalBonus += stat.upgradeValueStatic;
                 break;
             case UpgradeType.BasicAttack:
-                attack += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = attack * (stat.upgradeValuePercent/100);
-                    attack += increaseStat;
-                }
-                Debug.Log("Attack: "+Attack);
+                Attack += stat.upgradeValueStatic;
                 break;
-            case UpgradeType.HealthPoint:
-                healthPoint += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = healthPoint * (stat.upgradeValuePercent/100);
-                    healthPoint += increaseStat;
+            case UpgradeType.MaxHealthPoint:
+                if(maxHealthPoint == 0){
+                    maxHealthPoint = healthPoint;
                 }
-                Debug.Log("Health Point: "+healthPoint);
+                MaxHealthPoint += stat.upgradeValueStatic;
+                HealthPoint += stat.upgradeValueStatic;
+                Debug.Log("Max Health Point: "+maxHealthPoint);
                 break;
             case UpgradeType.AttackSpeed:
-                attackSpeed += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = attackSpeed * (stat.upgradeValuePercent/100);
-                    attackSpeed += increaseStat;
-                }
+                AttackSpeed += stat.upgradeValueStatic;
                 Debug.Log("Attack Speed :"+AttackSpeed);
                 break;
             case UpgradeType.Defense:
-                defence += stat.upgradeValueStatic;
-                if(stat.upgradeValuePercent != 0)
-                {
-                    increaseStat = defence * (stat.upgradeValuePercent/100);
-                    defence += increaseStat;
-                }
+                Defence += stat.upgradeValueStatic;
                 Debug.Log("Defense: "+defence);
                 break;
             default:
@@ -155,5 +146,76 @@ public class CharacterModel : MonoBehaviour
             }
         }
         
+    }
+
+    public void ResetStats()
+    {
+        healthPoint = 100f;
+        maxHealthPoint = 100f;
+        defence = 0f;
+        attackSpeed = 1f;
+        moveSpeed = 20.0f;
+        attack = 0f;
+        elementalBonus = 0f;
+        move = 0f;
+
+        // Dashi
+        rotationSpeed = 500f;
+        dashSpeed = 25000f;
+        dashDuration = 0.35f;
+        dashCooldown = 1f;
+    }
+    // Save player stats to PlayerPrefs
+    public void SavePlayerStats()
+    {
+        PlayerPrefs.SetFloat("PlayerHealth", HealthPoint);
+        PlayerPrefs.SetFloat("PlayerMaxHealth", MaxHealthPoint);
+        PlayerPrefs.SetFloat("PlayerDefence", Defence);
+        PlayerPrefs.SetFloat("PlayerAttackSpeed", AttackSpeed);
+        PlayerPrefs.SetFloat("PlayerMoveSpeed", MoveSpeed);
+        PlayerPrefs.SetFloat("PlayerAttack", Attack);
+        PlayerPrefs.SetFloat("PlayerElementalBonus", ElementalBonus);
+
+        // Save PlayerPrefs
+        PlayerPrefs.Save();
+    }
+
+    // Load player stats from PlayerPrefs
+    public void LoadPlayerStats()
+    {
+        if (PlayerPrefs.HasKey("PlayerHealth"))
+        {
+            HealthPoint = PlayerPrefs.GetFloat("PlayerHealth");
+        }
+
+        if (PlayerPrefs.HasKey("PlayerMaxHealth"))
+        {
+            MaxHealthPoint = PlayerPrefs.GetFloat("PlayerMaxHealth");
+        }
+
+        if (PlayerPrefs.HasKey("PlayerDefence"))
+        {
+            Defence = PlayerPrefs.GetFloat("PlayerDefence");
+        }
+
+        if (PlayerPrefs.HasKey("PlayerAttackSpeed"))
+        {
+            AttackSpeed = PlayerPrefs.GetFloat("PlayerAttackSpeed");
+        }
+
+        if (PlayerPrefs.HasKey("PlayerMoveSpeed"))
+        {
+            MoveSpeed = PlayerPrefs.GetFloat("PlayerMoveSpeed");
+        }
+
+        if (PlayerPrefs.HasKey("PlayerAttack"))
+        {
+            Attack = PlayerPrefs.GetFloat("PlayerAttack");
+        }
+
+        if (PlayerPrefs.HasKey("PlayerElementalBonus"))
+        {
+            ElementalBonus = PlayerPrefs.GetFloat("PlayerElementalBonus");
+        }
     }
 }

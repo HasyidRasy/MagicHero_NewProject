@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System;
 
 public class LoadLevelOnCollision : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class LoadLevelOnCollision : MonoBehaviour
     private Color originalColor; // Store the original color of the object.
     private bool isFading = false; // Flag to track if the fading animation is in progress.
 
+    public static Action OnTeleport;
     private void Start()
     {
         // Cache the original color of the object.
@@ -26,7 +28,8 @@ public class LoadLevelOnCollision : MonoBehaviour
                 //play sfx teleport
                 NewAudioManager.Instance.bgmSource.Stop();
                 NewAudioManager.Instance.PlaySFX("Teleport");
-                StartCoroutine(FadeAndLoadScene());
+                //StartCoroutine(FadeAndLoadScene());
+                OnTeleport?.Invoke();
             }
         }
     }
@@ -54,5 +57,6 @@ public class LoadLevelOnCollision : MonoBehaviour
 
         // Load the scene with the specified index.
         SceneManager.LoadScene(sceneIndexToLoad);
+        //AsynLoader.Instance.TrigerLoadLevel(sceneIndexToLoad);
     }
 }
