@@ -94,13 +94,13 @@ public class ScoreManager : MonoBehaviour
 
     private string FormatPlaytime(float seconds)
     {
-        // Konversi total detik ke dalam format hh:mm:ss
         TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
         return $"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
     }
     public void StartGame()
     {
         isGameRunning = true;
+        ResetScore();
     }
     public void EndGame()
     {
