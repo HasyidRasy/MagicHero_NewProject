@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4680,6 +4680,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7676626625634032160, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
+      propertyPath: buffSlotsContainer
+      value: 
+      objectReference: {fileID: 813942209}
     - target: {fileID: 7784484433476955452, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -18045,7 +18049,30 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6837078594191211094, guid: fc06bf9fe4b548f4da5816e28c39d850, type: 3}
       insertIndex: -1
       addedObject: {fileID: 440374009}
+    - targetCorrespondingSourceObject: {fileID: 6238733700115061000, guid: fc06bf9fe4b548f4da5816e28c39d850, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1940091848}
   m_SourcePrefab: {fileID: 100100000, guid: fc06bf9fe4b548f4da5816e28c39d850, type: 3}
+--- !u!1 &1940091847 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6238733700115061000, guid: fc06bf9fe4b548f4da5816e28c39d850, type: 3}
+  m_PrefabInstance: {fileID: 1940091846}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1940091848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940091847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90139983c2d57284b8c0c37dab077d64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireMaterial: {fileID: 2100000, guid: e13af483ba9cd96458893c31f82cbdad, type: 2}
+  waterMaterial: {fileID: 2100000, guid: f1e4fe1b4c6fd8644a2197a39882eee6, type: 2}
+  windMaterial: {fileID: 2100000, guid: 6e710b5637fcb7c4b9b7ec571b587b6d, type: 2}
 --- !u!1 &1941974305
 GameObject:
   m_ObjectHideFlags: 0
