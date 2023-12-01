@@ -60,6 +60,7 @@ public class FTUEManager : MonoBehaviour {
         NewAudioManager.Instance.bgmSource.Stop();
         NewAudioManager.Instance.PlayBGM("Safezone");
         CharacterModel.Instance.ResetStats();
+        ScoreManager.Instance.StartGame();
         elementSwitchSystem.SetDefaultElementStatus();
         newPlayerController1.SetDefaultElementSlots();
     }
