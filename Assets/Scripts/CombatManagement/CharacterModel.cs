@@ -129,7 +129,6 @@ public class CharacterModel : MonoBehaviour
                     maxHealthPoint = healthPoint;
                 }
                 MaxHealthPoint += stat.upgradeValueStatic;
-                HealthPoint += stat.upgradeValueStatic;
                 Debug.Log("Max Health Point: "+maxHealthPoint);
                 break;
             case UpgradeType.AttackSpeed:
@@ -139,6 +138,13 @@ public class CharacterModel : MonoBehaviour
             case UpgradeType.Defense:
                 Defence += stat.upgradeValueStatic;
                 Debug.Log("Defense: "+defence);
+                break;
+            case UpgradeType.HealthPoint:
+                HealthPoint += stat.upgradeValueStatic;
+                if(HealthPoint > MaxHealthPoint)
+                {
+                    HealthPoint = MaxHealthPoint;
+                }
                 break;
             default:
                 Debug.LogError("Unknown upgrade type: " + stat.upgradeType);

@@ -125,7 +125,12 @@ public class EnemyController : MonoBehaviour
         animator.SetBool("isAttacking", true);
         // Implement your attack logic here, e.g., dealing damage to the player
         //Invoke(nameof(AttackPlayer), attackVfxWait);
-        NewAudioManager.Instance.PlayEnemyAtkSFX("EnemyAtk");
+        //NewAudioManager.Instance.PlayEnemyAtkSFX("EnemyAtk");
+        if (characterModel.healthPoint == 0) {
+            NewAudioManager.Instance.enemyAtkSource.Stop();
+        } else {
+            NewAudioManager.Instance.PlayEnemyAtkSFX("EnemyAtk");
+        }
         yield return new WaitForSeconds(attackCooldown); // Wait for the attack animation to finish
 
         animator.SetBool("isAttacking", false);
@@ -328,6 +333,7 @@ public class EnemyController : MonoBehaviour
 
     private void Death()
     {
+        ScoreManager.Instance.EnemyKilled();
         Destroy(this.gameObject, 3f);
         enemyPool.NotifyEnemyDied();
         enemyCollider.enabled = false;

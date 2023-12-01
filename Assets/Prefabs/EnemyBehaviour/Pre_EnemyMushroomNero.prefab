@@ -1001,7 +1001,6 @@ MonoBehaviour:
   attack: 20
   elementalBonus: 10
   currentHealth: 0
-  
 --- !u!114 &391569849032127248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1016,12 +1015,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defense: 0
   speedChase: 0
-  minSpeed: 3
+  minSpeed: 4
   maxSpeed: 6
   damageAmount: 20
-  attackRange: 5
-  attackCooldown: 2
-
+  attackRange: 7
+  attackCooldown: 1
+  attackVfxWait: 0
 --- !u!114 &-4267194810408124845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1035,8 +1034,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementalPopupPrefab: {fileID: 3380654122138427042, guid: 73001d36d79954346b85cdfd57711f76, type: 3}
-  attackVfxWait: 0
-
 --- !u!195 &4425454995608835221
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1090,7 +1087,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8693549782459797256}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
