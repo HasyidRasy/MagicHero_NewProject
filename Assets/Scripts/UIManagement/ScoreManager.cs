@@ -98,6 +98,10 @@ public class ScoreManager : MonoBehaviour
         TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
         return $"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
     }
+    public void StartGame()
+    {
+        isGameRunning = true;
+    }
     public void EndGame()
     {
         isGameRunning = false;
