@@ -1,8 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -53,6 +50,7 @@ public class NewPlayerController1 : MonoBehaviour
     private bool isShooting = false;
     private Vector3 targetDirection;
     [SerializeField] private bool isAttacking = true;
+    [SerializeField] private bool canMove = true;
 
     public static event Action OnPlayerDeath;
     public static event Action OnPlayerHurt;
@@ -69,8 +67,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     [Header("TeleportVfx")]
     [SerializeField] private GameObject vfxTeleport;
-    [SerializeField] private Material vfxTeleportMaterial;
-    private Material[] originalMaterials;
+    [SerializeField] private GameObject vfxTeleportMaterial;
 
     private GameObject currentVfx;
 
@@ -79,6 +76,7 @@ public class NewPlayerController1 : MonoBehaviour
         CharacterModel.Instance.SavePlayerStats();
         SaveElementalSlots();
         elementSwitchSystem.SaveElementStatus();
+        ScoreManager.Instance.SavePlayerScore();
     }
 
     private void OnEnable() {
@@ -116,7 +114,8 @@ public class NewPlayerController1 : MonoBehaviour
         LoadElementalSlots();
         cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
 
-        VfxTeleport();
+        FirstVfxTeleport();
+        ScoreManager.Instance.LoadPlayerScore();
     }
 
     private void Update()
@@ -177,7 +176,7 @@ public class NewPlayerController1 : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        if (!isShooting) CharaMove();
+        if (!isShooting && canMove) CharaMove();
         else _rb.velocity = Vector3.zero; //stop move & sliding
     }
 
@@ -309,6 +308,8 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isDeath", true);
         characterModel.rotationSpeed = 0;
         characterModel.moveSpeed = 0;
+        ScoreManager.Instance.EndGame();
+        ScoreManager.Instance.DisplayGameOverStats();
         //CharacterModel.Instance.ResetStats();
     }
     private void ShowDeathPanel() {
@@ -500,15 +501,35 @@ public class NewPlayerController1 : MonoBehaviour
     }
 
     private void VfxTeleport() {
-
+        canMove = false;
+        animator.SetBool("isWalking",false);
+        vfxTeleportMaterial.SetActive(true);
         float yOffset = 1.0f;
         Vector3 newPosition = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
         currentVfx = Instantiate(vfxTeleport, newPosition, transform.rotation, transform);
         //SkinnedMeshRenderer vfxRenderer = currentVfx.GetComponent<SkinnedMeshRenderer>();
-
-
         //SetMaterialInChildren(transform, vfxTeleportMaterial);
-        Destroy(currentVfx, 3.5f);
+        Invoke(nameof(DestroyVfxTeleport), 3f);
+        Destroy(currentVfx,3.5f);
+
+    }
+
+    private void FirstVfxTeleport() {
+        canMove = false;
+        animator.SetBool("isWalking", false);
+        vfxTeleportMaterial.SetActive(true);
+        float yOffset = 1.0f;
+        Vector3 newPosition = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
+        currentVfx = Instantiate(vfxTeleport, newPosition, transform.rotation, transform);
+        //SkinnedMeshRenderer vfxRenderer = currentVfx.GetComponent<SkinnedMeshRenderer>();
+        //SetMaterialInChildren(transform, vfxTeleportMaterial);
+        Invoke(nameof(DestroyVfxTeleport), 1.5f);
+        Destroy(currentVfx, 2f);
+    }
+
+    private void DestroyVfxTeleport() {
+        canMove = true;
+        vfxTeleportMaterial.SetActive(false);
     }
 
     //void SetMaterialInChildren(Transform parent, Material material) {
