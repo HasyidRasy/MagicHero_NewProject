@@ -77,6 +77,7 @@ public class NewPlayerController1 : MonoBehaviour
         SaveElementalSlots();
         elementSwitchSystem.SaveElementStatus();
         ScoreManager.Instance.SavePlayerScore();
+        LevelManager.Instance.IncreaseLevel();
     }
 
     private void OnEnable() {
