@@ -63,17 +63,17 @@ public class UIAnimationManager : MonoBehaviour {
                  .From(1f);
     }
 
-    void Update() {
-        RestartAnimation();
-    }
+    //void Update() {
+    //    RestartAnimation();
+    //}
 
 
-    void RestartAnimation() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            //UpgradeUIAnimation();
-            TransitionDeathPanel();
-        }
-    }
+    //void RestartAnimation() {
+    //    if (Input.GetKeyDown(KeyCode.Space)) {
+    //        //UpgradeUIAnimation();
+    //        TransitionDeathPanel();
+    //    }
+    //}
 
     [ContextMenu("HpBarShake")]
     public void HpBarShake() {
