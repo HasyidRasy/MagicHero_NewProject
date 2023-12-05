@@ -77,6 +77,7 @@ public class NewPlayerController1 : MonoBehaviour
         SaveElementalSlots();
         elementSwitchSystem.SaveElementStatus();
         ScoreManager.Instance.SavePlayerScore();
+        LevelManager.Instance.IncreaseLevel();
     }
 
     private void OnEnable() {
@@ -108,6 +109,8 @@ public class NewPlayerController1 : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
+        CharacterModel.Instance.ResetStats();
+        ScoreManager.Instance.StartGame();
         attackPattern[0] = elementalSlots[0];
         CharacterModel.Instance.LoadPlayerStats();
         elementSwitchSystem.LoadElementStatus();
