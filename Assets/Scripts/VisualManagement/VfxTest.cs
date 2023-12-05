@@ -6,10 +6,10 @@ using UnityEngine.AI;
 
 public class VfxTest : MonoBehaviour
 {
-    //[Header("Attack Effect")]
-    //public GameObject attackEffect;
-    //private GameObject attackVfxIns;
-    //public float attackDespawnDuration;
+    [Header("Spawn Effect")]
+    public GameObject spawnEffect;
+    private ParticleSystem spawnEffectParticle;
+    private GameObject spawnEffectContainer;
 
     [Header("Freeze Effect")]
     public GameObject FreezeEffect;
@@ -35,18 +35,48 @@ public class VfxTest : MonoBehaviour
     private EnemyController enemyController;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         animator = GetComponentInChildren<Animator>();
-        enemyController = GetComponent<EnemyController>();  
+        enemyController = GetComponent<EnemyController>();
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         originalMaterials.AddRange(skinnedMeshRenderer.materials);
+
+        // Initialize the spawn effect container and particle
+        spawnEffectContainer = spawnEffect;
+
+        // Start the spawn effect and schedule the destruction of the container
+        SpawnVfxPlay();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    //// Update is called once per frame
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.I)) {
+            SpawnVfxPlay();
+        }
     }
+
+    private void SpawnVfxPlay() {
+        if (spawnEffectContainer != null) {
+            // Get the position at the feet of the current object
+            Vector3 spawnPosition = transform.position;
+            spawnPosition.y = 0; // Assuming the feet are at y=0, adjust this based on your setup
+
+            // Instantiate a new instance of the spawn effect container at the feet position
+            GameObject instance = Instantiate(spawnEffectContainer, spawnPosition, Quaternion.identity);
+
+            // Get the ParticleSystem from the instantiated instance
+            ParticleSystem instanceParticleSystem = instance.GetComponent<ParticleSystem>();
+
+            // Play the particle effect
+            instanceParticleSystem?.Play();
+
+            // Destroy the instantiated instance after the duration of the particle effect
+            Destroy(instance, instanceParticleSystem.main.duration);
+        }
+    }
+
+
+
 
     public void Freeze(float reactionDuration) {
             Debug.Log("Freezing VFX");

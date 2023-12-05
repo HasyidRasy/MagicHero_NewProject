@@ -181,7 +181,10 @@ public class CharacterModel : MonoBehaviour
         PlayerPrefs.SetFloat("PlayerMoveSpeed", MoveSpeed);
         PlayerPrefs.SetFloat("PlayerAttack", Attack);
         PlayerPrefs.SetFloat("PlayerElementalBonus", ElementalBonus);
-
+        for (int i = 0;i < chosenUpgrades.Count; i++)
+        {
+            PlayerPrefs.SetInt("Upgrade "+i, chosenUpgrades[i].upgradeID);
+        }
         // Save PlayerPrefs
         PlayerPrefs.Save();
     }
@@ -222,6 +225,20 @@ public class CharacterModel : MonoBehaviour
         if (PlayerPrefs.HasKey("PlayerElementalBonus"))
         {
             ElementalBonus = PlayerPrefs.GetFloat("PlayerElementalBonus");
+        }
+
+        for (int i = 0;i < chosenUpgrades.Count; i++)
+        {
+            if(PlayerPrefs.HasKey("Upgrade "+i))
+            {
+                foreach(UpgradeData upgrade in chosenUpgrades)
+                {
+                    if(PlayerPrefs.GetInt("Upgrade "+i) == upgrade.upgradeID)
+                    {
+                        chosenUpgrades.Add(upgrade);
+                    }
+                }
+            }
         }
     }
 }
