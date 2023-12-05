@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 21268454}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90139983c2d57284b8c0c37dab077d64, type: 3}
   m_Name: 
@@ -9616,15 +9616,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 225e62d680ca1ff48ba1a4010944eb01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDashing: 0
   _rb: {fileID: 1228064678}
   _model: {fileID: 1228064677}
   _collider: {fileID: 1650508851}
   elementalSlots: 01000000010000000000000001000000
   projectileSpawnPoint: {fileID: 398592867}
   magicProjectilePrefab: {fileID: 5823638608141224870, guid: 1dd62e0380aabfd49b66238b3578a4b4, type: 3}
-  delayShoot: 0
+  delayShoot: 0.3
   magicProSpeed: 45
-  timeBetweenAttacks: 0.3
+  timeBetweenAttacks: 0.5
   timeBetweenSteps: 0.5
   attackCooldown: 0
   groundMask:
@@ -9636,7 +9637,6 @@ MonoBehaviour:
   canMove: 1
   _dashCooldownSlider: {fileID: 1658923080}
   _currentDashCd: 0
-  _isIncrease: 0
   currentButtonIndex: 0
   vfxTeleport: {fileID: 4500983385514121861, guid: 97f8e6ba587e86247adc95df2145c929, type: 3}
   vfxTeleportMaterial: {fileID: 747527796}
@@ -12722,6 +12722,10 @@ PrefabInstance:
     - target: {fileID: 7326794286567333676, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448521414962362942, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7482920390821148541, guid: a12aa37d68b5f8c458cddf3e7979c1ca, type: 3}
       propertyPath: m_TargetGraphic

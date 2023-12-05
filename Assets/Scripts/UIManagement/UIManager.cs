@@ -190,6 +190,7 @@ public class UIManager : MonoBehaviour
 
     public void GoToTutorial() {
         SceneManager.LoadScene("Tutorial");
+        LevelManager.Instance.currentLevel = 0;
     }
 
     public void GoToMainLevel()
@@ -206,5 +207,6 @@ public class UIManager : MonoBehaviour
     {
         CharacterModel.Instance.ResetStats();
         ScoreManager.Instance.ResetScore();
+        EnemyModel.Instance.ResetEnemyStats();
     }
 }
