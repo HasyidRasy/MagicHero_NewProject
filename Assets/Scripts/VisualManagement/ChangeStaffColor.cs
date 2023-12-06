@@ -43,13 +43,16 @@ public class ChangeStaffColor : MonoBehaviour
         SetSecondMaterial(windMaterial);
     }
     void SetSecondMaterial(Material newMaterial) {
-        // Get the current materials array
-        Material[] materials = meshRenderer.materials;
 
-        // Update the material in the second slot
-        materials[secondMaterialIndex] = newMaterial;
+        if (newMaterial != null) {
+            // Get the current materials array
+            Material[] materials = meshRenderer.materials;
 
-        // Apply the updated materials array to the MeshRenderer
-        meshRenderer.materials = materials;
+            // Update the material in the second slot
+            materials[secondMaterialIndex] = newMaterial;
+
+            // Apply the updated materials array to the MeshRenderer
+            meshRenderer.materials = materials;
+        }
     }
 }

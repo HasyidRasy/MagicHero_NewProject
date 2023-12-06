@@ -57,9 +57,13 @@ public class FTUEManager : MonoBehaviour {
         //if (_sceneStory != null) {
         //    _sceneStory.SetActive(true);
         //}
+        LevelManager.Instance.currentLevel = 0;
+        LevelManager.Instance.UpdateLevelText();
         NewAudioManager.Instance.bgmSource.Stop();
         NewAudioManager.Instance.PlayBGM("Safezone");
         CharacterModel.Instance.ResetStats();
+        EnemyModel.Instance.ResetEnemyStats();
+        ScoreManager.Instance.StartGame();
         elementSwitchSystem.SetDefaultElementStatus();
         newPlayerController1.SetDefaultElementSlots();
     }
