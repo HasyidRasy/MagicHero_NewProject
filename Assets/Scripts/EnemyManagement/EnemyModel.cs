@@ -67,9 +67,9 @@ public class EnemyModel : MonoBehaviour {
     }
     public void EnemyStatsUp(int level)
     {
-        HealthPoint += (level - 1) * 50 ;
-        Attack += (level - 1) * 3;
-        Defence += (level - 1) * 2;
+        HealthPoint += (level - 1) * 75 ;
+        Attack += (level - 1) * 4;
+        Defence += (level - 1) * 3;
 
         Debug.Log("Enemy stats up");
     }

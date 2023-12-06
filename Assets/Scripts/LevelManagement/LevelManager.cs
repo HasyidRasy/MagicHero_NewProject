@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -44,6 +44,23 @@ public class LevelManager : MonoBehaviour
             {
                 levelText.text = "Level: " + currentLevel.ToString();
             }
+        }
+    }
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainMenu")
+        {
+            Destroy(gameObject);
         }
     }
 }
