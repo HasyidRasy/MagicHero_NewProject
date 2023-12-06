@@ -16,5 +16,6 @@ public class ElementalReaction : ScriptableObject
     public float reactionInterval;
     public float reactionDuration; 
     public bool stacking;
+    public Sprite reactionSprite;
 
 }

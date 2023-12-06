@@ -102,8 +102,6 @@ public class NewPlayerController1 : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
         cooldownAtkUI = FindObjectOfType<CooldownAttackUI>();
-        attackPattern[0] = elementalSlots[0];
-        cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
     }
 
     private void Start()
@@ -111,9 +109,11 @@ public class NewPlayerController1 : MonoBehaviour
         mainCamera = Camera.main;
         CharacterModel.Instance.ResetStats();
         ScoreManager.Instance.StartGame();
+        attackPattern[0] = elementalSlots[0];
         CharacterModel.Instance.LoadPlayerStats();
         elementSwitchSystem.LoadElementStatus();
         LoadElementalSlots();
+        cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
         FirstVfxTeleport();
         ScoreManager.Instance.LoadPlayerScore();
     }

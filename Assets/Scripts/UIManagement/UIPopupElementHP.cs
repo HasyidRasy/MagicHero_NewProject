@@ -17,16 +17,21 @@ public class UIPopupElementHP : MonoBehaviour
     //First PopupUI
     private GameObject firstElementPopupUI;
     private Image firstImagePopupUI;
-    private Vector3 firstOffset = new Vector3(1.0f, 0, 0);
+    private Vector3 firstOffset = new Vector3(1.0f, -0.75f, 0);
 
     //Secondd PopupUI
     private GameObject secondElementPopupUI;
     private Image secondImagePopupUI;
-    private Vector3 secondOffset = new Vector3(-1.0f, 0, 0);
+    private Vector3 secondOffset = new Vector3(-1.0f, -0.75f, 0);
 
     //Middle PopupUI
     private GameObject middleElementPopupUI;
     private Image middleImagePopupUI;
+    private Vector3 middleOffset = new Vector3(0, -0.75f, 0);
+
+    //Reaction PopupUI
+    private GameObject reactionPopupUI;
+    private Image reactionImageUI;
 
     //HealthBar UI Popup
     private GameObject healtBarPopupUI;
@@ -65,10 +70,18 @@ public class UIPopupElementHP : MonoBehaviour
         Transform childTransformMiddle = elementalPopupInstance.transform.GetChild(2);
         middleElementPopupUI = childTransformMiddle.gameObject;
         middleImagePopupUI = middleElementPopupUI.GetComponent<Image>();
+        middleElementPopupUI.transform.position += middleOffset;
         middleElementPopupUI.transform.localScale -= elementScale;
 
+        //Reaction PopupUI
+        Transform childTransformReaction = elementalPopupInstance.transform.GetChild(3);
+        reactionPopupUI = childTransformReaction.gameObject;
+        reactionImageUI = reactionPopupUI.GetComponent<Image>();
+        reactionPopupUI.transform.position += middleOffset;
+        reactionPopupUI.transform.localScale -= elementScale;
+
         //HealthBar UI
-        Transform healtTransformMiddle = elementalPopupInstance.transform.GetChild(3);
+        Transform healtTransformMiddle = elementalPopupInstance.transform.GetChild(4);
         healtBarPopupUI = healtTransformMiddle.gameObject;
         healtBarSlider = healtBarPopupUI.GetComponent<Slider>();
         healtBarPopupUI.transform.position += healthBarOffset;
@@ -79,6 +92,7 @@ public class UIPopupElementHP : MonoBehaviour
         secondElementPopupUI.SetActive(false);
         firstElementPopupUI.SetActive(false);
         middleElementPopupUI.SetActive(false);
+        reactionPopupUI.SetActive(false);
         healtBarPopupUI.SetActive(false);
     }
 
@@ -153,6 +167,20 @@ public class UIPopupElementHP : MonoBehaviour
                                         .SetDelay(1.5f);
     }
 
+    public void ShowReactionUI(Sprite elementalSprite, float reactDuration)
+    {
+        reactionPopupUI.SetActive(true);
+        reactionImageUI.sprite = elementalSprite;
+
+        reactionImageUI.rectTransform.DOScale(0.5f, 0.5f)
+                                        .SetEase(Ease.InOutBack)
+                                        .From(0f);
+
+        reactionImageUI.rectTransform.DOScale(0f, 0.5f)
+                                        .SetEase(Ease.InOutBack)
+                                        .SetDelay(reactDuration - 0.6f);
+    }
+
     //Applied element duration
     public IEnumerator ElementPopupDuration()
     {
@@ -175,5 +203,10 @@ public class UIPopupElementHP : MonoBehaviour
         secondElementPopupUI.SetActive(false);
         firstElementPopupUI.SetActive(false);
         middleElementPopupUI.SetActive(false);
+    }
+
+    public void ResetReactionUI()
+    {
+        reactionPopupUI.SetActive(false);
     }
 }
