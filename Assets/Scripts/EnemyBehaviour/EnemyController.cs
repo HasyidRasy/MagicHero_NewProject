@@ -66,6 +66,7 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
+        enemyModel.LoadEnemyStats();
         enemyModel.CurrentHealth = enemyModel.HealthPoint;
         NewAudioManager.Instance.PlayEnemySFX("EnemySpawn");
         vfx = GetComponent<VfxTest>();
@@ -355,6 +356,7 @@ public class EnemyController : MonoBehaviour
 
     private void Death()
     {
+        ScoreManager.Instance.EnemyKilled();
         Destroy(this.gameObject, 3f);
         enemyPool.NotifyEnemyDied();
         enemyCollider.enabled = false;
