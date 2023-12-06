@@ -24,8 +24,10 @@ public class EnemyController : MonoBehaviour
     //elemental PopupUI
     private UIPopupElementHP uiPopupElementHP;
     private Sprite elementSprite;
+    private Sprite reactionSprite;
     private Element elementScrptObj;
     private Coroutine isElementApplied;
+    private Coroutine isReaction;
 
     private Animator animator;
     public float minSpeed = 3f;
@@ -196,6 +198,12 @@ public class EnemyController : MonoBehaviour
             Debug.Log("Applied Status " + elementStatus);
 
             //PopupUI
+            //Reset ReactionUI When still occured
+            if (isReaction != null)
+            {
+                StopCoroutine(isReaction);
+                uiPopupElementHP.ResetReactionUI();
+            }
             //Show Popup UI When No Element Appllied
             if (isElementApplied != null)
             {
@@ -232,6 +240,8 @@ public class EnemyController : MonoBehaviour
     public void HandleElementalInteraction(ElementalType currentElement, ElementalType otherElement) {
         // Check for an elemental reaction between the player's element and the other element
         ElementalReaction reaction = ElementalReactionController.Instance.CheckElementalReaction(currentElement, otherElement);
+        // Get reaction Sprite
+        reactionSprite = reaction.reactionSprite;
 
         if (reaction != null) {
             // Handle the reaction, e.g., apply damage, change visuals, etc.
@@ -280,6 +290,10 @@ public class EnemyController : MonoBehaviour
 
     // Function to handle the reaction result
     private void HandleReaction(string resultReaction, float reactionDuration) {
+
+        // Reaction Popup
+        isReaction = StartCoroutine(ReactionUIDuration(reactionSprite, reactionDuration));
+
         if (resultReaction == "Freezing" && !freezing) {
             Debug.Log("Terjadi Reaksi " + resultReaction);
             freezing = true;
@@ -300,6 +314,14 @@ public class EnemyController : MonoBehaviour
             StartCoroutine(VfxHandleElemental(resultReaction, reactionDuration));
             StartCoroutine(VfxHandleElementalState(resultReaction, reactionDuration + 0.5f));
         }
+    }
+
+    IEnumerator ReactionUIDuration(Sprite spriteReaction, float reactionTime) {
+        yield return new WaitForSeconds(0.5f);
+        uiPopupElementHP.ResetPopupUI();
+        uiPopupElementHP.ShowReactionUI(spriteReaction, reactionTime - 0.5f);
+        //yield return new WaitForSeconds(reactionTime);
+        //uiPopupElementHP.ResetReactionUI();
     }
 
         IEnumerator VfxHandleElemental(string resultReaction, float delayTime) {

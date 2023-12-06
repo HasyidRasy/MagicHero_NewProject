@@ -12,7 +12,7 @@ public class NewPlayerController1 : MonoBehaviour
     private ElementSwitchSystem elementSwitchSystem;
     private CooldownAttackUI cooldownAtkUI;
     //cek dash logic
-    private bool isDashing = false;
+    [SerializeField] private bool isDashing = false;
     //rigidbody
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _model;
@@ -58,8 +58,7 @@ public class NewPlayerController1 : MonoBehaviour
     [Header("Player Info")]
     private Vector3 moveDir;
     public Slider _dashCooldownSlider;
-    public float _currentDashCd;
-    public bool _isIncrease;
+    public float _currentDashCd = 0f;
     private bool isDeath = false;
 
     [HideInInspector]
@@ -96,7 +95,6 @@ public class NewPlayerController1 : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         // Assign the mainCamera reference when a new scene is loaded
         mainCamera = Camera.main;
-        Debug.Log("kamera : " + mainCamera);
     }
     private void Awake()
     {
@@ -116,19 +114,42 @@ public class NewPlayerController1 : MonoBehaviour
         elementSwitchSystem.LoadElementStatus();
         LoadElementalSlots();
         cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
-
         FirstVfxTeleport();
         ScoreManager.Instance.LoadPlayerScore();
     }
 
     private void Update()
     {
+        //if (_isIncrease) {
+        //    float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
+        //    _dashCooldownSlider.value = cdValue;
+
+        //    if (_currentDashCd >= characterModel.DashCooldown) {
+        //        _currentDashCd = 0f;
+        //        _isIncrease = false;
+        //    }
+        //} else if (!_isIncrease &&  moveDir != Vector3.zero && isDashing) {
+        //    float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
+        //    _dashCooldownSlider.value = cdValue;
+
+        //    if (_currentDashCd >= characterModel.DashDuration) {
+        //        _currentDashCd = 0f;
+        //        _isIncrease = true;
+        //    }
+        //}
+
         PlayerStat();
         if (attackCooldown > 0) {
             attackCooldown -= Time.deltaTime;
         }
         stepCooldown -= Time.deltaTime;
-        _currentDashCd += Time.deltaTime;
+        if (_currentDashCd > 0) {
+            _currentDashCd -= Time.deltaTime;
+        }
+
+        _dashCooldownSlider.value = Mathf.Lerp(0f, 1f, 1f - (_currentDashCd / (characterModel.DashCooldown 
+                                                              + characterModel.DashDuration)));
+
 
         Aim();
 
@@ -137,44 +158,6 @@ public class NewPlayerController1 : MonoBehaviour
             Stepping(stepCooldown);
             stepCooldown = timeBetweenSteps;
             StartCoroutine(Stepping(stepCooldown));
-        }
-
-        //if (!isDashing) {
-        //    if (_isIncrease && isDashing) {
-        //        float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
-        //        _dashCooldownSlider.value = cdValue;
-
-        //        if (_currentDashCd >= characterModel.DashCooldown) {
-        //            _currentDashCd = 0f;
-        //            _isIncrease = false;
-        //        }
-        //    } else {
-        //        float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
-        //        _dashCooldownSlider.value = cdValue;
-
-        //        if (_currentDashCd >= characterModel.DashDuration) {
-        //            _currentDashCd = 0f;
-        //            _isIncrease = true;
-        //        }
-        //    }
-        //}
-
-        if (_isIncrease) {
-            float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
-            _dashCooldownSlider.value = cdValue;
-
-            if (_currentDashCd >= characterModel.DashCooldown) {
-                _currentDashCd = 0f;
-                _isIncrease = false;
-            }
-        } else if (!_isIncrease && Input.GetKeyDown(KeyCode.LeftShift) && moveDir != Vector3.zero) {
-            float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
-            _dashCooldownSlider.value = cdValue;
-
-            if (_currentDashCd >= characterModel.DashDuration) {
-                _currentDashCd = 0f;
-                _isIncrease = true;
-            }
         }
     }
 
@@ -225,6 +208,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     // Coroutine Dash Logic
     private IEnumerator Dash() {
+        _currentDashCd = characterModel.DashCooldown + characterModel.dashDuration;
         isDashing = true;
         animator.SetBool("isWalking", false);
         animator.SetBool("isDashing", true); // Set isDashing to true while dashing

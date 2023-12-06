@@ -12,10 +12,10 @@ public class ScoreManager : MonoBehaviour
     public int _buffCollected;
 
     [Header("UI Text")]
+    public TMP_Text playTimeTxt;
     public TMP_Text clearAreaTxt;
     public TMP_Text killEnemyTxt;
     public TMP_Text collectBuffTxt;
-    public TMP_Text playTimeTxt;
 
     public bool isGameRunning = true;
 
