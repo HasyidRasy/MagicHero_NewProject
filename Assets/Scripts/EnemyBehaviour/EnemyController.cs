@@ -62,6 +62,7 @@ public class EnemyController : MonoBehaviour
         speedChase = Random.Range(minSpeed, maxSpeed);
         animator = GetComponentInChildren<Animator>();
         enemyCollider = GetComponent<Collider>();
+        //enemyModel.LoadEnemyStats();
     }
 
     private void Start()
