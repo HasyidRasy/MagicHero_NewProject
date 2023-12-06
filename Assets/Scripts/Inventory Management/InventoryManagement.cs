@@ -76,6 +76,12 @@ public class InventoryManagement : MonoBehaviour
         upgradeText.text = GetUpgradeDescription(hoveredUpgrade);
     }
 
+    public void OnPointerExitButton()
+    {
+        upgradeName.text = "";
+        upgradeText.text = "";
+    }
+
     private string GetUpgradeDescription(UpgradeData upgrade)
     {
         string description = "";

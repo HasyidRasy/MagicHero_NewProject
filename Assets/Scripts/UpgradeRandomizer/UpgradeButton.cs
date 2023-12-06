@@ -12,6 +12,7 @@ public class UpgradeButton : MonoBehaviour
     public Image hoverImage;
     private UpgradeManager upgradeManager;
     private CharacterModel upgradedCharacter;
+    private UpgradeList upgradeList;
     private UpgradeData upgrade;
     public static int id = 1;
     private RectTransform rectTransform;
@@ -24,6 +25,7 @@ public class UpgradeButton : MonoBehaviour
         upgradeManager = FindObjectOfType<UpgradeManager>();
         upgradedCharacter = FindObjectOfType<CharacterModel>();
         rectTransform = GetComponent<RectTransform>();
+        upgradeList = FindObjectOfType<UpgradeList>();
 
         canvasRaycast= GetComponentInParent<GraphicRaycaster>();
 
@@ -55,7 +57,7 @@ public class UpgradeButton : MonoBehaviour
         {
             NewAudioManager.Instance.PlayUpgradeSFX("UpgradeSuccess");
             upgradedCharacter.ApplyUpgrade(upgrade);
-            upgradedCharacter.chosenUpgrades.Add(upgrade);
+            upgradeList.chosenUpgrades.Add(upgrade);
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
             Debug.Log("Upgrade Description: " + GetUpgradeDescription(upgrade));
             

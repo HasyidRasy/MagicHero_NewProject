@@ -58,7 +58,7 @@ public class UIManager : MonoBehaviour
         {
             isSwitchElementPanelActive = true;
             EnableSwitchElementPanel();
-            inventoryManagement.UpdateBuffDisplay(CharacterModel.Instance.chosenUpgrades);
+            inventoryManagement.UpdateBuffDisplay(UpgradeList.Instance.chosenUpgrades);
             animationManager.PopupAttribute();
         }
         else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive == true)
@@ -66,11 +66,6 @@ public class UIManager : MonoBehaviour
             isSwitchElementPanelActive = false;
             animationManager.DepopupAttribute();
             animationManager.ChangeElementDePopUp();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            EnableDeathPanel();
         }
     }
 
