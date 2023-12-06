@@ -65,6 +65,11 @@ public class InventoryManagement : MonoBehaviour
             entry.eventID = EventTriggerType.PointerEnter;
             entry.callback.AddListener((data) => OnPointerEnterButton(buff));
             trigger.triggers.Add(entry);
+
+            EventTrigger.Entry exit = new EventTrigger.Entry();
+            exit.eventID = EventTriggerType.PointerExit;
+            exit.callback.AddListener((data) => OnPointerExitButton());
+            trigger.triggers.Add(exit);
         }
     }
 
