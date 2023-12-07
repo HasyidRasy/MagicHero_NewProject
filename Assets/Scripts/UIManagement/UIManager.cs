@@ -60,12 +60,14 @@ public class UIManager : MonoBehaviour
             EnableSwitchElementPanel();
             inventoryManagement.UpdateBuffDisplay(UpgradeList.Instance.chosenUpgrades);
             animationManager.PopupAttribute();
+            NewAudioManager.Instance.PlayUpgradeSFX("UpgradeOpen");
         }
         else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive == true)
         {
             isSwitchElementPanelActive = false;
             animationManager.DepopupAttribute();
             animationManager.ChangeElementDePopUp();
+            NewAudioManager.Instance.PlayUpgradeSFX("UpgradeClose");
         }
     }
 
