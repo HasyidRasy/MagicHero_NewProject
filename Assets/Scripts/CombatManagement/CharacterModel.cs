@@ -129,6 +129,7 @@ public class CharacterModel : MonoBehaviour
                     maxHealthPoint = healthPoint;
                 }
                 MaxHealthPoint += stat.upgradeValueStatic;
+                HealthPoint += stat.upgradeValueStatic;
                 Debug.Log("Max Health Point: "+maxHealthPoint);
                 break;
             case UpgradeType.AttackSpeed:
