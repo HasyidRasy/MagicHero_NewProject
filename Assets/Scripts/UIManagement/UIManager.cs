@@ -181,6 +181,7 @@ public class UIManager : MonoBehaviour
 
     public void GoToStory() {
         SceneManager.LoadScene("Story");
+        NewGameDatas();
     }
 
     public void GoToTutorial() {
@@ -198,6 +199,11 @@ public class UIManager : MonoBehaviour
         Application.Quit();
     }
 
+    private void NewGameDatas()
+    {
+        CharacterModel.Instance.ResetStats();
+        EnemyModel.Instance.ResetEnemyStats();
+    }
     private void OnApplicationQuit()
     {
         CharacterModel.Instance.ResetStats();

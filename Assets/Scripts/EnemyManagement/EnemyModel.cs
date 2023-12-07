@@ -17,6 +17,12 @@ public class EnemyModel : MonoBehaviour {
         {
             Instance = this;
         }
+
+        if (PlayerPrefs.HasKey("EnemyHealth") && PlayerPrefs.HasKey("EnemyDefence") && PlayerPrefs.HasKey("EnemyAttack")) {
+            SaveEnemyStats();
+        } else {
+            ResetEnemyStats();
+        }
     }
 
     private void Start()
@@ -24,7 +30,6 @@ public class EnemyModel : MonoBehaviour {
         if (LevelManager.Instance.currentLevel > 1)
         {
             EnemyStatsUp(LevelManager.Instance.currentLevel);
-            SaveEnemyStats();
         }
     }
 
@@ -67,9 +72,9 @@ public class EnemyModel : MonoBehaviour {
     }
     public void EnemyStatsUp(int level)
     {
-        HealthPoint += (level - 1) * 50 ;
-        Attack += (level - 1) * 3;
-        Defence += (level - 1) * 2;
+        HealthPoint += (level - 1) * 75 ;
+        Attack += (level - 1) * 4;
+        Defence += (level - 1) * 3;
 
         Debug.Log("Enemy stats up");
     }
@@ -79,6 +84,7 @@ public class EnemyModel : MonoBehaviour {
         healthPoint = 120;
         attack = 20;
         defence = 5;
+        SaveEnemyStats();
     }
 
     public void SaveEnemyStats()
@@ -94,5 +100,6 @@ public class EnemyModel : MonoBehaviour {
         HealthPoint = PlayerPrefs.GetInt("EnemyHealth");
         Defence = PlayerPrefs.GetInt("EnemyDefence");
         Attack = PlayerPrefs.GetInt("EnemyAttack");
+        SaveEnemyStats();
     }
 }
