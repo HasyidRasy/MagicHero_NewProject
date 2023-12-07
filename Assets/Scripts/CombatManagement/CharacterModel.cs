@@ -24,7 +24,7 @@ public class CharacterModel : MonoBehaviour
     public float dashDuration = 0.5f;
     public float dashCooldown = 2.0f;
 
-    public List<UpgradeData> chosenUpgrades = new List<UpgradeData>();
+    
 
     private void Awake()
     {
