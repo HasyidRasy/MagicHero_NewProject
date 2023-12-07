@@ -11,6 +11,12 @@ public class EnemyModel : MonoBehaviour {
     public int elementalBonus = 10;
     public float currentHealth;
 
+    [Header("Enemy Stats Up")]
+    [SerializeField] private int hpUp;
+    [SerializeField] private int atkUp;
+    [SerializeField] private int defUp;
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -18,9 +24,12 @@ public class EnemyModel : MonoBehaviour {
             Instance = this;
         }
 
-        if (PlayerPrefs.HasKey("EnemyHealth") && PlayerPrefs.HasKey("EnemyDefence") && PlayerPrefs.HasKey("EnemyAttack")) {
+        if (PlayerPrefs.HasKey("EnemyHealth") && PlayerPrefs.HasKey("EnemyDefence") && PlayerPrefs.HasKey("EnemyAttack"))
+        {
             SaveEnemyStats();
-        } else {
+        }
+        else
+        {
             ResetEnemyStats();
         }
     }
@@ -72,17 +81,18 @@ public class EnemyModel : MonoBehaviour {
     }
     public void EnemyStatsUp(int level)
     {
-        HealthPoint += (level - 1) * 75 ;
-        Attack += (level - 1) * 4;
-        Defence += (level - 1) * 3;
+        HealthPoint += (level - 1) * hpUp ;
+        Attack += (level - 1) * atkUp;
+        Defence += (level - 1) * defUp;
 
+        SaveEnemyStats();
         Debug.Log("Enemy stats up");
     }
 
     public void ResetEnemyStats()
     {
         healthPoint = 120;
-        attack = 20;
+        attack = 25;
         defence = 5;
         SaveEnemyStats();
     }

@@ -994,13 +994,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70214e600bf37af44a587e09452e19ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoint: 100
+  healthPoint: 120
   defence: 5
   attackSpeed: 2
   moveSpeed: 3
   attack: 20
   elementalBonus: 10
   currentHealth: 0
+  hpUp: 35
+  atkUp: 3
+  defUp: 2
 --- !u!114 &391569849032127248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1018,6 +1021,7 @@ MonoBehaviour:
   minSpeed: 4.5
   maxSpeed: 7
   damageAmount: 20
+  isInstantiate: 1
   attackRange: 6
   attackCooldown: 0.8
   attackVfxWait: 0
