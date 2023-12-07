@@ -44,6 +44,7 @@ public class EnemyController : MonoBehaviour
     private bool burning = false;
     private bool slowness = false;
     private bool isSpawning;
+    [SerializeField] private bool isInstantiate = true;
 
     [SerializeField] private float attackRange;
     [SerializeField] private float attackCooldown = 2.0f; // Adjust the cooldown time as needed
@@ -69,7 +70,7 @@ public class EnemyController : MonoBehaviour
     {
         enemyModel.LoadEnemyStats();
         enemyModel.CurrentHealth = enemyModel.HealthPoint;
-        NewAudioManager.Instance.PlayEnemySFX("EnemySpawn");
+        if(isInstantiate) NewAudioManager.Instance.PlayEnemySFX("EnemySpawn");
         vfx = GetComponent<VfxTest>();
 
         if (vfx == null) {
