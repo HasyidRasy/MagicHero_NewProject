@@ -58,19 +58,16 @@ public class UIManager : MonoBehaviour
         {
             isSwitchElementPanelActive = true;
             EnableSwitchElementPanel();
-            inventoryManagement.UpdateBuffDisplay(CharacterModel.Instance.chosenUpgrades);
+            inventoryManagement.UpdateBuffDisplay(UpgradeList.Instance.chosenUpgrades);
             animationManager.PopupAttribute();
+            NewAudioManager.Instance.PlayUpgradeSFX("UpgradeOpen");
         }
         else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive == true)
         {
             isSwitchElementPanelActive = false;
             animationManager.DepopupAttribute();
             animationManager.ChangeElementDePopUp();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            EnableDeathPanel();
+            NewAudioManager.Instance.PlayUpgradeSFX("UpgradeClose");
         }
     }
 
