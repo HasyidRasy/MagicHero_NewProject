@@ -35,8 +35,7 @@ public class EnemyController : MonoBehaviour
     private float spawnDuration = 2.0f;
 
     private VfxTest vfx;
-
-    public float damageAmount;
+    [HideInInspector] public float damageAmount = 0;
     private bool isDeath = false;
     private bool isAttacking;
     private bool canAttack = true;

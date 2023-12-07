@@ -8,7 +8,7 @@ public class EnemyModel : MonoBehaviour {
     public float attackSpeed = 2f;
     public float moveSpeed = 3f;
     public int attack = 20;
-    public int elementalBonus = 10;
+    public int elementalBonus = 5;
     public float currentHealth;
 
     [Header("Enemy Stats Up")]
@@ -92,7 +92,7 @@ public class EnemyModel : MonoBehaviour {
     public void ResetEnemyStats()
     {
         healthPoint = 120;
-        attack = 25;
+        attack = 20;
         defence = 5;
         SaveEnemyStats();
     }
