@@ -14,6 +14,11 @@ public class InventoryManagement : MonoBehaviour
     public TMP_Text upgradeName;
     public TMP_Text upgradeText;
 
+    private void Awake() {
+        upgradeName.text = "";
+        upgradeText.text = "";
+    }
+
     public void UpdateBuffDisplay(List<UpgradeData> activeBuffs)
     {
         // Clear the list before updating
