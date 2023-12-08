@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class UpgradeElementalButton : MonoBehaviour
 {
+    private GraphicRaycaster canvasRaycast;
+
     public Image hoverImage;
     public int id;
     private UpgradeManager upgradeManager;
@@ -29,6 +31,7 @@ public class UpgradeElementalButton : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
 
         bgImg = transform.GetChild(1).gameObject.GetComponent<Image>();
+        canvasRaycast = GetComponentInParent<GraphicRaycaster>();
 
         if (elementSwitchSystem == null)
         {
@@ -79,7 +82,7 @@ public class UpgradeElementalButton : MonoBehaviour
             {
                 elementSwitchSystem.unlockedElementInfo.isFireUnlocked = true;
             }
-        
+            canvasRaycast.enabled = false;
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
             Debug.Log("Upgrade Description: " + upgradeElemental.GetUpgradeDescription(upgrade));
         
@@ -88,6 +91,7 @@ public class UpgradeElementalButton : MonoBehaviour
     }
 
     void SetFalseUpgradeElementalCanvas() {
+        canvasRaycast.enabled = true;
         upgradeElemental.gameObject.SetActive(false);
     }
 
