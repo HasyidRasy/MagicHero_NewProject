@@ -29,7 +29,8 @@ public enum UpgradeType
     MaxHealthPoint,
     AttackSpeed,
     Defense,
-    ElementalType
+    ElementalType,
+    HealthPoint
 }
 
 public enum UpgradeRarity

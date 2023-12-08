@@ -24,8 +24,10 @@ public class EnemyController : MonoBehaviour
     //elemental PopupUI
     private UIPopupElementHP uiPopupElementHP;
     private Sprite elementSprite;
+    private Sprite reactionSprite;
     private Element elementScrptObj;
     private Coroutine isElementApplied;
+    private Coroutine isReaction;
 
     private Animator animator;
     public float minSpeed = 3f;
@@ -33,8 +35,7 @@ public class EnemyController : MonoBehaviour
     private float spawnDuration = 2.0f;
 
     private VfxTest vfx;
-
-    public float damageAmount;
+    [HideInInspector] public float damageAmount = 0;
     private bool isDeath = false;
     private bool isAttacking;
     private bool canAttack = true;
@@ -42,6 +43,7 @@ public class EnemyController : MonoBehaviour
     private bool burning = false;
     private bool slowness = false;
     private bool isSpawning;
+    [SerializeField] private bool isInstantiate = true;
 
     [SerializeField] private float attackRange;
     [SerializeField] private float attackCooldown = 2.0f; // Adjust the cooldown time as needed
@@ -60,12 +62,14 @@ public class EnemyController : MonoBehaviour
         speedChase = Random.Range(minSpeed, maxSpeed);
         animator = GetComponentInChildren<Animator>();
         enemyCollider = GetComponent<Collider>();
+        //enemyModel.LoadEnemyStats();
     }
 
     private void Start()
     {
+        enemyModel.LoadEnemyStats();
         enemyModel.CurrentHealth = enemyModel.HealthPoint;
-        NewAudioManager.Instance.PlayEnemySFX("EnemySpawn");
+        if(isInstantiate) NewAudioManager.Instance.PlayEnemySFX("EnemySpawn");
         vfx = GetComponent<VfxTest>();
 
         if (vfx == null) {
@@ -195,6 +199,12 @@ public class EnemyController : MonoBehaviour
             Debug.Log("Applied Status " + elementStatus);
 
             //PopupUI
+            //Reset ReactionUI When still occured
+            if (isReaction != null)
+            {
+                StopCoroutine(isReaction);
+                uiPopupElementHP.ResetReactionUI();
+            }
             //Show Popup UI When No Element Appllied
             if (isElementApplied != null)
             {
@@ -231,6 +241,8 @@ public class EnemyController : MonoBehaviour
     public void HandleElementalInteraction(ElementalType currentElement, ElementalType otherElement) {
         // Check for an elemental reaction between the player's element and the other element
         ElementalReaction reaction = ElementalReactionController.Instance.CheckElementalReaction(currentElement, otherElement);
+        // Get reaction Sprite
+        reactionSprite = reaction.reactionSprite;
 
         if (reaction != null) {
             // Handle the reaction, e.g., apply damage, change visuals, etc.
@@ -279,6 +291,10 @@ public class EnemyController : MonoBehaviour
 
     // Function to handle the reaction result
     private void HandleReaction(string resultReaction, float reactionDuration) {
+
+        // Reaction Popup
+        isReaction = StartCoroutine(ReactionUIDuration(reactionSprite, reactionDuration));
+
         if (resultReaction == "Freezing" && !freezing) {
             Debug.Log("Terjadi Reaksi " + resultReaction);
             freezing = true;
@@ -299,6 +315,14 @@ public class EnemyController : MonoBehaviour
             StartCoroutine(VfxHandleElemental(resultReaction, reactionDuration));
             StartCoroutine(VfxHandleElementalState(resultReaction, reactionDuration + 0.5f));
         }
+    }
+
+    IEnumerator ReactionUIDuration(Sprite spriteReaction, float reactionTime) {
+        yield return new WaitForSeconds(0.5f);
+        uiPopupElementHP.ResetPopupUI();
+        uiPopupElementHP.ShowReactionUI(spriteReaction, reactionTime - 0.5f);
+        //yield return new WaitForSeconds(reactionTime);
+        //uiPopupElementHP.ResetReactionUI();
     }
 
         IEnumerator VfxHandleElemental(string resultReaction, float delayTime) {
@@ -333,6 +357,7 @@ public class EnemyController : MonoBehaviour
 
     private void Death()
     {
+        ScoreManager.Instance.EnemyKilled();
         Destroy(this.gameObject, 3f);
         enemyPool.NotifyEnemyDied();
         enemyCollider.enabled = false;

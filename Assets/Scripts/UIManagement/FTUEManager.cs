@@ -50,6 +50,7 @@ public class FTUEManager : MonoBehaviour {
         newPlayerController1.SetDefaultElementSlots();
         CharacterModel.Instance.ResetStats();
         CharacterModel.Instance.SavePlayerStats();
+        UpgradeList.Instance.RemoveTutorialList();
     }
 
     private void Start() {
@@ -57,9 +58,11 @@ public class FTUEManager : MonoBehaviour {
         //if (_sceneStory != null) {
         //    _sceneStory.SetActive(true);
         //}
+        LevelManager.Instance.currentLevel = 0;
+        LevelManager.Instance.UpdateLevelText();
         NewAudioManager.Instance.bgmSource.Stop();
         NewAudioManager.Instance.PlayBGM("Safezone");
-        CharacterModel.Instance.ResetStats();
+        ScoreManager.Instance.StartGame();
         elementSwitchSystem.SetDefaultElementStatus();
         newPlayerController1.SetDefaultElementSlots();
     }

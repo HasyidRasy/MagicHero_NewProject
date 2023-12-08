@@ -11,6 +11,7 @@ public class LoadLevelOnCollision : MonoBehaviour
 
     private Color originalColor; // Store the original color of the object.
     private bool isFading = false; // Flag to track if the fading animation is in progress.
+    private bool hasTriggered = false;
 
     public static Action OnTeleport;
     private void Start()
@@ -23,13 +24,16 @@ public class LoadLevelOnCollision : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (!isFading)
+            if (!isFading && !hasTriggered)
             {
                 //play sfx teleport
                 NewAudioManager.Instance.bgmSource.Stop();
                 NewAudioManager.Instance.PlaySFX("Teleport");
                 //StartCoroutine(FadeAndLoadScene());
                 OnTeleport?.Invoke();
+
+                hasTriggered = true;
+                GetComponent<Collider>().enabled = false;
             }
         }
     }
