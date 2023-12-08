@@ -50,6 +50,7 @@ public class FTUEManager : MonoBehaviour {
         newPlayerController1.SetDefaultElementSlots();
         CharacterModel.Instance.ResetStats();
         CharacterModel.Instance.SavePlayerStats();
+        UpgradeList.Instance.RemoveTutorialList();
     }
 
     private void Start() {
