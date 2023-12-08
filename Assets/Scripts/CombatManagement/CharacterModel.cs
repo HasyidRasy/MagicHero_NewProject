@@ -9,7 +9,7 @@ public class CharacterModel : MonoBehaviour
 
     // Private fields to store character properties
     public float healthPoint;
-    public float maxHealthPoint = 100;
+    public float maxHealthPoint;
     public float defence;
     public float attackSpeed;
     public float moveSpeed = 5.0f;
