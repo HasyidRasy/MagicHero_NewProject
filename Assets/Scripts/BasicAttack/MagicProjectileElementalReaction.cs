@@ -98,13 +98,19 @@ public class MagicProjectileElementalReaction : MonoBehaviour {
         if (other.CompareTag("Enemy")) {
             EnemyController enemyController = other.GetComponent<EnemyController>();
             float totalDamage = damageAmount + (characterModel.attack - enemyController.defense) + characterModel.elementalBonus;
-            enemyController.TakeDamage(totalDamage);
+            enemyController.TakeDamage(damageAmount);
+            Debug.Log("Chara model attk " +  characterModel.attack.ToString());
+            Debug.Log("Total Damage " + totalDamage.ToString());
             enemyController.ApplyElementalStatus(element);
 
              // Adjust offsetDistance as needed
 
             switch (element) {
                 case ElementalType.Water:
+                    // Damage Popup
+                    Vector3 randomnessWater = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
+                    DamagePopupGenerator.current.CreatePopup(other.transform.position + randomnessWater, totalDamage.ToString(), new Color32(0x73, 0xF9, 0xFE, 0xFF));
+                    
                     onImpactVfx = Instantiate(neroOnImpact, spawnPosition, transform.rotation);
                     onImpactVfx2 = Instantiate(neroOnImpact2, spawnPosition, transform.rotation);
 
@@ -116,6 +122,10 @@ public class MagicProjectileElementalReaction : MonoBehaviour {
 
                     break;
                 case ElementalType.Fire:
+                    // Damage Popup
+                    Vector3 randomnessFire = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
+                    DamagePopupGenerator.current.CreatePopup(other.transform.position + randomnessFire, totalDamage.ToString(), new Color32(0xFE, 0xAB, 0x76, 0xFF));
+
                     onImpactVfx = Instantiate(fotiaOnImpact, spawnPosition, transform.rotation);
                     onImpactVfx2 =  Instantiate(fotiaOnImpact2, spawnPosition, transform.rotation);
 
@@ -128,6 +138,10 @@ public class MagicProjectileElementalReaction : MonoBehaviour {
 
                     break;
                 case ElementalType.Wind:
+                    // Damage Popup
+                    Vector3 randomnessWind = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
+                    DamagePopupGenerator.current.CreatePopup(other.transform.position + randomnessWind, totalDamage.ToString(), new Color32(0xA4, 0xFE, 0x85, 0xFF));
+
                     onImpactVfx = Instantiate(anemosOnImpact, spawnPosition, transform.rotation);
                     onImpactVfx.Play();
 
