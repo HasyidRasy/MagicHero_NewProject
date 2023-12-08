@@ -13,6 +13,6 @@ public class UIDeathManager : MonoBehaviour
     }
 
     public void DeathUICall(){
-        inventoryManagement.UpdateBuffDisplay(CharacterModel.Instance.chosenUpgrades);
+        inventoryManagement.UpdateBuffDisplay(UpgradeList.Instance.chosenUpgrades);
     }
 }

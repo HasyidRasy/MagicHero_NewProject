@@ -845,13 +845,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70214e600bf37af44a587e09452e19ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoint: 100
+  healthPoint: 120
   defence: 5
   attackSpeed: 2
   moveSpeed: 3
   attack: 20
-  elementalBonus: 10
+  elementalBonus: 5
   currentHealth: 0
+  hpUp: 35
+  atkUp: 3
+  defUp: 2
 --- !u!114 &391569849032127248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -868,7 +871,8 @@ MonoBehaviour:
   speedChase: 0
   minSpeed: 4.5
   maxSpeed: 7
-  damageAmount: 20
+  damageAmount: 15
+  isInstantiate: 1
   attackRange: 6
   attackCooldown: 0.8
   attackVfxWait: 0
@@ -913,10 +917,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.60048085
-  m_Height: 1.2009617
+  m_Radius: 0.58586216
+  m_Height: 1.6227453
   m_Direction: 1
-  m_Center: {x: -0.00640738, y: 0.055584114, z: 0}
+  m_Center: {x: 0.008211374, y: 0.2664741, z: 0}
 --- !u!54 &8089879816901790824
 Rigidbody:
   m_ObjectHideFlags: 0

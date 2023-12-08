@@ -35,8 +35,7 @@ public class EnemyController : MonoBehaviour
     private float spawnDuration = 2.0f;
 
     private VfxTest vfx;
-
-    public float damageAmount;
+    [HideInInspector] public float damageAmount = 0;
     private bool isDeath = false;
     private bool isAttacking;
     private bool canAttack = true;
@@ -44,6 +43,7 @@ public class EnemyController : MonoBehaviour
     private bool burning = false;
     private bool slowness = false;
     private bool isSpawning;
+    [SerializeField] private bool isInstantiate = true;
 
     [SerializeField] private float attackRange;
     [SerializeField] private float attackCooldown = 2.0f; // Adjust the cooldown time as needed
@@ -62,6 +62,7 @@ public class EnemyController : MonoBehaviour
         speedChase = Random.Range(minSpeed, maxSpeed);
         animator = GetComponentInChildren<Animator>();
         enemyCollider = GetComponent<Collider>();
+        //enemyModel.LoadEnemyStats();
     }
 
     private void Start()
@@ -69,7 +70,7 @@ public class EnemyController : MonoBehaviour
         enemyModel.LoadEnemyStats();
         defense = enemyModel.defence;
         enemyModel.CurrentHealth = enemyModel.HealthPoint;
-        NewAudioManager.Instance.PlayEnemySFX("EnemySpawn");
+        if(isInstantiate) NewAudioManager.Instance.PlayEnemySFX("EnemySpawn");
         vfx = GetComponent<VfxTest>();
 
         if (vfx == null) {

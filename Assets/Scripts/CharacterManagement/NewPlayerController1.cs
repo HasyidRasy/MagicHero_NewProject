@@ -38,6 +38,7 @@ public class NewPlayerController1 : MonoBehaviour
     [Header("Casting Speed")]
     public float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     [SerializeField] private float timeBetweenSteps = 0.5f;   // Waktu antara serangan
+    private bool isStepping = false;
     public float attackCooldown = 0f;
     private float stepCooldown = 0f;
 
@@ -107,10 +108,16 @@ public class NewPlayerController1 : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
-        CharacterModel.Instance.ResetStats();
+        if (PlayerPrefs.HasKey("PlayerHealth") && PlayerPrefs.HasKey("PlayerDefence") && PlayerPrefs.HasKey("PlayerAttack"))
+        {
+            characterModel.LoadPlayerStats();
+        }
+        else
+        {
+            characterModel.ResetStats();
+        }
         ScoreManager.Instance.StartGame();
         attackPattern[0] = elementalSlots[0];
-        CharacterModel.Instance.LoadPlayerStats();
         elementSwitchSystem.LoadElementStatus();
         LoadElementalSlots();
         cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
@@ -154,11 +161,11 @@ public class NewPlayerController1 : MonoBehaviour
         Aim();
 
         //Call sfx player walk
-        if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f) && stepCooldown <= 0f) {
-            Stepping(stepCooldown);
-            stepCooldown = timeBetweenSteps;
-            StartCoroutine(Stepping(stepCooldown));
-        }
+        //if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f) && stepCooldown <= 0f) {
+        //    Stepping(stepCooldown);
+        //    stepCooldown = timeBetweenSteps;
+        //    StartCoroutine(Stepping(stepCooldown));
+        //}
     }
 
     private void FixedUpdate() {
@@ -179,6 +186,9 @@ public class NewPlayerController1 : MonoBehaviour
 
         if (!isWalking) {
             animator.SetBool("isDashing", false);
+        }
+        if (moveDir != Vector3.zero && isStepping == false) {
+            StartCoroutine(Stepping(timeBetweenSteps));
         }
 
 
@@ -213,8 +223,8 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isWalking", false);
         animator.SetBool("isDashing", true); // Set isDashing to true while dashing
 
-        float startTime = Time.time;
-        Vector3 pos = transform.position;
+        //float startTime = Time.time;
+        //Vector3 pos = transform.position;
         Vector3 dashDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
 
         //while (Time.time < startTime + characterModel.DashDuration) {
@@ -241,8 +251,10 @@ public class NewPlayerController1 : MonoBehaviour
 
     private IEnumerator Stepping(float duration)
     {
+        isStepping = true;
         NewAudioManager.Instance.PlayStepSFX("StepOnDirt");
         yield return new WaitForSeconds(duration);
+        isStepping = false;
     }
 
     // Coroutine untuk menonaktifkan isShooting selama durasi tertentu
