@@ -25,13 +25,6 @@ public class DamagePopupGenerator : MonoBehaviour
         {
             popup.transform.rotation = mainCamera.transform.rotation;
         }
-
-          // Tes Damage Popup
-        if(Input.GetKeyDown(KeyCode.F10))
-        {
-            Vector3 randomness = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
-            CreatePopup(Vector3.one + randomness, Random.Range(0, 1000).ToString(), new Color32(0xFF, 0xBA, 0x06, 0xFF));
-        } 
           
     }
 
@@ -41,8 +34,6 @@ public class DamagePopupGenerator : MonoBehaviour
         var temp = popup.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         temp.text = text;
         temp.faceColor = color;
-
-        //Debug.Log(position);
 
         // Destroy timer
         Destroy(popup, 1f);
