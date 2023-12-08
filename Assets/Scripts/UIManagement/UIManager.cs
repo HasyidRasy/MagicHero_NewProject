@@ -201,7 +201,7 @@ public class UIManager : MonoBehaviour
         Application.Quit();
     }
 
-    private void NewGameDatas()
+    public void NewGameDatas()
     {
         CharacterModel.Instance.ResetStats();
         EnemyModel.Instance.ResetEnemyStats();

@@ -210,7 +210,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 21268454}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90139983c2d57284b8c0c37dab077d64, type: 3}
   m_Name: 
@@ -8129,8 +8129,7 @@ Transform:
   m_LocalPosition: {x: 910.8473, y: 466.989, z: -10.482292}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1844086308}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &244826307
@@ -8290,6 +8289,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 275532769}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &284448723
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 284448725}
+  - component: {fileID: 284448724}
+  m_Layer: 0
+  m_Name: DamagePopupGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &284448724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284448723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cccfb362d507f1545935fffbf5339f33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabDamagePopup: {fileID: 2868900846335458555, guid: c18a92acee9294b4bbc427a39698f3b0, type: 3}
+--- !u!4 &284448725
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284448723}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &393899685
 GameObject:
   m_ObjectHideFlags: 0
@@ -9153,8 +9197,8 @@ MonoBehaviour:
   - {fileID: 458419985063655971, guid: 1a11a431e5f48c54bbfd0f64543058f9, type: 3}
   - {fileID: 40988261729150645, guid: 704621d14cd1644448a5ba0b01642681, type: 3}
   corridorPrefab: {fileID: 8145903803648160457, guid: 2d9bd33cb391a534c8b35698ca86dba8, type: 3}
-  minChallengeAreas: 4
-  maxChallengeAreas: 7
+  minChallengeAreas: 8
+  maxChallengeAreas: 9
   roomSpacing: 180
   currentAreaID: 1
 --- !u!4 &980354186
@@ -9938,7 +9982,7 @@ Transform:
   m_GameObject: {fileID: 1365725441}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23911765, y: -0.3696438, z: 0.09904577, w: 0.89239913}
-  m_LocalPosition: {x: 11.6, y: 11.4, z: -59}
+  m_LocalPosition: {x: 7, y: 7.7, z: -54.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10379,7 +10423,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1906699466}
   m_HandleRect: {fileID: 0}
@@ -10480,51 +10524,6 @@ Transform:
   - {fileID: 1997412087}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1844086307
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1844086308}
-  - component: {fileID: 1844086309}
-  m_Layer: 0
-  m_Name: UpgradeList
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1844086308
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1844086307}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 190044107}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1844086309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1844086307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e670d2d80f013dd4bb1a02dbf8ae1e07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chosenUpgrades: []
 --- !u!1 &1870929270
 GameObject:
   m_ObjectHideFlags: 0
@@ -10923,51 +10922,6 @@ Transform:
   m_Children:
   - {fileID: 1285508259}
   m_Father: {fileID: 1221052940}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2062006233
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2062006235}
-  - component: {fileID: 2062006234}
-  m_Layer: 0
-  m_Name: DamagePopupGenerator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2062006234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2062006233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cccfb362d507f1545935fffbf5339f33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefabDamagePopup: {fileID: 2868900846335458555, guid: c18a92acee9294b4bbc427a39698f3b0, type: 3}
---- !u!4 &2062006235
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2062006233}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2082397363
 PrefabInstance:
@@ -12449,7 +12403,7 @@ SceneRoots:
   - {fileID: 6897677885142299909}
   - {fileID: 244826309}
   - {fileID: 980354186}
-  - {fileID: 2062006235}
+  - {fileID: 284448725}
   - {fileID: 1365725444}
   - {fileID: 1831281712}
   - {fileID: 1228064677}

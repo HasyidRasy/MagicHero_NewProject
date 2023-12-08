@@ -63,6 +63,7 @@ public class ScoreManager : MonoBehaviour
         _enemyKilled = 0;
         _playTime = 0;
         _buffCollected = 0;
+        SavePlayerScore();
     }
     // Save player stats to PlayerPrefs
     public void SavePlayerScore()
