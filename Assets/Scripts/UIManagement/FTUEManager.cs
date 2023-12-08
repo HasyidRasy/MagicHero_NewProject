@@ -50,7 +50,7 @@ public class FTUEManager : MonoBehaviour {
         elementSwitchSystem.SetDefaultElementStatus();
         newPlayerController1.SetDefaultElementSlots();
         ScoreManager.Instance.ResetScore();
-        CharacterModel.Instance.SavePlayerStats();
+        CharacterModel.Instance.ResetStats();
         UpgradeList.Instance.RemoveTutorialList();
     }
 

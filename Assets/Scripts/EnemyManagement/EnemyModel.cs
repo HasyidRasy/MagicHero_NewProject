@@ -92,7 +92,7 @@ public class EnemyModel : MonoBehaviour {
     public void ResetEnemyStats()
     {
         healthPoint = 120;
-        attack = 20;
+        attack = 23;
         defence = 5;
         SaveEnemyStats();
     }
