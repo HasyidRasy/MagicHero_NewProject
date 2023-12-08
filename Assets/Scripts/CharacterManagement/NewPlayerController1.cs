@@ -275,7 +275,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        if(damageAmount < characterModel.defence) {
+        if(damageAmount <= characterModel.defence) {
             characterModel.HealthPoint -= 1;
             } else {
             characterModel.HealthPoint -= (damageAmount-characterModel.defence); // Reduce current health by the damage amount
