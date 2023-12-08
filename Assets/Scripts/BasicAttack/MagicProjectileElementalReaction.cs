@@ -62,39 +62,7 @@ public class MagicProjectileElementalReaction : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         Vector3 spawnPosition = transform.position + transform.forward * offsetDistance;
         if (!other.CompareTag("Player") && !other.CompareTag("Transparant")) {
-            //switch (element) {
-            //    case ElementalType.Water:
-            //        onImpactVfx = Instantiate(neroOnImpact, spawnPosition, transform.rotation);
-            //        onImpactVfx2 = Instantiate(neroOnImpact2, spawnPosition, transform.rotation);
-
-            //        onImpactVfx.Play();
-            //        neroOnImpact2.Play();
-
-            //        Destroy(onImpactVfx.gameObject, 3.5f);
-            //        Destroy(onImpactVfx2.gameObject, 3.5f);
-
-            //        break;
-            //    case ElementalType.Fire:
-            //        onImpactVfx = Instantiate(fotiaOnImpact, spawnPosition, transform.rotation);
-            //        onImpactVfx2 = Instantiate(fotiaOnImpact2, spawnPosition, transform.rotation);
-
-            //        onImpactVfx.Play();
-            //        fotiaOnImpact2.Play();
-
-            //        Destroy(onImpactVfx.gameObject, 3.5f);
-            //        Destroy(onImpactVfx2.gameObject, 3.5f);
-
-
-            //        break;
-            //    case ElementalType.Wind:
-            //        onImpactVfx = Instantiate(anemosOnImpact, spawnPosition, transform.rotation);
-            //        onImpactVfx.Play();
-
-            //        Destroy(onImpactVfx.gameObject, 3.5f);
-
-            //        // No second particle system for wind in the provided code
-            //        break;
-            //}
+   
             Destroy(gameObject); // Destroy the projectile after collision
             Debug.Log("Collision with other game object");
         }
@@ -102,45 +70,37 @@ public class MagicProjectileElementalReaction : MonoBehaviour {
         if (other.CompareTag("Enemy")) {
             EnemyController enemyController = other.GetComponent<EnemyController>();
             float totalDamage = damageAmount + (characterModel.attack - enemyController.defense) + characterModel.elementalBonus;
-            enemyController.TakeDamage(totalDamage);
+            enemyController.TakeDamage(damageAmount);
+            Debug.Log("Chara model attk " +  characterModel.attack.ToString());
+            Debug.Log("Total Damage " + totalDamage.ToString());
             enemyController.ApplyElementalStatus(element);
 
              // Adjust offsetDistance as needed
 
-            //switch (element) {
-            //    case ElementalType.Water:
-            //        onImpactVfx = Instantiate(neroOnImpact, spawnPosition, transform.rotation);
-            //        onImpactVfx2 = Instantiate(neroOnImpact2, spawnPosition, transform.rotation);
+            switch (element) {
+                case ElementalType.Water:
+                    // Damage Popup
+                    Vector3 randomnessWater = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
+                    DamagePopupGenerator.current.CreatePopup(other.transform.position + randomnessWater, totalDamage.ToString(), new Color32(0x73, 0xF9, 0xFE, 0xFF));
+     
+                    break;
+                
+                case ElementalType.Fire:
+                    // Damage Popup
+                    Vector3 randomnessFire = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
+                    DamagePopupGenerator.current.CreatePopup(other.transform.position + randomnessFire, totalDamage.ToString(), new Color32(0xFE, 0xAB, 0x76, 0xFF));
 
-            //        onImpactVfx.Play();
-            //        neroOnImpact2.Play();
+                    break;
+                
+                case ElementalType.Wind:
+                    // Damage Popup
+                    Vector3 randomnessWind = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
+                    DamagePopupGenerator.current.CreatePopup(other.transform.position + randomnessWind, totalDamage.ToString(), new Color32(0xA4, 0xFE, 0x85, 0xFF));
 
-            //        Destroy(onImpactVfx.gameObject, 3.5f);
-            //        Destroy(onImpactVfx2.gameObject, 3.5f);
-
-            //        break;
-            //    case ElementalType.Fire:
-            //        onImpactVfx = Instantiate(fotiaOnImpact, spawnPosition, transform.rotation);
-            //        onImpactVfx2 =  Instantiate(fotiaOnImpact2, spawnPosition, transform.rotation);
-
-            //        onImpactVfx.Play();
-            //        fotiaOnImpact2.Play();
-
-            //        Destroy(onImpactVfx.gameObject, 3.5f);
-            //        Destroy(onImpactVfx2.gameObject, 3.5f);
-
-
-            //        break;
-            //    case ElementalType.Wind:
-            //        onImpactVfx = Instantiate(anemosOnImpact, spawnPosition, transform.rotation);
-            //        onImpactVfx.Play();
-
-            //        Destroy(onImpactVfx.gameObject, 3.5f);
-
-            //        // No second particle system for wind in the provided code
-            //        break;
+                    break;
                     
-            //}
+               }
+          
             // Destroy the impact VFX after a delay
             Destroy(gameObject); // Destroy the projectile after collision
             Debug.Log("Attacking Enemy");
