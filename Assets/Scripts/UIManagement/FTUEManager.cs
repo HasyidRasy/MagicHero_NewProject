@@ -29,6 +29,7 @@ public class FTUEManager : MonoBehaviour {
 
     private ElementSwitchSystem elementSwitchSystem;
     private NewPlayerController1 newPlayerController1;
+    private UIManager uIManager;
 
 
     private void Awake() {
@@ -48,7 +49,7 @@ public class FTUEManager : MonoBehaviour {
     {
         elementSwitchSystem.SetDefaultElementStatus();
         newPlayerController1.SetDefaultElementSlots();
-        CharacterModel.Instance.ResetStats();
+        ScoreManager.Instance.ResetScore();
         CharacterModel.Instance.SavePlayerStats();
         UpgradeList.Instance.RemoveTutorialList();
     }
