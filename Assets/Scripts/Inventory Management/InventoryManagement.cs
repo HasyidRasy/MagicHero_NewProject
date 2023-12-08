@@ -14,6 +14,11 @@ public class InventoryManagement : MonoBehaviour
     public TMP_Text upgradeName;
     public TMP_Text upgradeText;
 
+    private void Awake() {
+        upgradeName.text = "";
+        upgradeText.text = "";
+    }
+
     public void UpdateBuffDisplay(List<UpgradeData> activeBuffs)
     {
         // Clear the list before updating
@@ -65,6 +70,12 @@ public class InventoryManagement : MonoBehaviour
             entry.eventID = EventTriggerType.PointerEnter;
             entry.callback.AddListener((data) => OnPointerEnterButton(buff));
             trigger.triggers.Add(entry);
+
+            EventTrigger.Entry exit = new EventTrigger.Entry();
+            exit.eventID = EventTriggerType.PointerExit;
+            exit.callback.AddListener((data) => OnPointerExitButton());
+            trigger.triggers.Add(exit);
+
         }
     }
 
@@ -74,6 +85,12 @@ public class InventoryManagement : MonoBehaviour
 
         upgradeName.text = hoveredUpgrade.upgradeName;
         upgradeText.text = GetUpgradeDescription(hoveredUpgrade);
+    }
+
+    public void OnPointerExitButton()
+    {
+        upgradeName.text = "";
+        upgradeText.text = "";
     }
 
     private string GetUpgradeDescription(UpgradeData upgrade)

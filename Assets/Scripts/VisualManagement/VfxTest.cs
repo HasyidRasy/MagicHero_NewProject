@@ -49,11 +49,11 @@ public class VfxTest : MonoBehaviour
     }
 
     //// Update is called once per frame
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.I)) {
-            SpawnVfxPlay();
-        }
-    }
+    //void Update() {
+    //    if (Input.GetKeyDown(KeyCode.I)) {
+    //        SpawnVfxPlay();
+    //    }
+    //}
 
     private void SpawnVfxPlay() {
         if (spawnEffectContainer != null) {

@@ -1,12 +1,15 @@
 using UnityEngine;
 using TMPro;
-using System.Collections; // Add this line
+using System.Collections;
+using Unity.VisualScripting;
 
 public class TextWriter : MonoBehaviour {
     public float delay = 0.1f; // Time delay between each character
+    public float delaySfx = 0.1f; // Time delay between each character
     private TMP_Text textComponent;
     private string fullText;
     private string currentText = "";
+    private bool isTyping = true;
 
     private void Start() {
         textComponent = GetComponent<TMP_Text>();
@@ -18,7 +21,12 @@ public class TextWriter : MonoBehaviour {
 
         fullText = textComponent.text;
         textComponent.text = ""; // Clear text initially
+
+        // Start the text coroutine
         StartCoroutine(WriteText());
+
+        // Start the sound coroutine independently
+        StartCoroutine(WriteTextSound());
     }
 
     private IEnumerator WriteText() {
@@ -31,6 +39,14 @@ public class TextWriter : MonoBehaviour {
             currentText = fullText.Substring(0, i);
             textComponent.text = currentText;
             yield return new WaitForSeconds(delay);
+        }
+        isTyping = false;
+    }
+
+    private IEnumerator WriteTextSound() {
+        while (isTyping) {
+            NewAudioManager.Instance.PlaySFX("Type");
+            yield return new WaitForSeconds(delaySfx);
         }
     }
 }

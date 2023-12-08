@@ -58,19 +58,16 @@ public class UIManager : MonoBehaviour
         {
             isSwitchElementPanelActive = true;
             EnableSwitchElementPanel();
-            inventoryManagement.UpdateBuffDisplay(CharacterModel.Instance.chosenUpgrades);
+            inventoryManagement.UpdateBuffDisplay(UpgradeList.Instance.chosenUpgrades);
             animationManager.PopupAttribute();
+            NewAudioManager.Instance.PlayUpgradeSFX("UpgradeOpen");
         }
         else if(Input.GetKeyDown(KeyCode.Tab) && isSwitchElementPanelActive == true)
         {
             isSwitchElementPanelActive = false;
             animationManager.DepopupAttribute();
             animationManager.ChangeElementDePopUp();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            EnableDeathPanel();
+            NewAudioManager.Instance.PlayUpgradeSFX("UpgradeClose");
         }
     }
 
@@ -186,6 +183,7 @@ public class UIManager : MonoBehaviour
 
     public void GoToStory() {
         SceneManager.LoadScene("Story");
+        NewGameDatas();
     }
 
     public void GoToTutorial() {
@@ -203,6 +201,12 @@ public class UIManager : MonoBehaviour
         Application.Quit();
     }
 
+    private void NewGameDatas()
+    {
+        CharacterModel.Instance.ResetStats();
+        EnemyModel.Instance.ResetEnemyStats();
+        ScoreManager.Instance.ResetScore();
+    }
     private void OnApplicationQuit()
     {
         CharacterModel.Instance.ResetStats();

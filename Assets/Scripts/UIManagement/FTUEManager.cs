@@ -50,6 +50,7 @@ public class FTUEManager : MonoBehaviour {
         newPlayerController1.SetDefaultElementSlots();
         CharacterModel.Instance.ResetStats();
         CharacterModel.Instance.SavePlayerStats();
+        UpgradeList.Instance.RemoveTutorialList();
     }
 
     private void Start() {
@@ -61,8 +62,6 @@ public class FTUEManager : MonoBehaviour {
         LevelManager.Instance.UpdateLevelText();
         NewAudioManager.Instance.bgmSource.Stop();
         NewAudioManager.Instance.PlayBGM("Safezone");
-        CharacterModel.Instance.ResetStats();
-        EnemyModel.Instance.ResetEnemyStats();
         ScoreManager.Instance.StartGame();
         elementSwitchSystem.SetDefaultElementStatus();
         newPlayerController1.SetDefaultElementSlots();

@@ -26,9 +26,13 @@ public class ChangeStaffColor : MonoBehaviour
         CooldownAttackUI.OnWaterNext -= SetWaterNext;
         CooldownAttackUI.OnWindNext -= SetWindNext;
     }
-    void Start() {
+
+    private void Awake() {
         // Assuming the MeshRenderer is attached to the same GameObject
         meshRenderer = GetComponent<MeshRenderer>();
+        
+    }
+    void Start() {
         // Initialize the material for the second slot
         SetSecondMaterial(fireMaterial);
     }

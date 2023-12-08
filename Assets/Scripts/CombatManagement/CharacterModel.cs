@@ -129,6 +129,7 @@ public class CharacterModel : MonoBehaviour
                     maxHealthPoint = healthPoint;
                 }
                 MaxHealthPoint += stat.upgradeValueStatic;
+                HealthPoint += stat.upgradeValueStatic;
                 Debug.Log("Max Health Point: "+maxHealthPoint);
                 break;
             case UpgradeType.AttackSpeed:
@@ -158,7 +159,7 @@ public class CharacterModel : MonoBehaviour
     {
         healthPoint = 100f;
         maxHealthPoint = 100f;
-        defence = 0f;
+        defence = 5f;
         attackSpeed = 1f;
         moveSpeed = 20.0f;
         attack = 0f;
@@ -169,7 +170,8 @@ public class CharacterModel : MonoBehaviour
         rotationSpeed = 500f;
         dashSpeed = 25000f;
         dashDuration = 0.35f;
-        dashCooldown = 1f;
+        dashCooldown = 2f;
+        SavePlayerStats();
     }
     // Save player stats to PlayerPrefs
     public void SavePlayerStats()
