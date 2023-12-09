@@ -51,7 +51,7 @@ public class DashTrail : MonoBehaviour
         FX = Instantiate(speedlineOverlay, overlaySpawn.transform);
         FX = Instantiate(lightningTrail, posToSpawn.transform);
 
-        Debug.Log("vfxtrail");
+        //Debug.Log("vfxtrail");
     }
 
     IEnumerator ActivateTrail (float timeActive)

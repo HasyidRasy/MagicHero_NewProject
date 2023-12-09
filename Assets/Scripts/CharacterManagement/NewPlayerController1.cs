@@ -1,8 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,7 +12,7 @@ public class NewPlayerController1 : MonoBehaviour
     private ElementSwitchSystem elementSwitchSystem;
     private CooldownAttackUI cooldownAtkUI;
     //cek dash logic
-    private bool isDashing = false;
+    [SerializeField] private bool isDashing = false;
     //rigidbody
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _model;
@@ -41,6 +38,7 @@ public class NewPlayerController1 : MonoBehaviour
     [Header("Casting Speed")]
     public float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     [SerializeField] private float timeBetweenSteps = 0.5f;   // Waktu antara serangan
+    private bool isStepping = false;
     public float attackCooldown = 0f;
     private float stepCooldown = 0f;
 
@@ -53,6 +51,7 @@ public class NewPlayerController1 : MonoBehaviour
     private bool isShooting = false;
     private Vector3 targetDirection;
     [SerializeField] private bool isAttacking = true;
+    [SerializeField] private bool canMove = true;
 
     public static event Action OnPlayerDeath;
     public static event Action OnPlayerHurt;
@@ -60,8 +59,7 @@ public class NewPlayerController1 : MonoBehaviour
     [Header("Player Info")]
     private Vector3 moveDir;
     public Slider _dashCooldownSlider;
-    public float _currentDashCd;
-    public bool _isIncrease;
+    public float _currentDashCd = 0f;
     private bool isDeath = false;
 
     [HideInInspector]
@@ -69,8 +67,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     [Header("TeleportVfx")]
     [SerializeField] private GameObject vfxTeleport;
-    [SerializeField] private Material vfxTeleportMaterial;
-    private Material[] originalMaterials;
+    [SerializeField] private GameObject vfxTeleportMaterial;
 
     private GameObject currentVfx;
 
@@ -79,6 +76,8 @@ public class NewPlayerController1 : MonoBehaviour
         CharacterModel.Instance.SavePlayerStats();
         SaveElementalSlots();
         elementSwitchSystem.SaveElementStatus();
+        ScoreManager.Instance.SavePlayerScore();
+        LevelManager.Instance.IncreaseLevel();
     }
 
     private void OnEnable() {
@@ -97,7 +96,6 @@ public class NewPlayerController1 : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         // Assign the mainCamera reference when a new scene is loaded
         mainCamera = Camera.main;
-        Debug.Log("kamera : " + mainCamera);
     }
     private void Awake()
     {
@@ -110,74 +108,68 @@ public class NewPlayerController1 : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
+        if (PlayerPrefs.HasKey("PlayerHealth") && PlayerPrefs.HasKey("PlayerDefence") && PlayerPrefs.HasKey("PlayerAttack"))
+        {
+            characterModel.LoadPlayerStats();
+        }
+        else
+        {
+            characterModel.ResetStats();
+        }
+        ScoreManager.Instance.StartGame();
         attackPattern[0] = elementalSlots[0];
-        CharacterModel.Instance.LoadPlayerStats();
         elementSwitchSystem.LoadElementStatus();
         LoadElementalSlots();
         cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
-
-        VfxTeleport();
+        FirstVfxTeleport();
+        ScoreManager.Instance.LoadPlayerScore();
     }
 
     private void Update()
     {
+        //if (_isIncrease) {
+        //    float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
+        //    _dashCooldownSlider.value = cdValue;
+
+        //    if (_currentDashCd >= characterModel.DashCooldown) {
+        //        _currentDashCd = 0f;
+        //        _isIncrease = false;
+        //    }
+        //} else if (!_isIncrease &&  moveDir != Vector3.zero && isDashing) {
+        //    float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
+        //    _dashCooldownSlider.value = cdValue;
+
+        //    if (_currentDashCd >= characterModel.DashDuration) {
+        //        _currentDashCd = 0f;
+        //        _isIncrease = true;
+        //    }
+        //}
+
         PlayerStat();
         if (attackCooldown > 0) {
             attackCooldown -= Time.deltaTime;
         }
         stepCooldown -= Time.deltaTime;
-        _currentDashCd += Time.deltaTime;
+        if (_currentDashCd > 0) {
+            _currentDashCd -= Time.deltaTime;
+        }
+
+        _dashCooldownSlider.value = Mathf.Lerp(0f, 1f, 1f - (_currentDashCd / (characterModel.DashCooldown 
+                                                              + characterModel.DashDuration)));
+
 
         Aim();
 
         //Call sfx player walk
-        if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f) && stepCooldown <= 0f) {
-            Stepping(stepCooldown);
-            stepCooldown = timeBetweenSteps;
-            StartCoroutine(Stepping(stepCooldown));
-        }
-
-        //if (!isDashing) {
-        //    if (_isIncrease && isDashing) {
-        //        float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
-        //        _dashCooldownSlider.value = cdValue;
-
-        //        if (_currentDashCd >= characterModel.DashCooldown) {
-        //            _currentDashCd = 0f;
-        //            _isIncrease = false;
-        //        }
-        //    } else {
-        //        float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
-        //        _dashCooldownSlider.value = cdValue;
-
-        //        if (_currentDashCd >= characterModel.DashDuration) {
-        //            _currentDashCd = 0f;
-        //            _isIncrease = true;
-        //        }
-        //    }
+        //if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f) && stepCooldown <= 0f) {
+        //    Stepping(stepCooldown);
+        //    stepCooldown = timeBetweenSteps;
+        //    StartCoroutine(Stepping(stepCooldown));
         //}
-
-        if (_isIncrease) {
-            float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
-            _dashCooldownSlider.value = cdValue;
-
-            if (_currentDashCd >= characterModel.DashCooldown) {
-                _currentDashCd = 0f;
-                _isIncrease = false;
-            }
-        } else if (!_isIncrease && Input.GetKeyDown(KeyCode.LeftShift) && moveDir != Vector3.zero) {
-            float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
-            _dashCooldownSlider.value = cdValue;
-
-            if (_currentDashCd >= characterModel.DashDuration) {
-                _currentDashCd = 0f;
-                _isIncrease = true;
-            }
-        }
     }
 
     private void FixedUpdate() {
-        if (!isShooting) CharaMove();
+        if (!isShooting && canMove) CharaMove();
         else _rb.velocity = Vector3.zero; //stop move & sliding
     }
 
@@ -194,6 +186,9 @@ public class NewPlayerController1 : MonoBehaviour
 
         if (!isWalking) {
             animator.SetBool("isDashing", false);
+        }
+        if (moveDir != Vector3.zero && isStepping == false) {
+            StartCoroutine(Stepping(timeBetweenSteps));
         }
 
 
@@ -223,12 +218,13 @@ public class NewPlayerController1 : MonoBehaviour
 
     // Coroutine Dash Logic
     private IEnumerator Dash() {
+        _currentDashCd = characterModel.DashCooldown + characterModel.dashDuration;
         isDashing = true;
         animator.SetBool("isWalking", false);
         animator.SetBool("isDashing", true); // Set isDashing to true while dashing
 
-        float startTime = Time.time;
-        Vector3 pos = transform.position;
+        //float startTime = Time.time;
+        //Vector3 pos = transform.position;
         Vector3 dashDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
 
         //while (Time.time < startTime + characterModel.DashDuration) {
@@ -255,8 +251,10 @@ public class NewPlayerController1 : MonoBehaviour
 
     private IEnumerator Stepping(float duration)
     {
+        isStepping = true;
         NewAudioManager.Instance.PlayStepSFX("StepOnDirt");
         yield return new WaitForSeconds(duration);
+        isStepping = false;
     }
 
     // Coroutine untuk menonaktifkan isShooting selama durasi tertentu
@@ -277,7 +275,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        if(damageAmount < characterModel.defence) {
+        if(damageAmount <= characterModel.defence) {
             characterModel.HealthPoint -= 1;
             } else {
             characterModel.HealthPoint -= (damageAmount-characterModel.defence); // Reduce current health by the damage amount
@@ -309,6 +307,8 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isDeath", true);
         characterModel.rotationSpeed = 0;
         characterModel.moveSpeed = 0;
+        ScoreManager.Instance.EndGame();
+        ScoreManager.Instance.DisplayGameOverStats();
         //CharacterModel.Instance.ResetStats();
     }
     private void ShowDeathPanel() {
@@ -500,15 +500,35 @@ public class NewPlayerController1 : MonoBehaviour
     }
 
     private void VfxTeleport() {
-
+        canMove = false;
+        animator.SetBool("isWalking",false);
+        vfxTeleportMaterial.SetActive(true);
         float yOffset = 1.0f;
         Vector3 newPosition = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
         currentVfx = Instantiate(vfxTeleport, newPosition, transform.rotation, transform);
         //SkinnedMeshRenderer vfxRenderer = currentVfx.GetComponent<SkinnedMeshRenderer>();
-
-
         //SetMaterialInChildren(transform, vfxTeleportMaterial);
-        Destroy(currentVfx, 3.5f);
+        Invoke(nameof(DestroyVfxTeleport), 3f);
+        Destroy(currentVfx,3.5f);
+
+    }
+
+    private void FirstVfxTeleport() {
+        canMove = false;
+        animator.SetBool("isWalking", false);
+        vfxTeleportMaterial.SetActive(true);
+        float yOffset = 1.0f;
+        Vector3 newPosition = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
+        currentVfx = Instantiate(vfxTeleport, newPosition, transform.rotation, transform);
+        //SkinnedMeshRenderer vfxRenderer = currentVfx.GetComponent<SkinnedMeshRenderer>();
+        //SetMaterialInChildren(transform, vfxTeleportMaterial);
+        Invoke(nameof(DestroyVfxTeleport), 1.5f);
+        Destroy(currentVfx, 2f);
+    }
+
+    private void DestroyVfxTeleport() {
+        canMove = true;
+        vfxTeleportMaterial.SetActive(false);
     }
 
     //void SetMaterialInChildren(Transform parent, Material material) {

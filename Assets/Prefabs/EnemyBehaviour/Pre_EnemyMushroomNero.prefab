@@ -994,13 +994,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70214e600bf37af44a587e09452e19ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoint: 100
+  healthPoint: 120
   defence: 5
   attackSpeed: 2
   moveSpeed: 3
-  attack: 20
-  elementalBonus: 10
+  attack: 23
+  elementalBonus: 5
   currentHealth: 0
+  hpUp: 35
+  atkUp: 3
+  defUp: 2
 --- !u!114 &391569849032127248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1015,11 +1018,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defense: 0
   speedChase: 0
-  minSpeed: 3
-  maxSpeed: 6
-  damageAmount: 20
-  attackRange: 5
-  attackCooldown: 2
+  minSpeed: 4.5
+  maxSpeed: 7
+  damageAmount: 15
+  isInstantiate: 1
+  attackRange: 6
+  attackCooldown: 0.8
   attackVfxWait: 0
 --- !u!114 &-4267194810408124845
 MonoBehaviour:
@@ -1075,10 +1079,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.60048085
-  m_Height: 1.2009617
+  m_Radius: 0.58177346
+  m_Height: 1.6540474
   m_Direction: 1
-  m_Center: {x: -0.00640738, y: 0.055584114, z: 0}
+  m_Center: {x: 0.012299895, y: 0.28212643, z: 0}
 --- !u!54 &8089879816901790824
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1118,6 +1122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa107a6e79fd30548acb9b1da6adedeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnEffect: {fileID: 1894199357615276205, guid: ba092eb65dd70904694b1a1eadd19401, type: 3}
   FreezeEffect: {fileID: 8653144190716356466, guid: d2c2433571bc53b408f6081a71d48e86, type: 3}
   FreezeOff: {fileID: 4071121852338977983, guid: c238dfcae3907024992a2e2c2542ef7c, type: 3}
   freezeYPosition: 0.1
@@ -1182,11 +1187,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4182326502901244342, guid: af7ed0cf60e60ab448ba6737bf8c1d45, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4182326502901244342, guid: af7ed0cf60e60ab448ba6737bf8c1d45, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4182326502901244342, guid: af7ed0cf60e60ab448ba6737bf8c1d45, type: 3}
       propertyPath: m_LocalScale.z

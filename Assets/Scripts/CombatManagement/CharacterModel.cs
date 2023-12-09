@@ -9,7 +9,7 @@ public class CharacterModel : MonoBehaviour
 
     // Private fields to store character properties
     public float healthPoint;
-    public float maxHealthPoint = 100;
+    public float maxHealthPoint;
     public float defence;
     public float attackSpeed;
     public float moveSpeed = 5.0f;
@@ -140,6 +140,13 @@ public class CharacterModel : MonoBehaviour
                 Defence += stat.upgradeValueStatic;
                 Debug.Log("Defense: "+defence);
                 break;
+            case UpgradeType.HealthPoint:
+                HealthPoint += stat.upgradeValueStatic;
+                if(HealthPoint > MaxHealthPoint)
+                {
+                    HealthPoint = MaxHealthPoint;
+                }
+                break;
             default:
                 Debug.LogError("Unknown upgrade type: " + stat.upgradeType);
                 break;
@@ -152,7 +159,7 @@ public class CharacterModel : MonoBehaviour
     {
         healthPoint = 100f;
         maxHealthPoint = 100f;
-        defence = 0f;
+        defence = 5f;
         attackSpeed = 1f;
         moveSpeed = 20.0f;
         attack = 0f;
@@ -163,7 +170,8 @@ public class CharacterModel : MonoBehaviour
         rotationSpeed = 500f;
         dashSpeed = 25000f;
         dashDuration = 0.35f;
-        dashCooldown = 1f;
+        dashCooldown = 2f;
+        SavePlayerStats();
     }
     // Save player stats to PlayerPrefs
     public void SavePlayerStats()
@@ -175,7 +183,10 @@ public class CharacterModel : MonoBehaviour
         PlayerPrefs.SetFloat("PlayerMoveSpeed", MoveSpeed);
         PlayerPrefs.SetFloat("PlayerAttack", Attack);
         PlayerPrefs.SetFloat("PlayerElementalBonus", ElementalBonus);
-
+        for (int i = 0;i < chosenUpgrades.Count; i++)
+        {
+            PlayerPrefs.SetInt("Upgrade "+i, chosenUpgrades[i].upgradeID);
+        }
         // Save PlayerPrefs
         PlayerPrefs.Save();
     }
@@ -216,6 +227,20 @@ public class CharacterModel : MonoBehaviour
         if (PlayerPrefs.HasKey("PlayerElementalBonus"))
         {
             ElementalBonus = PlayerPrefs.GetFloat("PlayerElementalBonus");
+        }
+
+        for (int i = 0;i < chosenUpgrades.Count; i++)
+        {
+            if(PlayerPrefs.HasKey("Upgrade "+i))
+            {
+                foreach(UpgradeData upgrade in chosenUpgrades)
+                {
+                    if(PlayerPrefs.GetInt("Upgrade "+i) == upgrade.upgradeID)
+                    {
+                        chosenUpgrades.Add(upgrade);
+                    }
+                }
+            }
         }
     }
 }

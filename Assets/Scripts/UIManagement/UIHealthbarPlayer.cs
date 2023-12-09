@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIHealthbarPlayer : MonoBehaviour
 {
     private CharacterModel characterModel;
     public GameObject player;
     private float maxHP;
+    public TMP_Text hpText;
+    private string hpCurrent;
+    private string hpMax;
 
     private Slider healtBarSlider;
 
@@ -23,8 +27,10 @@ public class UIHealthbarPlayer : MonoBehaviour
 
         healthBarPlayerUI = this.gameObject;
         fadeHealthSlider = healthBarPlayerUI.transform.GetChild(0).GetComponent<Slider>();
-        maxHP = characterModel.healthPoint;
-
+        hpText = healthBarPlayerUI.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        //maxHP = characterModel.maxHealthPoint;
+        hpCurrent = characterModel.healthPoint.ToString();
+        hpMax = characterModel.maxHealthPoint.ToString();
     }
 
     private void Update()
@@ -35,10 +41,23 @@ public class UIHealthbarPlayer : MonoBehaviour
         {
             fadeHealthSlider.value = Mathf.Lerp(fadeHealthSlider.value, healtBarSlider.value, lerpSpeed);
         }
+
+        SetAmountHP();
     }
 
     private void SetHealthbarPlayer()
     {
-        healtBarSlider.value = characterModel.healthPoint / maxHP;
+        healtBarSlider.value = characterModel.healthPoint / characterModel.maxHealthPoint;
     }
+
+    private void SetAmountHP()
+    {
+        hpCurrent = characterModel.healthPoint.ToString();
+        hpMax = characterModel.maxHealthPoint.ToString();
+        if(characterModel.healthPoint < 0){
+            hpCurrent = "0";
+        }
+        hpText.text = hpCurrent + " / " + hpMax;
+    }
+    
 }

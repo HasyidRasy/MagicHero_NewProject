@@ -54,7 +54,7 @@ public class AsynLoader : MonoBehaviour {
 
     IEnumerator LoadLevelAsyn(string levelToLoad) {  
         //transitionAnim.SetTrigger("TransitionEnd");
-        yield return new WaitForSeconds(3.7f);
+        yield return new WaitForSeconds(3f);
         loadingScreen.SetActive(true);
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(levelToLoad);
         
