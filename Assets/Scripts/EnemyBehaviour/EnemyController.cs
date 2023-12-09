@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -20,14 +21,21 @@ public class EnemyController : MonoBehaviour
     private ElementalType elementStatus = ElementalType.Null;
     private bool isActive = false;
 
+    //elemental PopupUI
+    private UIPopupElementHP uiPopupElementHP;
+    private Sprite elementSprite;
+    private Sprite reactionSprite;
+    private Element elementScrptObj;
+    private Coroutine isElementApplied;
+    private Coroutine isReaction;
+
     private Animator animator;
     public float minSpeed = 3f;
     public float maxSpeed = 10f;
     private float spawnDuration = 2.0f;
 
     private VfxTest vfx;
-
-    public float damageAmount;
+    [HideInInspector] public float damageAmount = 0;
     private bool isDeath = false;
     private bool isAttacking;
     private bool canAttack = true;
@@ -35,13 +43,17 @@ public class EnemyController : MonoBehaviour
     private bool burning = false;
     private bool slowness = false;
     private bool isSpawning;
+    [SerializeField] private bool isInstantiate = true;
 
     [SerializeField] private float attackRange;
     [SerializeField] private float attackCooldown = 2.0f; // Adjust the cooldown time as needed
 
+    [SerializeField] private float attackVfxWait = 0f;
+
     private void Awake()
     {
         characterModel = FindObjectOfType<CharacterModel>();
+        uiPopupElementHP = GetComponent<UIPopupElementHP>();
         enemyPool = FindObjectOfType<EnemyPool>();
         enemySpawnManagerTrigger = FindObjectOfType<EnemySpawnManagerTrigger>();
         enemyModel = GetComponent<EnemyModel>();
@@ -50,12 +62,15 @@ public class EnemyController : MonoBehaviour
         speedChase = Random.Range(minSpeed, maxSpeed);
         animator = GetComponentInChildren<Animator>();
         enemyCollider = GetComponent<Collider>();
+        //enemyModel.LoadEnemyStats();
     }
 
     private void Start()
     {
+        enemyModel.LoadEnemyStats();
+        defense = enemyModel.defence;
         enemyModel.CurrentHealth = enemyModel.HealthPoint;
-        NewAudioManager.Instance.PlaySFX("EnemySpawn");
+        if(isInstantiate) NewAudioManager.Instance.PlayEnemySFX("EnemySpawn");
         vfx = GetComponent<VfxTest>();
 
         if (vfx == null) {
@@ -66,6 +81,19 @@ public class EnemyController : MonoBehaviour
     private void Update()
     {
         Invoke("EnemyBehavior", spawnDuration);
+
+        //Logic for Showing HP Bar
+        if (enemyModel.currentHealth != enemyModel.HealthPoint && enemyModel.currentHealth > 0)
+        {
+            // Show HP Bar
+            uiPopupElementHP.ShowUpdateHealthBarUI(enemyModel.currentHealth, enemyModel.healthPoint);
+        }
+        else if (enemyModel.currentHealth <= 0)
+        {
+            uiPopupElementHP.ResetHealthUI();
+            uiPopupElementHP.ResetPopupUI();
+            uiPopupElementHP.ResetReactionUI();
+        }
     }
 
     private void EnemyBehavior() {
@@ -73,7 +101,7 @@ public class EnemyController : MonoBehaviour
             float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
             if (distanceToPlayer <= attackRange) {
-                if (canAttack) StartCoroutine(AttackPlayer());
+                if (canAttack) StartCoroutine(StartAttackPlayer());
             } else {
                 if (!isAttacking && !freezing) ChasePlayer();
             }
@@ -98,7 +126,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private IEnumerator AttackPlayer()
+    private IEnumerator StartAttackPlayer()
     {
         canAttack = false;
         isAttacking = true;
@@ -106,8 +134,14 @@ public class EnemyController : MonoBehaviour
         animator.SetBool("isWalking", false);
         animator.SetBool("isHopping", false);
         animator.SetBool("isAttacking", true);
-        NewAudioManager.Instance.PlaySFX("EnemyAtk");
         // Implement your attack logic here, e.g., dealing damage to the player
+        //Invoke(nameof(AttackPlayer), attackVfxWait);
+        //NewAudioManager.Instance.PlayEnemyAtkSFX("EnemyAtk");
+        if (characterModel.healthPoint == 0) {
+            NewAudioManager.Instance.enemyAtkSource.Stop();
+        } else {
+            NewAudioManager.Instance.PlayEnemyAtkSFX("EnemyAtk");
+        }
         yield return new WaitForSeconds(attackCooldown); // Wait for the attack animation to finish
 
         animator.SetBool("isAttacking", false);
@@ -115,29 +149,53 @@ public class EnemyController : MonoBehaviour
         canAttack = true;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            NewPlayerController1 playerController = collision.gameObject.GetComponent<NewPlayerController1>();
+    //private void AttackPlayer() {
+    //    AttackVfx();
+    //    Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
+    //    foreach (Collider collider in hitColliders) {
+    //        if (collider.gameObject.CompareTag("Player")) {
+    //            NewPlayerController1 playerController = collider.gameObject.GetComponent<NewPlayerController1>();
+    //            if (playerController != null) {
+    //                playerController.TakeDamage(damageAmount);
+    //                Debug.Log("Player attacked");
+    //            }
+    //        }
+    //    }
+    //}
 
-            if (playerController != null)
-            {
-                playerController.TakeDamage(damageAmount);
-            }
-        }
-    }
+    //private void AttackVfx() {
+    //    //vfx.AttackVFX();     
+    //    //Debug.Log("Bam");
+    //}
+
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //        NewPlayerController1 playerController = collision.gameObject.GetComponent<NewPlayerController1>();
+
+    //        if (playerController != null)
+    //        {
+                //playerController.TakeDamage(damageAmount);
+    //        }
+    //    }
+    //}
 
     public void TakeDamage(float damageAmount)
     {       
         float damageTaken = (damageAmount - defense) + characterModel.elementalBonus;
+        if (damageTaken <= 0) 
+        {
+            damageTaken = 1f;
+        }
         enemyModel.CurrentHealth -= damageTaken; // Reduce current health by the damage amount
         int randomHurtPattern = Random.Range(0, 3);
         animator.SetInteger("hurtPattern", randomHurtPattern);
         animator.SetTrigger("isHurt");
         navMeshAgent.speed = 0;
         NewAudioManager.Instance.sfxSource.Stop();
-        NewAudioManager.Instance.PlaySFX("EnemyHurt");
+        NewAudioManager.Instance.PlayEnemySFX("EnemyHurt");
         if (enemyModel.CurrentHealth <= 0 && isDeath == false)
         {
             Death();
@@ -145,19 +203,64 @@ public class EnemyController : MonoBehaviour
     }
 
     public void ApplyElementalStatus(ElementalType elementType) {
+        elementScrptObj = ElementalReactionController.Instance.GetElementScrptObj(elementType); //Get Element Scriptable Object
+
         if (elementStatus == ElementalType.Null) {
             elementStatus = elementType;
             Debug.Log("Applied Status " + elementStatus);
-        } else if (elementStatus != elementType) {
-            HandleElementalInteraction(elementStatus, elementType);
-            elementStatus = ElementalType.Null;
+
+            //PopupUI
+            //Reset ReactionUI When still occured
+            if (isReaction != null)
+            {
+                StopCoroutine(isReaction);
+                uiPopupElementHP.ResetReactionUI();
+            }
+            //Show Popup UI When No Element Appllied
+            if (isElementApplied != null)
+            {
+                StopCoroutine(isElementApplied);
+                isElementApplied = null;
+                uiPopupElementHP.ResetPopupUI();
+            }
+            elementSprite = elementScrptObj.elementSprite;
+            uiPopupElementHP.ShowElementalPopup(elementSprite);
+            isElementApplied = StartCoroutine(uiPopupElementHP.ElementPopupDuration());
         }
+        else if (elementStatus == elementType)
+        {
+            //Reset Applied Element Duration if Same Type
+            if (isElementApplied != null)
+            {
+                StopCoroutine(isElementApplied);
+                isElementApplied = null;
+                uiPopupElementHP.ResetPopupUI();
+            }
+            uiPopupElementHP.ShowElementalPopup(elementSprite);
+            isElementApplied = StartCoroutine(uiPopupElementHP.ElementPopupDuration());
+        } else if (elementStatus != elementType) {
+            //Trigger Elemental Reaction & Popup 2 Element
+            uiPopupElementHP.ResetPopupUI();
+            StopCoroutine(isElementApplied);
+            uiPopupElementHP.ShowReactionPopupUI(elementSprite, elementScrptObj.elementSprite);
+            isElementApplied = StartCoroutine(uiPopupElementHP.ResetReactionPopupUI());
+            HandleElementalInteraction(elementStatus, elementType);
+            ResetElementalStatus();
+        }
+    }
+
+    // Function for resetting element
+    public void ResetElementalStatus()
+    {
+        elementStatus = ElementalType.Null;
     }
 
     // Function to handle elemental interactions
     public void HandleElementalInteraction(ElementalType currentElement, ElementalType otherElement) {
         // Check for an elemental reaction between the player's element and the other element
         ElementalReaction reaction = ElementalReactionController.Instance.CheckElementalReaction(currentElement, otherElement);
+        // Get reaction Sprite
+        reactionSprite = reaction.reactionSprite;
 
         if (reaction != null) {
             // Handle the reaction, e.g., apply damage, change visuals, etc.
@@ -190,6 +293,14 @@ public class EnemyController : MonoBehaviour
 
             while (Time.time < endTime) {
                 TakeDamage(damage);
+                // Damage Popup
+                float damageTakenAmount = (damage - defense) + characterModel.elementalBonus;
+                if (damageTakenAmount <= 0) 
+                {
+                    damageTakenAmount = 1f;
+                }
+                Vector3 randomnessFire = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
+                DamagePopupGenerator.current.CreatePopup(navMeshAgent.transform.position + randomnessFire, damageTakenAmount.ToString(), new Color32(0xFE, 0xAB, 0x76, 0xFF));
                 yield return new WaitForSeconds(interval);
             }
             isActive = false;
@@ -206,6 +317,10 @@ public class EnemyController : MonoBehaviour
 
     // Function to handle the reaction result
     private void HandleReaction(string resultReaction, float reactionDuration) {
+
+        // Reaction Popup
+        isReaction = StartCoroutine(ReactionUIDuration(reactionSprite, reactionDuration));
+
         if (resultReaction == "Freezing" && !freezing) {
             Debug.Log("Terjadi Reaksi " + resultReaction);
             freezing = true;
@@ -226,6 +341,14 @@ public class EnemyController : MonoBehaviour
             StartCoroutine(VfxHandleElemental(resultReaction, reactionDuration));
             StartCoroutine(VfxHandleElementalState(resultReaction, reactionDuration + 0.5f));
         }
+    }
+
+    IEnumerator ReactionUIDuration(Sprite spriteReaction, float reactionTime) {
+        yield return new WaitForSeconds(0.5f);
+        uiPopupElementHP.ResetPopupUI();
+        uiPopupElementHP.ShowReactionUI(spriteReaction, reactionTime - 0.5f);
+        //yield return new WaitForSeconds(reactionTime);
+        //uiPopupElementHP.ResetReactionUI();
     }
 
         IEnumerator VfxHandleElemental(string resultReaction, float delayTime) {
@@ -260,6 +383,7 @@ public class EnemyController : MonoBehaviour
 
     private void Death()
     {
+        ScoreManager.Instance.EnemyKilled();
         Destroy(this.gameObject, 3f);
         enemyPool.NotifyEnemyDied();
         enemyCollider.enabled = false;
@@ -267,7 +391,7 @@ public class EnemyController : MonoBehaviour
         navMeshAgent.speed = 0;
         isDeath = true;
         animator.SetBool("Death", true);
-        NewAudioManager.Instance.PlaySFX("EnemyDeath");
+        NewAudioManager.Instance.PlayEnemySFX("EnemyDeath");
     }
 
     public void FreezeChara(bool _freeze)

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class AsynLoader : MonoBehaviour {
     public static AsynLoader Instance;
+    [SerializeField] private string nextLevel;
 
     [Header("Scene")]
     [SerializeField] private GameObject loadingScreen;
@@ -18,6 +19,12 @@ public class AsynLoader : MonoBehaviour {
     [Header("Transition")]
     [SerializeField] Animator transitionAnim;
 
+    private void OnEnable() {
+        LoadLevelOnCollision.OnTeleport += LoadLevel;
+    }
+    private void OnDisable() {
+        LoadLevelOnCollision.OnTeleport -= LoadLevel;
+    }
     //private void Awake() {
     //    if (Instance == null) {
     //        Instance = this;
@@ -27,6 +34,10 @@ public class AsynLoader : MonoBehaviour {
     //    }
     //}
 
+    public void LoadLevel() {
+        string levelToLoad = nextLevel;
+        StartCoroutine(LoadLevelAsyn(levelToLoad));
+    }
     public void LoadLevelBtn(string levelToLoad) {
         //loadingScreen.SetActive(true);
         mainMenu.SetActive(false);
@@ -41,9 +52,10 @@ public class AsynLoader : MonoBehaviour {
         StartCoroutine(LoadLevelAsyn(levelToLoad));
     }
 
-    IEnumerator LoadLevelAsyn(string levelToLoad) {
+    IEnumerator LoadLevelAsyn(string levelToLoad) {  
         //transitionAnim.SetTrigger("TransitionEnd");
-        //yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
+        loadingScreen.SetActive(true);
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(levelToLoad);
         
         while (!loadOperation.isDone) {
@@ -51,6 +63,8 @@ public class AsynLoader : MonoBehaviour {
             loadingSlider.value = progressValue;
             yield return null;
         }
+
+        yield return new WaitForSeconds(1f);
         //transitionAnim.SetTrigger("TransitionStart");
         //loadingScreen.SetActive(false);
     }

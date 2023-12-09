@@ -11,13 +11,14 @@ public class UpgradeData : ScriptableObject
    public Sprite upgradeIcon;
    public UpgradeStats[] stats;
    public UpgradeRarity rarity;
+   public string upgradeDesc;
+   public ElementalType upgradeElement;
 }
 
 [System.Serializable]
 public class UpgradeStats
 {
     public int upgradeValueStatic;
-    public float upgradeValuePercent;
     public UpgradeType upgradeType;
 }
 
@@ -25,14 +26,16 @@ public enum UpgradeType
 {
     ElementalAttack,
     BasicAttack,
-    HealthPoint,
+    MaxHealthPoint,
     AttackSpeed,
-    Defense
+    Defense,
+    ElementalType,
+    HealthPoint
 }
 
 public enum UpgradeRarity
 {
     Common,
     Rare,
-    Legendary
+    Elemental
 }

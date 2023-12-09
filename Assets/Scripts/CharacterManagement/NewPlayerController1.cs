@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class NewPlayerController1 : MonoBehaviour
 {
@@ -10,11 +10,13 @@ public class NewPlayerController1 : MonoBehaviour
     private CharacterModel characterModel;
     private Animator animator;
     private ElementSwitchSystem elementSwitchSystem;
+    private CooldownAttackUI cooldownAtkUI;
     //cek dash logic
-    private bool isDashing = false;
+    [SerializeField] private bool isDashing = false;
     //rigidbody
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _model;
+    [SerializeField] private Collider _collider;
 
     private Vector3 _input; 
 
@@ -34,9 +36,10 @@ public class NewPlayerController1 : MonoBehaviour
     [SerializeField] private float magicProSpeed = 10f;         // Kecepatan proyektil
 
     [Header("Casting Speed")]
-    [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
+    public float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
     [SerializeField] private float timeBetweenSteps = 0.5f;   // Waktu antara serangan
-    private float attackCooldown = 0f;
+    private bool isStepping = false;
+    public float attackCooldown = 0f;
     private float stepCooldown = 0f;
 
     [SerializeField] private LayerMask groundMask;
@@ -48,55 +51,125 @@ public class NewPlayerController1 : MonoBehaviour
     private bool isShooting = false;
     private Vector3 targetDirection;
     [SerializeField] private bool isAttacking = true;
+    [SerializeField] private bool canMove = true;
 
     public static event Action OnPlayerDeath;
+    public static event Action OnPlayerHurt;
 
+    [Header("Player Info")]
+    private Vector3 moveDir;
+    public Slider _dashCooldownSlider;
+    public float _currentDashCd = 0f;
+    private bool isDeath = false;
+
+    [HideInInspector]
+    public int currentButtonIndex = 0;
+
+    [Header("TeleportVfx")]
+    [SerializeField] private GameObject vfxTeleport;
+    [SerializeField] private GameObject vfxTeleportMaterial;
+
+    private GameObject currentVfx;
+
+    private void OnDestroy()
+    {
+        CharacterModel.Instance.SavePlayerStats();
+        SaveElementalSlots();
+        elementSwitchSystem.SaveElementStatus();
+        ScoreManager.Instance.SavePlayerScore();
+        LevelManager.Instance.IncreaseLevel();
+    }
 
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        UIManager.OnRestart += RestartPlayer;
+        LoadLevelOnCollision.OnTeleport += VfxTeleport;
     }
 
     private void OnDisable() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        UIManager.OnRestart -= RestartPlayer;
+        LoadLevelOnCollision.OnTeleport -= VfxTeleport;
+
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         // Assign the mainCamera reference when a new scene is loaded
         mainCamera = Camera.main;
-        Debug.Log("kamera : " + mainCamera);
     }
     private void Awake()
     {
         characterModel = GetComponent<CharacterModel>();
         animator = GetComponentInChildren<Animator>();
         elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
+        cooldownAtkUI = FindObjectOfType<CooldownAttackUI>();
     }
 
     private void Start()
     {
-
         mainCamera = Camera.main;
+        if (PlayerPrefs.HasKey("PlayerHealth") && PlayerPrefs.HasKey("PlayerDefence") && PlayerPrefs.HasKey("PlayerAttack"))
+        {
+            characterModel.LoadPlayerStats();
+        }
+        else
+        {
+            characterModel.ResetStats();
+        }
+        ScoreManager.Instance.StartGame();
         attackPattern[0] = elementalSlots[0];
+        elementSwitchSystem.LoadElementStatus();
+        LoadElementalSlots();
+        cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
+        FirstVfxTeleport();
+        ScoreManager.Instance.LoadPlayerScore();
     }
 
     private void Update()
     {
+        //if (_isIncrease) {
+        //    float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
+        //    _dashCooldownSlider.value = cdValue;
+
+        //    if (_currentDashCd >= characterModel.DashCooldown) {
+        //        _currentDashCd = 0f;
+        //        _isIncrease = false;
+        //    }
+        //} else if (!_isIncrease &&  moveDir != Vector3.zero && isDashing) {
+        //    float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
+        //    _dashCooldownSlider.value = cdValue;
+
+        //    if (_currentDashCd >= characterModel.DashDuration) {
+        //        _currentDashCd = 0f;
+        //        _isIncrease = true;
+        //    }
+        //}
+
         PlayerStat();
-        attackCooldown -= Time.deltaTime;
+        if (attackCooldown > 0) {
+            attackCooldown -= Time.deltaTime;
+        }
         stepCooldown -= Time.deltaTime;
+        if (_currentDashCd > 0) {
+            _currentDashCd -= Time.deltaTime;
+        }
+
+        _dashCooldownSlider.value = Mathf.Lerp(0f, 1f, 1f - (_currentDashCd / (characterModel.DashCooldown 
+                                                              + characterModel.DashDuration)));
+
 
         Aim();
 
         //Call sfx player walk
-        if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f) && stepCooldown <= 0f) {
-            Stepping(stepCooldown);
-            stepCooldown = timeBetweenSteps;
-            StartCoroutine(Stepping(stepCooldown));
-        }
+        //if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f) && stepCooldown <= 0f) {
+        //    Stepping(stepCooldown);
+        //    stepCooldown = timeBetweenSteps;
+        //    StartCoroutine(Stepping(stepCooldown));
+        //}
     }
 
     private void FixedUpdate() {
-        if (!isShooting) CharaMove();
+        if (!isShooting && canMove) CharaMove();
         else _rb.velocity = Vector3.zero; //stop move & sliding
     }
 
@@ -106,17 +179,27 @@ public class NewPlayerController1 : MonoBehaviour
         float vertical = Input.GetAxisRaw("Vertical");
 
         // Move direction
-        Vector3 moveDir = new Vector3(horizontal, 0f, vertical).normalized;
+        moveDir = new Vector3(horizontal, 0f, vertical).normalized;
 
         // Check if the character is walking
         bool isWalking = moveDir != Vector3.zero;
 
+        if (!isWalking) {
+            animator.SetBool("isDashing", false);
+        }
+        if (moveDir != Vector3.zero && isStepping == false) {
+            StartCoroutine(Stepping(timeBetweenSteps));
+        }
+
+
         // Set the "isWalking" parameter in the animator
         animator.SetBool("isWalking", isWalking);
-        animator.SetBool("isDashing", isDashing);
+        animator.SetBool("isDashing", false);
 
         // Calculate the desired velocity
         Vector3 velocity = moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed;
+
+        velocity.y += -100f * Time.deltaTime;
 
         // Apply velocity to the Rigidbody
         _rb.velocity = velocity;
@@ -128,24 +211,38 @@ public class NewPlayerController1 : MonoBehaviour
 
         // Call Coroutine Dash
         if (Input.GetKey(KeyCode.LeftShift) && !isDashing && isWalking) {
+            NewAudioManager.Instance.PlayPlayerSFX("Dash");
             StartCoroutine(Dash());
         }
     }
 
     // Coroutine Dash Logic
     private IEnumerator Dash() {
+        _currentDashCd = characterModel.DashCooldown + characterModel.dashDuration;
         isDashing = true;
         animator.SetBool("isWalking", false);
         animator.SetBool("isDashing", true); // Set isDashing to true while dashing
 
-        float startTime = Time.time;
-        Vector3 pos = transform.position;
+        //float startTime = Time.time;
+        //Vector3 pos = transform.position;
         Vector3 dashDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
 
-        while (Time.time < startTime + characterModel.DashDuration) {
-            _rb.MovePosition(transform.position + dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime);
-            yield return null;
-        }
+        //while (Time.time < startTime + characterModel.DashDuration) {
+        //    _rb.MovePosition(transform.position + dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime);
+        //    yield return null;
+        //}
+
+        Vector3 dashVelocity = dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime;
+
+        _rb.velocity = dashVelocity;
+
+        DashTrail dashvfx = GetComponent<DashTrail>();
+
+        if(dashvfx != null) dashvfx.StartDashVfx();
+
+        yield return new WaitForSeconds(characterModel.dashDuration);
+
+        _rb.velocity = Vector3.zero;
 
         animator.SetBool("isDashing", false); // Set isDashing back to false after dashing
         yield return new WaitForSeconds(characterModel.DashCooldown);
@@ -154,8 +251,10 @@ public class NewPlayerController1 : MonoBehaviour
 
     private IEnumerator Stepping(float duration)
     {
-        NewAudioManager.Instance.PlaySFX("StepOnDirt");
+        isStepping = true;
+        NewAudioManager.Instance.PlayStepSFX("StepOnDirt");
         yield return new WaitForSeconds(duration);
+        isStepping = false;
     }
 
     // Coroutine untuk menonaktifkan isShooting selama durasi tertentu
@@ -176,13 +275,31 @@ public class NewPlayerController1 : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        characterModel.HealthPoint -= damageAmount; // Reduce current health by the damage amount
-        animator.SetTrigger("isHurt");
-        if (characterModel.HealthPoint <= 0)
-        {          
-            Death(); // If health drops to or below zero, call a method to handle enemy death
-            Invoke("ShowDeathPanel", 3f);
+        if(damageAmount <= characterModel.defence) {
+            characterModel.HealthPoint -= 1;
+            } else {
+            characterModel.HealthPoint -= (damageAmount-characterModel.defence); // Reduce current health by the damage amount
         }
+        animator.SetTrigger("isHurt");
+        if (isDeath == false) {
+            OnPlayerHurt?.Invoke();
+            NewAudioManager.Instance.PlayPlayerSFX("PlayerHurt");
+        }
+        if (characterModel.HealthPoint <= 0)
+        {
+            if (isDeath == false) {
+                NewAudioManager.Instance.bgmSource.Stop();
+                NewAudioManager.Instance.PlayPlayerSFX("PlayerDeath");
+                Invoke(nameof(GameOver), 2f);
+            }
+            isDeath = true;
+            Death(); // If health drops to or below zero, call a method to handle enemy death
+            ShowDeathPanel();
+        }
+    }
+
+    private void GameOver() {
+        NewAudioManager.Instance.PlayPlayerSFX("GameOver");
     }
 
     private void Death()
@@ -190,9 +307,15 @@ public class NewPlayerController1 : MonoBehaviour
         animator.SetBool("isDeath", true);
         characterModel.rotationSpeed = 0;
         characterModel.moveSpeed = 0;
+        ScoreManager.Instance.EndGame();
+        ScoreManager.Instance.DisplayGameOverStats();
+        //CharacterModel.Instance.ResetStats();
     }
     private void ShowDeathPanel() {
         OnPlayerDeath?.Invoke();
+    }
+    private void RestartPlayer() {
+        Destroy(gameObject);
     }
 
     private void ShootMagic(ElementalType element)
@@ -218,10 +341,20 @@ public class NewPlayerController1 : MonoBehaviour
                 rb.velocity = targetDirection * magicProSpeed;
             }
             ChangeActiveElement();
-            // Menonaktifkan isShooting setelah menembak
-            StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
-    }
+            SetAttackCooldown();
 
+            Debug.Log(elementalSlots[currentSlotIndex]);
+        // Menonaktifkan isShooting setelah menembak
+        StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
+    }
+    public void ResetAttackIndex()
+    {
+        currentSlotIndex = 0;
+        attackPattern[currentAttackIndex] = elementalSlots[currentAttackIndex];
+    }
+    public void SetAttackCooldown() {
+        cooldownAtkUI.SetElement(elementalSlots[currentSlotIndex]);
+    }
     private void ChangeActiveElement()
     {
         // Mengganti elemen aktif ke slot berikutnya
@@ -313,17 +446,44 @@ public class NewPlayerController1 : MonoBehaviour
     {
         // Here you can call ShootMagic with the attack pattern.
         ShootMagic(attackPattern[currentAttackIndex]);
+        Debug.Log("current attack index = " + currentSlotIndex);
     }
 
     public void SetAttackPattern(ElementalType newElement)
     {
-        elementalSlots[elementSwitchSystem.currentButtonIndex] = newElement;
+        elementalSlots[currentButtonIndex] = newElement;
+        //Debug.Log("curent button index = " + currentButtonIndex);
     }
     
     public void GetCamera(Camera cam) {
         var newCamera = cam;
         mainCamera = newCamera;
         Debug.Log("A key pressed. Camera: " + (cam != null ? cam.name : "null"));
+    }
+    public void SetDefaultElementSlots()
+    {
+        elementalSlots[0] = ElementalType.Fire; 
+        elementalSlots[1] = ElementalType.Fire; 
+        elementalSlots[2] = ElementalType.Fire;
+        elementalSlots[3] = ElementalType.Fire;
+        SaveElementalSlots();
+    }
+    private void SaveElementalSlots()
+    {
+        for (int i = 0; i < elementalSlots.Length; i++)
+        {
+            PlayerPrefs.SetInt("ElementalSlot_" + i, (int)elementalSlots[i]);
+        }
+        PlayerPrefs.Save();
+    }
+    public void LoadElementalSlots()
+    {
+        for (int i = 0; i < elementalSlots.Length; i++)
+        {
+            // Baca data PlayerPrefs dan konversi ke enum ElementalType
+            int savedElement = PlayerPrefs.GetInt("ElementalSlot_" + i, 0);
+            elementalSlots[i] = (ElementalType)savedElement;
+        }
     }
     private (bool success, Vector3 position) GetMousePosition() {
 
@@ -338,6 +498,55 @@ public class NewPlayerController1 : MonoBehaviour
             }
   
     }
+
+    private void VfxTeleport() {
+        canMove = false;
+        animator.SetBool("isWalking",false);
+        vfxTeleportMaterial.SetActive(true);
+        float yOffset = 1.0f;
+        Vector3 newPosition = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
+        currentVfx = Instantiate(vfxTeleport, newPosition, transform.rotation, transform);
+        //SkinnedMeshRenderer vfxRenderer = currentVfx.GetComponent<SkinnedMeshRenderer>();
+        //SetMaterialInChildren(transform, vfxTeleportMaterial);
+        Invoke(nameof(DestroyVfxTeleport), 3f);
+        Destroy(currentVfx,3.5f);
+
+    }
+
+    private void FirstVfxTeleport() {
+        canMove = false;
+        animator.SetBool("isWalking", false);
+        vfxTeleportMaterial.SetActive(true);
+        float yOffset = 1.0f;
+        Vector3 newPosition = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
+        currentVfx = Instantiate(vfxTeleport, newPosition, transform.rotation, transform);
+        //SkinnedMeshRenderer vfxRenderer = currentVfx.GetComponent<SkinnedMeshRenderer>();
+        //SetMaterialInChildren(transform, vfxTeleportMaterial);
+        Invoke(nameof(DestroyVfxTeleport), 1.5f);
+        Destroy(currentVfx, 2f);
+    }
+
+    private void DestroyVfxTeleport() {
+        canMove = true;
+        vfxTeleportMaterial.SetActive(false);
+    }
+
+    //void SetMaterialInChildren(Transform parent, Material material) {
+
+    //    foreach (Transform child in parent) {
+    //        SkinnedMeshRenderer skinnedMeshRenderer = child.GetComponent<SkinnedMeshRenderer>();
+
+    //        if (skinnedMeshRenderer != null) {
+    //            skinnedMeshRenderer.material = material;
+    //        }
+
+    //        SetMaterialInChildren(child, material);
+    //    }
+    //}
+
+
+
+
 
     //helpers
     //public static class Helpers
