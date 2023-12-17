@@ -209,4 +209,9 @@ public class UIPopupElementHP : MonoBehaviour
     {
         reactionPopupUI.SetActive(false);
     }
+
+    public void ResetHealthUI()
+    {
+        healtBarPopupUI.SetActive(false);
+    }
 }

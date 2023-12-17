@@ -9,7 +9,7 @@ public class CharacterModel : MonoBehaviour
 
     // Private fields to store character properties
     public float healthPoint;
-    public float maxHealthPoint = 100;
+    public float maxHealthPoint;
     public float defence;
     public float attackSpeed;
     public float moveSpeed = 5.0f;
@@ -129,6 +129,7 @@ public class CharacterModel : MonoBehaviour
                     maxHealthPoint = healthPoint;
                 }
                 MaxHealthPoint += stat.upgradeValueStatic;
+                HealthPoint += stat.upgradeValueStatic;
                 Debug.Log("Max Health Point: "+maxHealthPoint);
                 break;
             case UpgradeType.AttackSpeed:

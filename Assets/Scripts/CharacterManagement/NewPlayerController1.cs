@@ -108,10 +108,16 @@ public class NewPlayerController1 : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
-        CharacterModel.Instance.ResetStats();
+        if (PlayerPrefs.HasKey("PlayerHealth") && PlayerPrefs.HasKey("PlayerDefence") && PlayerPrefs.HasKey("PlayerAttack"))
+        {
+            characterModel.LoadPlayerStats();
+        }
+        else
+        {
+            characterModel.ResetStats();
+        }
         ScoreManager.Instance.StartGame();
         attackPattern[0] = elementalSlots[0];
-        CharacterModel.Instance.LoadPlayerStats();
         elementSwitchSystem.LoadElementStatus();
         LoadElementalSlots();
         cooldownAtkUI.SetElement(attackPattern[currentAttackIndex]);
@@ -269,7 +275,7 @@ public class NewPlayerController1 : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        if(damageAmount < characterModel.defence) {
+        if(damageAmount <= characterModel.defence) {
             characterModel.HealthPoint -= 1;
             } else {
             characterModel.HealthPoint -= (damageAmount-characterModel.defence); // Reduce current health by the damage amount

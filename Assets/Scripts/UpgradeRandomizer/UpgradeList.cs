@@ -24,7 +24,7 @@ public class UpgradeList : MonoBehaviour
         }
     }
 
-    void RemoveTutorialList()
+    public void RemoveTutorialList()
     {
         chosenUpgrades.Clear(); // This line clears all elements from the list
     }

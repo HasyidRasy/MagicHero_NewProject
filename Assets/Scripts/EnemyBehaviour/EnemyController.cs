@@ -68,6 +68,7 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         enemyModel.LoadEnemyStats();
+        defense = enemyModel.defence;
         enemyModel.CurrentHealth = enemyModel.HealthPoint;
         if(isInstantiate) NewAudioManager.Instance.PlayEnemySFX("EnemySpawn");
         vfx = GetComponent<VfxTest>();
@@ -82,10 +83,16 @@ public class EnemyController : MonoBehaviour
         Invoke("EnemyBehavior", spawnDuration);
 
         //Logic for Showing HP Bar
-        if (enemyModel.currentHealth != enemyModel.HealthPoint)
+        if (enemyModel.currentHealth != enemyModel.HealthPoint && enemyModel.currentHealth > 0)
         {
             // Show HP Bar
             uiPopupElementHP.ShowUpdateHealthBarUI(enemyModel.currentHealth, enemyModel.healthPoint);
+        }
+        else if (enemyModel.currentHealth <= 0)
+        {
+            uiPopupElementHP.ResetHealthUI();
+            uiPopupElementHP.ResetPopupUI();
+            uiPopupElementHP.ResetReactionUI();
         }
     }
 
@@ -178,6 +185,10 @@ public class EnemyController : MonoBehaviour
     public void TakeDamage(float damageAmount)
     {       
         float damageTaken = (damageAmount - defense) + characterModel.elementalBonus;
+        if (damageTaken <= 0) 
+        {
+            damageTaken = 1f;
+        }
         enemyModel.CurrentHealth -= damageTaken; // Reduce current health by the damage amount
         int randomHurtPattern = Random.Range(0, 3);
         animator.SetInteger("hurtPattern", randomHurtPattern);
@@ -209,6 +220,7 @@ public class EnemyController : MonoBehaviour
             if (isElementApplied != null)
             {
                 StopCoroutine(isElementApplied);
+                isElementApplied = null;
                 uiPopupElementHP.ResetPopupUI();
             }
             elementSprite = elementScrptObj.elementSprite;
@@ -218,7 +230,13 @@ public class EnemyController : MonoBehaviour
         else if (elementStatus == elementType)
         {
             //Reset Applied Element Duration if Same Type
-            StopCoroutine(isElementApplied);
+            if (isElementApplied != null)
+            {
+                StopCoroutine(isElementApplied);
+                isElementApplied = null;
+                uiPopupElementHP.ResetPopupUI();
+            }
+            uiPopupElementHP.ShowElementalPopup(elementSprite);
             isElementApplied = StartCoroutine(uiPopupElementHP.ElementPopupDuration());
         } else if (elementStatus != elementType) {
             //Trigger Elemental Reaction & Popup 2 Element
@@ -275,6 +293,14 @@ public class EnemyController : MonoBehaviour
 
             while (Time.time < endTime) {
                 TakeDamage(damage);
+                // Damage Popup
+                float damageTakenAmount = (damage - defense) + characterModel.elementalBonus;
+                if (damageTakenAmount <= 0) 
+                {
+                    damageTakenAmount = 1f;
+                }
+                Vector3 randomnessFire = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
+                DamagePopupGenerator.current.CreatePopup(navMeshAgent.transform.position + randomnessFire, damageTakenAmount.ToString(), new Color32(0xFE, 0xAB, 0x76, 0xFF));
                 yield return new WaitForSeconds(interval);
             }
             isActive = false;
