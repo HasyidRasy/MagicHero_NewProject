@@ -5,21 +5,12 @@ using UnityEngine;
 public class EnemySpawnManagerTrigger : MonoBehaviour
 {
     [SerializeField]private EnemyPool enemyPool;
-    
-    //Prefabs yang akan dimunculkan
     public List<GameObject> enemyPrefabs;
-    //Dimana titik prefab dimunculkan
     public List<Transform> spawnPoints;
-    //Titik dimana musuh tidak bisa spawn
     public List<Transform> safeZones;
-
-    //Waktu spawn tiap musuh
     public float spawnInterval = 2.0f;
-    //Y minimum agar prefabs tidak muncul dibawah tanah
     public float minY = 1f;
-    //Jarak maksimal dimana prefab dapat dimunculkan dari titik
     public float maxDistanceFromSpawnPoint = 5f;
-    //Jumlah maksimal musuh
     public int maxEnemies = 10;
 
     public int id;
@@ -27,11 +18,7 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
     
     private bool isEnemySpawned = true;
 
-    public float checkInterval = 5f; // Sesuaikan interval sesuai kebutuhan
-    //private bool enemiesPresent = true; // Awalnya anggap ada musuh
-
-    //Membuat koneksi dengan Upgrade Randomizer
-    //[SerializeField]private UpgradeRandomizer upgradeRandomizer;
+    public float checkInterval = 5f; 
 
     private void Awake()
     {
@@ -43,7 +30,6 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
 
         GameEvents.current.onDoorwayTriggerEnter += SpawnEnemyTriggerOff;
         GameEvents.current.onDoorwayTriggerExit += SpawnEnemyTriggerOn;
-        //StartCoroutine(CheckForEnemiesPeriodically());
     }
 
     private void SpawnEnemyTriggerOff(int id)
@@ -65,22 +51,6 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
                 
             isEnemySpawned = false;
         }
-    }
-
-    //Memunculkan musuh secara bertahap
-    private IEnumerator SpawnEnemiesContinuously()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(spawnInterval);
-            SpawnEnemy();
-        }
-    }
-
-    //
-    private void SpawnEnemiesImmediately()
-    {
-        SpawnEnemy();
     }
 
     private void SpawnEnemy()
@@ -140,11 +110,4 @@ public class EnemySpawnManagerTrigger : MonoBehaviour
             enemyPool.SpawnEnemy(spawnEnemy);
         }
     }
-    //public void EnemyCleared(int id)
-    //{
-    //    if(enemyPool.spawnedEnemies <= 0)
-    //    GameEvents.current.DoorwayTriggerEnter(id); // Ganti 0 dengan ID yang sesuai
-    //    //NewAudioManager.Instance.bgmSource.Stop();
-    //    //NewAudioManager.Instance.PlayBGM("Safezone"); // Play BGM Safezone
-    //}
 }

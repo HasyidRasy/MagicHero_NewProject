@@ -16,7 +16,6 @@ public class LoadLevelOnCollision : MonoBehaviour
     public static Action OnTeleport;
     private void Start()
     {
-        // Cache the original color of the object.
         originalColor = objectRenderer.material.color;
     }
 
@@ -29,38 +28,11 @@ public class LoadLevelOnCollision : MonoBehaviour
                 //play sfx teleport
                 NewAudioManager.Instance.bgmSource.Stop();
                 NewAudioManager.Instance.PlaySFX("Teleport");
-                //StartCoroutine(FadeAndLoadScene());
                 OnTeleport?.Invoke();
 
                 hasTriggered = true;
                 GetComponent<Collider>().enabled = false;
             }
         }
-    }
-
-    IEnumerator FadeAndLoadScene()
-    {
-        isFading = true;
-
-        float elapsedTime = 0f;
-        Color currentColor = originalColor;
-        Color targetColor = Color.black;
-
-        while (elapsedTime < delayBeforeLoad)
-        {
-            // Calculate the lerped color over time.
-            currentColor = Color.Lerp(originalColor, targetColor, elapsedTime / delayBeforeLoad);
-            objectRenderer.material.color = currentColor;
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // Ensure the final color is set to black.
-        objectRenderer.material.color = targetColor;
-
-        // Load the scene with the specified index.
-        SceneManager.LoadScene(sceneIndexToLoad);
-        //AsynLoader.Instance.TrigerLoadLevel(sceneIndexToLoad);
     }
 }

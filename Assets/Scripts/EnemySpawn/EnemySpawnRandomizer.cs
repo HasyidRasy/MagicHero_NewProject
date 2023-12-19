@@ -4,30 +4,18 @@ using UnityEngine;
 
 public class EnemySpawnManager : MonoBehaviour
 {
-    //Prefabs yang akan dimunculkan
     public List<GameObject> enemyPrefabs;
-    //Dimana titik prefab dimunculkan
     public List<Transform> spawnPoints;
-    //Titik dimana musuh tidak bisa spawn
     public List<Transform> safeZones;
 
-    //Waktu spawn tiap musuh
     public float spawnInterval = 2.0f;
-    //Y minimum agar prefabs tidak muncul dibawah tanah
     public float minY = 1f;
-    //Jarak maksimal dimana prefab dapat dimunculkan dari titik
     public float maxDistanceFromSpawnPoint = 5f;
-    ///Jumlah maksimal musuh
     public int maxEnemies = 10;
 
     private void Start()
     {        
-            //Perintah untuk memanggil musuh satu per satu
-            //StartCoroutine(SpawnEnemies());
-
-            //Perintah untuk memanggil musuh sekaligus
-            SpawnEnemiesImmediately();
-        
+        SpawnEnemiesImmediately();
     }
 
     //Memunculkan musuh secara bertahap
@@ -40,7 +28,6 @@ public class EnemySpawnManager : MonoBehaviour
         }
     }
 
-    //
     private void SpawnEnemiesImmediately(){
             SpawnEnemy();
     }

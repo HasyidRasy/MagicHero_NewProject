@@ -12,17 +12,13 @@ public class UpgradeElementalButton : MonoBehaviour
     public Image hoverImage;
     public int id;
     private UpgradeManager upgradeManager;
-    //private CharacterModel upgradedCharacter;
     private UpgradeData upgrade;
     private UpgradeElemental upgradeElemental;
     private ElementSwitchSystem elementSwitchSystem;
-
     private RectTransform rectTransform;
     [SerializeField] private float hoverHighValue = 10f;
-
     private Image bgImg;
 
-    // Start is called before the first frame update
     void Start()
     {
         upgradeElemental = FindObjectOfType<UpgradeElemental>();
@@ -89,7 +85,6 @@ public class UpgradeElementalButton : MonoBehaviour
             Time.timeScale = 1f;
         }
     }
-
     void SetFalseUpgradeElementalCanvas() {
         canvasRaycast.enabled = true;
         upgradeElemental.gameObject.SetActive(false);
@@ -133,8 +128,6 @@ public class UpgradeElementalButton : MonoBehaviour
         upgrade = upgradeData;
     }
 
- 
-
     public void OnPointerEnterButton()
     {
         if((elementSwitchSystem.unlockedElementInfo.isWaterUnlocked == true && id == 0) ||
@@ -153,7 +146,6 @@ public class UpgradeElementalButton : MonoBehaviour
 
     public void OnPointerExitButton()
     {
-        // Deactivate the hover image here
         hoverImage.gameObject.SetActive(false);
         rectTransform.DOAnchorPosY(-390f, .5f)
                      .SetUpdate(true);

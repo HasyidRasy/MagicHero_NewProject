@@ -1,10 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+public enum ElementalType
+{
+    Water,
+    Fire,
+    Wind,
+    Null
+}
 
 public class MagicProjectileElementalReaction : MonoBehaviour {
+
     [SerializeField] private CharacterModel characterModel;
-    [SerializeField] public ElementalType element; // Elemen proyektil
+    [SerializeField] public ElementalType element;
     [SerializeField] private float lifeTime;
     [SerializeField] private int damageAmount = 20;
     private float offsetDistance = 0.1f;
@@ -22,21 +30,17 @@ public class MagicProjectileElementalReaction : MonoBehaviour {
 
     private ParticleSystem onImpactVfx;
     private ParticleSystem onImpactVfx2;
-
     private static GameObject vfxContainer;
-    //untuk menghancurkan projectile dalam kurun waktu tertentu
+
     private void Awake() {
 
         characterModel = FindObjectOfType<CharacterModel>();
         Destroy(gameObject, lifeTime);
     }
 
-
-    // Mengatur elemen proyektil
     public void SetElement(ElementalType newElement) {
         element = newElement;
 
-        // Mengatur visual proyektil berdasarkan elemen
         Renderer renderer = GetComponentInChildren<Renderer>();
         Material material = renderer.material;
 
@@ -56,14 +60,11 @@ public class MagicProjectileElementalReaction : MonoBehaviour {
                 break;
         }
     }
-
-    // Logika tabrakan proyektil dengan musuh atau objek lain
-    // Logika tabrakan proyektil dengan musuh atau objek lain
     private void OnTriggerEnter(Collider other) {
         Vector3 spawnPosition = transform.position + transform.forward * offsetDistance;
         if (!other.CompareTag("Player") && !other.CompareTag("Transparant")) {
    
-            Destroy(gameObject); // Destroy the projectile after collision
+            Destroy(gameObject); 
             Debug.Log("Collision with other game object");
         }
 
@@ -75,34 +76,27 @@ public class MagicProjectileElementalReaction : MonoBehaviour {
             Debug.Log("Total Damage " + totalDamage.ToString());
             enemyController.ApplyElementalStatus(element);
 
-             // Adjust offsetDistance as needed
-
             switch (element) {
                 case ElementalType.Water:
                     // Damage Popup
                     Vector3 randomnessWater = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
                     DamagePopupGenerator.current.CreatePopup(other.transform.position + randomnessWater, totalDamage.ToString(), new Color32(0x73, 0xF9, 0xFE, 0xFF));
-     
                     break;
                 
                 case ElementalType.Fire:
                     // Damage Popup
                     Vector3 randomnessFire = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
                     DamagePopupGenerator.current.CreatePopup(other.transform.position + randomnessFire, totalDamage.ToString(), new Color32(0xFE, 0xAB, 0x76, 0xFF));
-
                     break;
                 
                 case ElementalType.Wind:
                     // Damage Popup
                     Vector3 randomnessWind = new Vector3(Random.Range(0f, 0.25f), Random.Range(0f, 0.25f), Random.Range(0f, 0.25f));
                     DamagePopupGenerator.current.CreatePopup(other.transform.position + randomnessWind, totalDamage.ToString(), new Color32(0xA4, 0xFE, 0x85, 0xFF));
-
-                    break;
-                    
+                    break;    
                }
-          
-            // Destroy the impact VFX after a delay
-            Destroy(gameObject); // Destroy the projectile after collision
+ 
+            Destroy(gameObject); 
             Debug.Log("Attacking Enemy");
         }
        
@@ -121,8 +115,8 @@ public class MagicProjectileElementalReaction : MonoBehaviour {
 
                 Destroy(onImpactVfx.gameObject, 3.5f);
                 Destroy(onImpactVfx2.gameObject, 3.5f);
-
                 break;
+
             case ElementalType.Fire:
                 onImpactVfx = Instantiate(fotiaOnImpact, spawnPosition, transform.rotation);
                 onImpactVfx2 = Instantiate(fotiaOnImpact2, spawnPosition, transform.rotation);
@@ -132,16 +126,13 @@ public class MagicProjectileElementalReaction : MonoBehaviour {
 
                 Destroy(onImpactVfx.gameObject, 3.5f);
                 Destroy(onImpactVfx2.gameObject, 3.5f);
-
-
                 break;
+
             case ElementalType.Wind:
                 onImpactVfx = Instantiate(anemosOnImpact, spawnPosition, transform.rotation);
                 onImpactVfx.Play();
 
                 Destroy(onImpactVfx.gameObject, 3.5f);
-
-                // No second particle system for wind in the provided code
                 break;
         }
         if (vfxContainer == null) {
@@ -154,6 +145,4 @@ public class MagicProjectileElementalReaction : MonoBehaviour {
             onImpactVfx2.transform.SetParent(vfxContainer.transform);
         }
     }
-
-
 }

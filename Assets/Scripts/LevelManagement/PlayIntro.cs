@@ -17,8 +17,6 @@ public class PlayIntro : MonoBehaviour {
         while (videoPlayer.isPlaying) {
             yield return null;
         }
-
-        // Load the "Game" scene after the video finishes playing
         SceneManager.LoadScene("MainMenu");
     }
 }

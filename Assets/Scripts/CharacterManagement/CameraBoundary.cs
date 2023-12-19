@@ -73,11 +73,7 @@ public class CameraBoundary : MonoBehaviour
         {
             blankArea = false;
         }
-
-
-
-            // Clamp camera position based on the specified boundary coordinates
-            targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
+        targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
         targetPosition.z = Mathf.Clamp(targetPosition.z, minZ, maxZ);
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition + _offset, ref _currentVelocity, smoothTime);
     }

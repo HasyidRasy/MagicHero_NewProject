@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControllerElementalReaction : MonoBehaviour {
+public class PlayerControllerElementalReaction : MonoBehaviour
+{
     //get model
     private CharacterModel characterModel;
     //cek dash logic
@@ -12,21 +13,20 @@ public class PlayerControllerElementalReaction : MonoBehaviour {
     [SerializeField] private Transform _model;
 
     [Header("Attack Pattern")]
-    [SerializeField] private ElementalType[] elementalSlots = new ElementalType[4]; // Set Attack Pattern
+    [SerializeField] private ElementalType[] elementalSlots = new ElementalType[4];
     private int currentSlotIndex = 0;
 
     private ElementalType[] attackPattern = new ElementalType[4];
     private int currentAttackIndex = 0;
 
     [Space(5)]
-    [SerializeField] private Transform projectileSpawnPoint;    // Titik spawn proyektil
-    [SerializeField] private GameObject magicProjectilePrefab;  // Prefab untuk sihir
+    [SerializeField] private Transform projectileSpawnPoint;
+    [SerializeField] private GameObject magicProjectilePrefab;
 
     [Header("Magic Speed")]
-    [SerializeField] private float magicProSpeed = 10f;         // Kecepatan proyektil
-
+    [SerializeField] private float magicProSpeed = 10f;
     [Header("Casting Speed")]
-    [SerializeField] private float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
+    [SerializeField] private float timeBetweenAttacks = 0.5f;
     private float attackCooldown = 0f;
 
     [Header("Stats Stuff")]
@@ -38,13 +38,13 @@ public class PlayerControllerElementalReaction : MonoBehaviour {
     {
         characterModel = GetComponent<CharacterModel>();
     }
-    private void Start() 
-    {       
+    private void Start()
+    {
         PlayerStat();
     }
 
-    private void Update() {
-        //Call Function
+    private void Update()
+    {
         CharaMove();
         PlayerStat();
 
@@ -52,17 +52,18 @@ public class PlayerControllerElementalReaction : MonoBehaviour {
         if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f)
         {
             ShootMagic(attackPattern[currentAttackIndex]);          // Menembakkan sihir sesuai dengan pola serangan saat ini
-            if(characterModel.attackSpeed > 0)
+            if (characterModel.attackSpeed > 0)
                 attackCooldown = timeBetweenAttacks / (characterModel.attackSpeed);
             else
                 attackCooldown = timeBetweenAttacks;
             currentAttackIndex = (currentAttackIndex + 1) % 4;      // Pindah ke elemen berikutnya dalam pola serangan
             ChangeActiveElement();
-            //CheckElementalReaction();
+
         }
     }
 
-    private void CharaMove() {
+    private void CharaMove()
+    {
         //input movement
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
@@ -70,35 +71,30 @@ public class PlayerControllerElementalReaction : MonoBehaviour {
         //move direction
         Vector3 moveDir = new Vector3(horizontal, 0f, vertical).normalized;
 
-        ////move
-        //transform.position += characterModel.MoveSpeed * Time.deltaTime * moveDir;
-        ////rotation
-        //if (moveDir != Vector3.zero) {
-        //    transform.forward = Vector3.Slerp(transform.forward, moveDir, characterModel.RotationSpeed * Time.deltaTime);
-        //}
-
-        //New Move Logic
         _rb.MovePosition(transform.position + moveDir.ToIso() * moveDir.magnitude * characterModel.moveSpeed * Time.deltaTime);
 
         //New Look Logic (rotation)
         if (moveDir == Vector3.zero) return;
         Quaternion rotation = Quaternion.LookRotation(moveDir.ToIso(), Vector3.up);
         _model.rotation = Quaternion.RotateTowards(_model.rotation, rotation, characterModel.rotationSpeed * Time.deltaTime);
-        
+
         //Call Coroutine Dash
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && (Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f)) {
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && (Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f))
+        {
             StartCoroutine(Dash());
         }
     }
 
     //Coroutine Dash Logic
-    private IEnumerator Dash() {
+    private IEnumerator Dash()
+    {
         isDashing = true;
         float startTime = Time.time;
         Vector3 pos = transform.position;
         Vector3 dashDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
 
-        while (Time.time < startTime + characterModel.DashDuration) {
+        while (Time.time < startTime + characterModel.DashDuration)
+        {
             //transform.position += characterModel.DashSpeed * Time.deltaTime * dashDir;
             //New Logic Dash
             _rb.MovePosition(transform.position + dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime);
@@ -109,8 +105,8 @@ public class PlayerControllerElementalReaction : MonoBehaviour {
         isDashing = false;
     }
 
-    //Player Stat
-    private void PlayerStat() {
+    private void PlayerStat()
+    {
         playerHp = characterModel.HealthPoint;
         playerDef = characterModel.Defence;
     }
@@ -168,46 +164,4 @@ public class PlayerControllerElementalReaction : MonoBehaviour {
         // Memperbarui pola serangan berdasarkan elemen yang baru aktif
         attackPattern[currentAttackIndex] = elementalSlots[currentSlotIndex];
     }
-    /*
-    private void CheckElementalReaction()
-    {
-        // Mengecek apakah ada 2 elemen berturut-turut dalam pola serangan
-        if (currentAttackIndex >= 2)
-        {
-            ElementalType firstElement = attackPattern[currentAttackIndex - 2];
-            ElementalType secondElement = attackPattern[currentAttackIndex - 1];
-
-            // Melakukan pengecekan elemen reaksi
-            ElementalReaction(firstElement, secondElement);
-        }
-    }
-
-    private void ElementalReaction(ElementalType element1, ElementalType element2)
-    {
-        // Implementasi efek-efek elemen reaksi
-        if ((element1 == ElementalType.Fire && element2 == ElementalType.Wind) ||
-            (element1 == ElementalType.Wind && element2 == ElementalType.Fire))
-        {
-            Debug.Log("Combustion!"); 
-        }
-        else if ((element1 == ElementalType.Fire && element2 == ElementalType.Water) ||
-                 (element1 == ElementalType.Water && element2 == ElementalType.Fire))
-        {
-            Debug.Log("Steam!");
-        }
-        else if ((element1 == ElementalType.Wind && element2 == ElementalType.Water) ||
-                 (element1 == ElementalType.Water && element2 == ElementalType.Wind))
-        {
-            Debug.Log("Freeze!");
-        }
-    }
-    */
 }
-
-//helpers
-/*
-public static class Helpers {
-    private static Matrix4x4 _isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0f, -45f, 0f));
-    public static Vector3 ToIso(this Vector3 input) => _isoMatrix.MultiplyPoint3x4(input);
-}
-*/

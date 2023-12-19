@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class UpgradeManager : MonoBehaviour
 {
-    public static UpgradeManager instance; // Singleton pattern
-
+    public static UpgradeManager instance; 
     public UpgradeDatabase upgradeDatabase;
-
-    // Create a dictionary to store selected upgrades
     private Dictionary<int, UpgradeData> selectedUpgrades = new Dictionary<int, UpgradeData>();
 
     private void Awake()
@@ -22,12 +19,9 @@ public class UpgradeManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        // Load selected upgrades from PlayerPrefs when the game starts
         LoadSelectedUpgrades();
     }
 
-    // Save selected upgrades to PlayerPrefs
     public void SaveSelectedUpgrades()
     {
         foreach (var kvp in selectedUpgrades)
@@ -37,7 +31,6 @@ public class UpgradeManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    // Load selected upgrades from PlayerPrefs
     public void LoadSelectedUpgrades()
     {
         selectedUpgrades.Clear();
@@ -80,15 +73,11 @@ public class UpgradeManager : MonoBehaviour
             }
         }
     }
-
-    // Add a selected upgrade
     public void AddSelectedUpgrade(UpgradeData upgrade)
     {
         selectedUpgrades[upgrade.upgradeID] = upgrade;
         SaveSelectedUpgrades();
     }
-
-    // Get a selected upgrade
     public UpgradeData GetSelectedUpgrade(int upgradeID)
     {
         if (selectedUpgrades.ContainsKey(upgradeID))
@@ -97,7 +86,6 @@ public class UpgradeManager : MonoBehaviour
         }
         return null;
     }
-
      public void ApplyUpgradesToCharacter(CharacterModel characterModel)
     {
         foreach (var kvp in selectedUpgrades)

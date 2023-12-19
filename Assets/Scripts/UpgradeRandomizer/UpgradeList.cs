@@ -6,9 +6,7 @@ using UnityEngine.SceneManagement;
 public class UpgradeList : MonoBehaviour
 {
     public static UpgradeList Instance {get; private set;}
-
     public List<UpgradeData> chosenUpgrades = new List<UpgradeData>();
-
     private string tutorialSceneName = "Tutorial";
 
     private void Awake()
@@ -26,7 +24,7 @@ public class UpgradeList : MonoBehaviour
 
     public void RemoveTutorialList()
     {
-        chosenUpgrades.Clear(); // This line clears all elements from the list
+        chosenUpgrades.Clear(); 
     }
 
     private void OnEnable()
@@ -43,7 +41,6 @@ public class UpgradeList : MonoBehaviour
     {
         if (scene.name != tutorialSceneName && SceneManager.GetActiveScene().name == tutorialSceneName)
         {
-            // The current scene is not the tutorial scene, but the previous one was
             RemoveTutorialList();
         }
     }

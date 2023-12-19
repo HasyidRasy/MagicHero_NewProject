@@ -35,15 +35,12 @@ public class FTUEManager : MonoBehaviour {
     private void Awake() {
         if (Instance == null) {
             Instance = this;
-            //DontDestroyOnLoad(gameObject);
         } else {
             Destroy(gameObject);
         }
         elementSwitchSystem = FindObjectOfType<ElementSwitchSystem>();
         newPlayerController1 = FindObjectOfType<NewPlayerController1>();
-
     }
-
 
     private void OnDestroy()
     {
@@ -55,10 +52,6 @@ public class FTUEManager : MonoBehaviour {
     }
 
     private void Start() {
-        //Pause();
-        //if (_sceneStory != null) {
-        //    _sceneStory.SetActive(true);
-        //}
         LevelManager.Instance.currentLevel = 0;
         LevelManager.Instance.UpdateLevelText();
         NewAudioManager.Instance.bgmSource.Stop();
@@ -118,7 +111,6 @@ public class FTUEManager : MonoBehaviour {
             _currentActive = _scenePortal;
             FadeIn();
         }
-
     }
 
     private void FadeIn() {

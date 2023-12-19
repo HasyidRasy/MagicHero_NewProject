@@ -65,7 +65,6 @@ public class ScoreManager : MonoBehaviour
         _buffCollected = 0;
         SavePlayerScore();
     }
-    // Save player stats to PlayerPrefs
     public void SavePlayerScore()
     {
         PlayerPrefs.SetInt("AreaCleared", _areaCleared);
@@ -73,11 +72,9 @@ public class ScoreManager : MonoBehaviour
         PlayerPrefs.SetInt("BuffCollected", _buffCollected);
         PlayerPrefs.SetFloat("PlayTime", _playTime);
 
-        // Save PlayerPrefs
         PlayerPrefs.Save();
     }
 
-    // Load player stats from PlayerPrefs
     public void LoadPlayerScore()
     {
         _areaCleared = PlayerPrefs.GetInt("AreaCleared");

@@ -181,7 +181,6 @@ public class UIPopupElementHP : MonoBehaviour
                                         .SetDelay(reactDuration - 0.6f);
     }
 
-    //Applied element duration
     public IEnumerator ElementPopupDuration()
     {
         yield return new WaitForSeconds(durationPopupUI);
@@ -190,14 +189,12 @@ public class UIPopupElementHP : MonoBehaviour
         enemyController.ResetElementalStatus();
     }
 
-    //Reaction Popup Duration
     public IEnumerator ResetReactionPopupUI()
     {
         yield return new WaitForSeconds(2f);
         ResetPopupUI();
     }
 
-    //Hide Popup UI
     public void ResetPopupUI()
     {
         secondElementPopupUI.SetActive(false);

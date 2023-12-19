@@ -103,45 +103,6 @@ public class UpgradeRandomizer : MonoBehaviour
 
     private UpgradeRarity GetRandomRarityWithWeightedDistribution()
     {
-        /*Amount Randomizer
-        int commonAmount = 0;
-        int rareAmount = 0;
-        int legendAmount = 0;
-    
-        foreach(var upgrades in upgradeDatabase.commonUpgrades)
-        {
-            commonAmount += 6;
-        }
-
-        foreach(var upgrades in upgradeDatabase.rareUpgrades)
-        {
-            rareAmount += 3;
-        }
-
-        foreach(var upgrades in upgradeDatabase.legendUpgrades)
-        {
-            legendAmount += 1;
-        }
-
-        int totalAmount = commonAmount + rareAmount + legendAmount;
-
-        int randVal = Random.Range(1, totalAmount);
-
-        if(randVal >= 1 && randVal <= commonAmount)
-        {
-            return UpgradeRarity.Common;
-        }
-        else if(randVal > commonAmount && randVal <= (commonAmount + rareAmount))
-        {
-            return UpgradeRarity.Rare;
-        }
-        else 
-        {
-            return UpgradeRarity.Legendary;
-        }
-        */
-        
-        //|| Percent randomizer;
         float randomValue = Random.Range(0f, 1f);
         
         // 60% chance for common, 30% chance for rare, 10% change for legend
@@ -178,24 +139,20 @@ public class UpgradeRandomizer : MonoBehaviour
         {
             upgradeNameText[i].text = randomizedUpgrades[i].upgradeName;
             
-            // Use Color values between 0 and 1
             if (randomizedUpgrades[i].rarity == UpgradeRarity.Common)
             {
-                //upgradeNameText[i].color = new Color(0.545f, 0.761f, 0.808f); // Cyan color
                 upgradeRarity[i].color = new Color(0.545f, 0.761f, 0.808f);
                 upgradeBgColor[i].color = new Color(0.545f, 0.761f, 0.808f);
                 hoverImage[i].color = new Color(0.545f, 0.761f, 0.808f);
             }
             else if (randomizedUpgrades[i].rarity == UpgradeRarity.Rare)
             {
-                //upgradeNameText[i].color = new Color(0.518f, 0.157f, 0.741f); // Purple color
                 upgradeRarity[i].color = new Color(0.518f, 0.157f, 0.741f);
                 upgradeBgColor[i].color = new Color(0.518f, 0.157f, 0.741f);
                 hoverImage[i].color = new Color(0.518f, 0.157f, 0.741f);
             }
             else
             {
-                //upgradeNameText[i].color = Color.white;
                 upgradeRarity[i].color = Color.white;
                 upgradeBgColor[i].color = Color.white;
                 hoverImage[i].color = Color.white;

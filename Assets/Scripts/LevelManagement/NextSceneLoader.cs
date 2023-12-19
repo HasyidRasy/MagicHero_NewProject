@@ -9,6 +9,4 @@ public class NextSceneLoader : MonoBehaviour
     {
         loader.LoadLevelBtn("Tutorial");
     }
-
-    
 }

@@ -7,7 +7,6 @@ public class CharacterModel : MonoBehaviour
     public static CharacterModel Instance {get; private set;}
     private PlayerController playerController;
 
-    // Private fields to store character properties
     public float healthPoint;
     public float maxHealthPoint;
     public float defence;
@@ -18,7 +17,6 @@ public class CharacterModel : MonoBehaviour
     public float move;
     private float increaseStat;
 
-    //Dashing
     public float rotationSpeed = 10.0f;
     public float dashSpeed = 10.0f;
     public float dashDuration = 0.5f;
@@ -31,7 +29,6 @@ public class CharacterModel : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -41,7 +38,6 @@ public class CharacterModel : MonoBehaviour
         playerController = FindObjectOfType<PlayerController>();
     }
 
-    // Getter and setter for healthPoint
     public float HealthPoint {
         get { return healthPoint; }
         set {
@@ -56,61 +52,51 @@ public class CharacterModel : MonoBehaviour
         }
     }
 
-    // Getter and setter for defence
     public float Defence {
         get { return defence; }
         set { defence = value; }
     }
 
-    // Getter and setter for attackSpeed
     public float AttackSpeed {
         get { return attackSpeed; }
         set { attackSpeed = value; }
     }
 
-    // Getter and setter for moveSpeed
     public float MoveSpeed {
         get { return moveSpeed; }
         set { moveSpeed = value; }
     }
 
-    // Getter and setter for attack
     public float Attack {
         get { return attack; }
         set { attack = value; }
     }
 
-    // Getter and setter for elementalBonus
     public float ElementalBonus {
         get { return elementalBonus; }
         set { elementalBonus = value; }
     }
 
-    // Getter and setter for rotationSpeed
     public float RotationSpeed {
         get { return rotationSpeed; }
         set { rotationSpeed = value; }
     }
 
-    // Getter and setter for dashSpeed
     public float DashSpeed {
         get { return dashSpeed; }
         set { dashSpeed = value; }
     }
 
-    // Getter and setter for dashDuration
     public float DashDuration {
         get { return dashDuration; }
         set { dashDuration = value; }
     }
 
-    // Getter and setter for dashCooldown
     public float DashCooldown {
         get { return dashCooldown; }
         set { dashCooldown = value; }
     }
 
-    //Apply Upgrades (Avin)
     public void ApplyUpgrade(UpgradeData upgrade)
     {
 
@@ -166,14 +152,13 @@ public class CharacterModel : MonoBehaviour
         elementalBonus = 0f;
         move = 0f;
 
-        // Dashi
         rotationSpeed = 500f;
         dashSpeed = 25000f;
         dashDuration = 0.35f;
         dashCooldown = 2f;
         SavePlayerStats();
     }
-    // Save player stats to PlayerPrefs
+
     public void SavePlayerStats()
     {
         PlayerPrefs.SetFloat("PlayerHealth", HealthPoint);
@@ -187,11 +172,9 @@ public class CharacterModel : MonoBehaviour
         {
             PlayerPrefs.SetInt("Upgrade "+i, chosenUpgrades[i].upgradeID);
         }
-        // Save PlayerPrefs
         PlayerPrefs.Save();
     }
 
-    // Load player stats from PlayerPrefs
     public void LoadPlayerStats()
     {
         if (PlayerPrefs.HasKey("PlayerHealth"))

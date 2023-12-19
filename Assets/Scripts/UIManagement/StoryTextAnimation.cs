@@ -20,12 +20,9 @@ public class TextWriter : MonoBehaviour {
         }
 
         fullText = textComponent.text;
-        textComponent.text = ""; // Clear text initially
+        textComponent.text = ""; 
 
-        // Start the text coroutine
         StartCoroutine(WriteText());
-
-        // Start the sound coroutine independently
         StartCoroutine(WriteTextSound());
     }
 

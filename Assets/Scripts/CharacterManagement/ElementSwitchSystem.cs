@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class ElementSwitchSystem : MonoBehaviour
 {
-    [SerializeField] private Sprite[] elementSprites = new Sprite[3]; // Array sprite untuk elemen
-    [SerializeField] private Image[] elementIndicatorImages = new Image[3]; // Array Image untuk menampilkan elemen saat ini
+    [SerializeField] private Sprite[] elementSprites = new Sprite[3];
+    [SerializeField] private Image[] elementIndicatorImages = new Image[3];
     [SerializeField] private GameObject[] elementPanel = new GameObject[3];
     [SerializeField] private Button[] elementButton = new Button[3];
     public ElementUnlockedInfo unlockedElementInfo = new ElementUnlockedInfo();
@@ -13,7 +13,7 @@ public class ElementSwitchSystem : MonoBehaviour
     private int elementIndex;
     private NewPlayerController1 playerController;
     
-    [System.Serializable] //[System.Serializable] akan dihapus setelah masa pengembangan
+    [System.Serializable] 
     public class ElementUnlockedInfo
     {
         public bool isFireUnlocked = false;
@@ -21,27 +21,16 @@ public class ElementSwitchSystem : MonoBehaviour
         public bool isWindUnlocked = false;
     }
 
-    /*
-     * untuk mengubah kondisi unlock element dari script lain, dapat diatur seperti ini:
-     * ElementSwitchSystem.unlockElement.isFireUnlocked = true; 
-     * dan sebagainya, sesuaikan dengan kebutuhan
-     */
-
     private void Awake()
     {
-        // Cari dan simpan referensi ke NewPlayerController1 saat awal mulai
         playerController = FindObjectOfType<NewPlayerController1>();
-        //GetComponent<Button>();
     }
 
     private void Start()
     {
         elementIndex = elementPanel.Length;
-        //LoadElementStatus();
-        //playerController.LoadElementalSlots();
     }
 
-    //Mengatur elemen proyektil
     public void SetElement(ElementalType newElement)
     {
         element = newElement;
@@ -120,8 +109,6 @@ public class ElementSwitchSystem : MonoBehaviour
     public void EnableElementPanel(int buttonIndex)
     {
         playerController.currentButtonIndex = buttonIndex;
-        //Debug.Log("button index = " + buttonIndex);
-        //Debug.Log("current button index = " + playerController.currentButtonIndex);
         if (elementPanel != null)
         {
             for (int i = 0; i < elementIndex; i++)
@@ -141,8 +128,6 @@ public class ElementSwitchSystem : MonoBehaviour
         //    }
         //}
     }
-
-    // Set interactable sesuai dengan status unlocked
     public void elementUnlockedChecker()
     {
         if (unlockedElementInfo.isFireUnlocked)

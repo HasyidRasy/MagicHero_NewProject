@@ -9,16 +9,9 @@ public class switchcotroller : MonoBehaviour
         off,
         on,
         Blink
-
     }
-
-   
     public Material onmaterial;
     public Material offmaterial;
-   
-
-    
-
     private switchstate state;
     private Renderer renderer;
 
@@ -28,7 +21,6 @@ public class switchcotroller : MonoBehaviour
         set(false);
         StartCoroutine(Blinktimestart(3));
     }
-
  
     private void set(bool active)
     {
@@ -43,21 +35,9 @@ public class switchcotroller : MonoBehaviour
             state = switchstate.off;
             renderer.material = offmaterial;
             StartCoroutine(Blinktimestart(3));
-
         }
     }
 
-    private void toggle()
-    {
-        if (state == switchstate.on)
-        {
-            set(false);
-        }
-        else
-        {
-            set(true);
-        }
-    }
     private IEnumerator Blink(int times)
     {
         state = switchstate.Blink;

@@ -6,14 +6,11 @@ using UnityEngine.UI;
 
 public class NewPlayerController1 : MonoBehaviour
 {
-    //get model
     private CharacterModel characterModel;
     private Animator animator;
     private ElementSwitchSystem elementSwitchSystem;
     private CooldownAttackUI cooldownAtkUI;
-    //cek dash logic
     [SerializeField] private bool isDashing = false;
-    //rigidbody
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform _model;
     [SerializeField] private Collider _collider;
@@ -21,23 +18,23 @@ public class NewPlayerController1 : MonoBehaviour
     private Vector3 _input; 
 
     [Header("Attack Pattern")]
-    [SerializeField] private ElementalType[] elementalSlots = new ElementalType[4]; // Set Attack Pattern
+    [SerializeField] private ElementalType[] elementalSlots = new ElementalType[4]; 
     private int currentSlotIndex = 0;
 
     private ElementalType[] attackPattern = new ElementalType[4];
     private int currentAttackIndex = 0;
 
     [Space(5)]
-    [SerializeField] private Transform projectileSpawnPoint;    // Titik spawn proyektil
-    [SerializeField] private GameObject magicProjectilePrefab;  // Prefab untuk sihir
+    [SerializeField] private Transform projectileSpawnPoint;    
+    [SerializeField] private GameObject magicProjectilePrefab;  
 
     [Header("Magic Speed")]
     [SerializeField] private float delayShoot = 2f;
-    [SerializeField] private float magicProSpeed = 10f;         // Kecepatan proyektil
+    [SerializeField] private float magicProSpeed = 10f;         
 
     [Header("Casting Speed")]
-    public float timeBetweenAttacks = 0.5f;   // Waktu antara serangan
-    [SerializeField] private float timeBetweenSteps = 0.5f;   // Waktu antara serangan
+    public float timeBetweenAttacks = 0.5f;   
+    [SerializeField] private float timeBetweenSteps = 0.5f;  
     private bool isStepping = false;
     public float attackCooldown = 0f;
     private float stepCooldown = 0f;
@@ -45,7 +42,7 @@ public class NewPlayerController1 : MonoBehaviour
     [SerializeField] private LayerMask groundMask;
 
     [Header("Jarak Antara Player dan Spawn Magic ")]
-    [SerializeField] private float distanceInFront = 2.0f; // Sesuaikan dengan jarak yang Anda inginkan
+    [SerializeField] private float distanceInFront = 2.0f;
 
     [SerializeField] public Camera mainCamera;
     private bool isShooting = false;
@@ -94,7 +91,6 @@ public class NewPlayerController1 : MonoBehaviour
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        // Assign the mainCamera reference when a new scene is loaded
         mainCamera = Camera.main;
     }
     private void Awake()
@@ -127,24 +123,6 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void Update()
     {
-        //if (_isIncrease) {
-        //    float cdValue = Mathf.Lerp(0f, 1f, _currentDashCd / characterModel.DashCooldown);
-        //    _dashCooldownSlider.value = cdValue;
-
-        //    if (_currentDashCd >= characterModel.DashCooldown) {
-        //        _currentDashCd = 0f;
-        //        _isIncrease = false;
-        //    }
-        //} else if (!_isIncrease &&  moveDir != Vector3.zero && isDashing) {
-        //    float cdValue = Mathf.Lerp(1f, 0f, _currentDashCd / characterModel.DashDuration);
-        //    _dashCooldownSlider.value = cdValue;
-
-        //    if (_currentDashCd >= characterModel.DashDuration) {
-        //        _currentDashCd = 0f;
-        //        _isIncrease = true;
-        //    }
-        //}
-
         PlayerStat();
         if (attackCooldown > 0) {
             attackCooldown -= Time.deltaTime;
@@ -156,32 +134,20 @@ public class NewPlayerController1 : MonoBehaviour
 
         _dashCooldownSlider.value = Mathf.Lerp(0f, 1f, 1f - (_currentDashCd / (characterModel.DashCooldown 
                                                               + characterModel.DashDuration)));
-
-
         Aim();
-
-        //Call sfx player walk
-        //if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f) && stepCooldown <= 0f) {
-        //    Stepping(stepCooldown);
-        //    stepCooldown = timeBetweenSteps;
-        //    StartCoroutine(Stepping(stepCooldown));
-        //}
     }
 
     private void FixedUpdate() {
         if (!isShooting && canMove) CharaMove();
-        else _rb.velocity = Vector3.zero; //stop move & sliding
+        else _rb.velocity = Vector3.zero; 
     }
 
     private void CharaMove() {
-        // Input movement
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        // Move direction
         moveDir = new Vector3(horizontal, 0f, vertical).normalized;
 
-        // Check if the character is walking
         bool isWalking = moveDir != Vector3.zero;
 
         if (!isWalking) {
@@ -190,7 +156,6 @@ public class NewPlayerController1 : MonoBehaviour
         if (moveDir != Vector3.zero && isStepping == false) {
             StartCoroutine(Stepping(timeBetweenSteps));
         }
-
 
         // Set the "isWalking" parameter in the animator
         animator.SetBool("isWalking", isWalking);
@@ -204,7 +169,6 @@ public class NewPlayerController1 : MonoBehaviour
         // Apply velocity to the Rigidbody
         _rb.velocity = velocity;
 
-        // New Look Logic (rotation)
         if (moveDir == Vector3.zero) return;
         Quaternion rotation = Quaternion.LookRotation(moveDir.ToIso(), Vector3.up);
         _model.rotation = Quaternion.RotateTowards(_model.rotation, rotation, characterModel.rotationSpeed * Time.deltaTime);
@@ -216,21 +180,13 @@ public class NewPlayerController1 : MonoBehaviour
         }
     }
 
-    // Coroutine Dash Logic
     private IEnumerator Dash() {
         _currentDashCd = characterModel.DashCooldown + characterModel.dashDuration;
         isDashing = true;
         animator.SetBool("isWalking", false);
-        animator.SetBool("isDashing", true); // Set isDashing to true while dashing
+        animator.SetBool("isDashing", true);
 
-        //float startTime = Time.time;
-        //Vector3 pos = transform.position;
         Vector3 dashDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
-
-        //while (Time.time < startTime + characterModel.DashDuration) {
-        //    _rb.MovePosition(transform.position + dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime);
-        //    yield return null;
-        //}
 
         Vector3 dashVelocity = dashDir.ToIso() * dashDir.magnitude * characterModel.dashSpeed * Time.deltaTime;
 
@@ -244,7 +200,7 @@ public class NewPlayerController1 : MonoBehaviour
 
         _rb.velocity = Vector3.zero;
 
-        animator.SetBool("isDashing", false); // Set isDashing back to false after dashing
+        animator.SetBool("isDashing", false); 
         yield return new WaitForSeconds(characterModel.DashCooldown);
         isDashing = false;
     }
@@ -257,16 +213,13 @@ public class NewPlayerController1 : MonoBehaviour
         isStepping = false;
     }
 
-    // Coroutine untuk menonaktifkan isShooting selama durasi tertentu
     private IEnumerator DisableShootingForDuration(float duration)
     {
-        //isShooting = true;
         yield return new WaitForSeconds(duration);
         isShooting = false;
         animator.SetBool("isAttacking", false);
     }
 
-    //Player Stat
     private void PlayerStat()
     {
         float playerHp = characterModel.HealthPoint;
@@ -293,7 +246,7 @@ public class NewPlayerController1 : MonoBehaviour
                 Invoke(nameof(GameOver), 2f);
             }
             isDeath = true;
-            Death(); // If health drops to or below zero, call a method to handle enemy death
+            Death(); 
             ShowDeathPanel();
         }
     }
@@ -309,7 +262,6 @@ public class NewPlayerController1 : MonoBehaviour
         characterModel.moveSpeed = 0;
         ScoreManager.Instance.EndGame();
         ScoreManager.Instance.DisplayGameOverStats();
-        //CharacterModel.Instance.ResetStats();
     }
     private void ShowDeathPanel() {
         OnPlayerDeath?.Invoke();
@@ -320,15 +272,12 @@ public class NewPlayerController1 : MonoBehaviour
 
     private void ShootMagic(ElementalType element)
     {
-            targetDirection.Normalize(); // Normalisasi agar memiliki panjang 1
+            targetDirection.Normalize(); 
 
             // Hitung posisi spawn di depan pemain
             Vector3 spawnPosition = projectileSpawnPoint.position + transform.forward * distanceInFront;
-
-            // Instansiasi proyektil di titik spawn
             GameObject magic = Instantiate(magicProjectilePrefab, spawnPosition, Quaternion.LookRotation(targetDirection));
 
-            // Implementasi logika menembakkan sihir sesuai elemen
             MagicProjectileElementalReaction magicProjectile = magic.GetComponent<MagicProjectileElementalReaction>();
             if (magicProjectile != null)
             {
@@ -344,7 +293,6 @@ public class NewPlayerController1 : MonoBehaviour
             SetAttackCooldown();
 
             Debug.Log(elementalSlots[currentSlotIndex]);
-        // Menonaktifkan isShooting setelah menembak
         StartCoroutine(DisableShootingForDuration(timeBetweenAttacks));
     }
     public void ResetAttackIndex()
@@ -357,61 +305,23 @@ public class NewPlayerController1 : MonoBehaviour
     }
     private void ChangeActiveElement()
     {
-        // Mengganti elemen aktif ke slot berikutnya
         currentSlotIndex = (currentSlotIndex + 1) % 4;
-        // Memperbarui pola serangan berdasarkan elemen yang baru aktif
         attackPattern[currentAttackIndex] = elementalSlots[currentSlotIndex];
     }
     public ElementalType[] GetCurrentAttackPattern()
     {
-        // Mengembalikan elemen yang sedang digunakan dalam pola serangan saat ini
         return elementalSlots;
     }
 
-    // Method untuk mendapatkan indeks attack saat ini
     public int GetCurrentAttackIndex()
     {
         return currentSlotIndex;
-    }
-
-    private void CheckElementalReaction()
-    {
-        // Mengecek apakah ada 2 elemen berturut-turut dalam pola serangan
-        if (currentAttackIndex >= 2)
-        {
-            ElementalType firstElement = attackPattern[currentAttackIndex - 2];
-            ElementalType secondElement = attackPattern[currentAttackIndex - 1];
-
-            // Melakukan pengecekan elemen reaksi
-            ElementalReaction(firstElement, secondElement);
-        }
-    }
-
-    private void ElementalReaction(ElementalType element1, ElementalType element2)
-    {
-        // Implementasi efek-efek elemen reaksi
-        if ((element1 == ElementalType.Fire && element2 == ElementalType.Wind) ||
-            (element1 == ElementalType.Wind && element2 == ElementalType.Fire))
-        {
-            Debug.Log("Combustion!");
-        }
-        else if ((element1 == ElementalType.Fire && element2 == ElementalType.Water) ||
-                 (element1 == ElementalType.Water && element2 == ElementalType.Fire))
-        {
-            Debug.Log("Steam!");
-        }
-        else if ((element1 == ElementalType.Wind && element2 == ElementalType.Water) ||
-                 (element1 == ElementalType.Water && element2 == ElementalType.Wind))
-        {
-            Debug.Log("Freeze!");
-        }
     }
 
     private void Aim()
     {
         if (Input.GetButtonDown("Fire1") && attackCooldown <= 0f && isAttacking && !isShooting && Time.timeScale !=0)
         {
-            // Raycast dari kursor mouse ke dunia 3D
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -421,30 +331,18 @@ public class NewPlayerController1 : MonoBehaviour
                 isShooting = true;
                 animator.SetBool("isAttacking", true);
 
-                // Menghitung vektor arah ke titik klik mouse
                 targetDirection = hit.point - transform.position;
-
-                // Mengabaikan perubahan tinggi (sumbu Y)
                 targetDirection.y = 0;
-
-                // Membuat pemain melihat ke arah klik mouse
                 transform.forward = targetDirection.normalized;
 
-                // Menembak proyektil ke arah tersebut
                 Invoke("DelayedShootMagic", delayShoot);
-                //ShootMagic(attackPattern[currentAttackIndex]);
-
-                // Mengatur waktu cooldown
                 attackCooldown = timeBetweenAttacks;
-
-                CheckElementalReaction();
             }
         }
     }
 
     void DelayedShootMagic()
     {
-        // Here you can call ShootMagic with the attack pattern.
         ShootMagic(attackPattern[currentAttackIndex]);
         Debug.Log("current attack index = " + currentSlotIndex);
     }
@@ -452,13 +350,6 @@ public class NewPlayerController1 : MonoBehaviour
     public void SetAttackPattern(ElementalType newElement)
     {
         elementalSlots[currentButtonIndex] = newElement;
-        //Debug.Log("curent button index = " + currentButtonIndex);
-    }
-    
-    public void GetCamera(Camera cam) {
-        var newCamera = cam;
-        mainCamera = newCamera;
-        Debug.Log("A key pressed. Camera: " + (cam != null ? cam.name : "null"));
     }
     public void SetDefaultElementSlots()
     {
@@ -480,25 +371,10 @@ public class NewPlayerController1 : MonoBehaviour
     {
         for (int i = 0; i < elementalSlots.Length; i++)
         {
-            // Baca data PlayerPrefs dan konversi ke enum ElementalType
             int savedElement = PlayerPrefs.GetInt("ElementalSlot_" + i, 0);
             elementalSlots[i] = (ElementalType)savedElement;
         }
     }
-    private (bool success, Vector3 position) GetMousePosition() {
-
-            var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask)) {
-                // The Raycast hit something, return with the position.
-                return (success: true, position: hitInfo.point);
-            } else {
-                // The Raycast did not hit anything.
-                return (success: false, position: Vector3.zero);
-            }
-  
-    }
-
     private void VfxTeleport() {
         canMove = false;
         animator.SetBool("isWalking",false);
@@ -506,11 +382,8 @@ public class NewPlayerController1 : MonoBehaviour
         float yOffset = 1.0f;
         Vector3 newPosition = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
         currentVfx = Instantiate(vfxTeleport, newPosition, transform.rotation, transform);
-        //SkinnedMeshRenderer vfxRenderer = currentVfx.GetComponent<SkinnedMeshRenderer>();
-        //SetMaterialInChildren(transform, vfxTeleportMaterial);
         Invoke(nameof(DestroyVfxTeleport), 3f);
         Destroy(currentVfx,3.5f);
-
     }
 
     private void FirstVfxTeleport() {
@@ -520,8 +393,6 @@ public class NewPlayerController1 : MonoBehaviour
         float yOffset = 1.0f;
         Vector3 newPosition = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
         currentVfx = Instantiate(vfxTeleport, newPosition, transform.rotation, transform);
-        //SkinnedMeshRenderer vfxRenderer = currentVfx.GetComponent<SkinnedMeshRenderer>();
-        //SetMaterialInChildren(transform, vfxTeleportMaterial);
         Invoke(nameof(DestroyVfxTeleport), 1.5f);
         Destroy(currentVfx, 2f);
     }
@@ -530,28 +401,10 @@ public class NewPlayerController1 : MonoBehaviour
         canMove = true;
         vfxTeleportMaterial.SetActive(false);
     }
+}
 
-    //void SetMaterialInChildren(Transform parent, Material material) {
-
-    //    foreach (Transform child in parent) {
-    //        SkinnedMeshRenderer skinnedMeshRenderer = child.GetComponent<SkinnedMeshRenderer>();
-
-    //        if (skinnedMeshRenderer != null) {
-    //            skinnedMeshRenderer.material = material;
-    //        }
-
-    //        SetMaterialInChildren(child, material);
-    //    }
-    //}
-
-
-
-
-
-    //helpers
-    //public static class Helpers
-    //{
-    //    private static Matrix4x4 _isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0f, -45f, 0f));
-    //    public static Vector3 ToIso(this Vector3 input) => _isoMatrix.MultiplyPoint3x4(input);
-    //}
+public static class Helpers
+{
+    private static Matrix4x4 _isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0f, -45f, 0f));
+    public static Vector3 ToIso(this Vector3 input) => _isoMatrix.MultiplyPoint3x4(input);
 }

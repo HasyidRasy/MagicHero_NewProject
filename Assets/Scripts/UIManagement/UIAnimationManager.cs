@@ -63,25 +63,12 @@ public class UIAnimationManager : MonoBehaviour {
                  .From(1f);
     }
 
-    //void Update() {
-    //    RestartAnimation();
-    //}
-
-
-    //void RestartAnimation() {
-    //    if (Input.GetKeyDown(KeyCode.Space)) {
-    //        //UpgradeUIAnimation();
-    //        TransitionDeathPanel();
-    //    }
-    //}
-
     [ContextMenu("HpBarShake")]
     public void HpBarShake() {
         playerStatusBar.DOShakeAnchorPos(shakeDuration, new Vector3(shakeStrenght, shakeStrenght, 0.0f), 10, 90);
     }
     [ContextMenu("UpgradeUIAnimation")]
     public void UpgradeUIAnimation() {
-        //Debug.Log("UiUpgradeAnimation");
         float duration = 1f;
         float initialY = -Screen.height - 1000f;
         float targetY = -390f;
@@ -90,16 +77,13 @@ public class UIAnimationManager : MonoBehaviour {
                  .From(0f)
                  .SetUpdate(true);
 
-        // Loop through each upgradeButton element and animate its position
         for (int i = 0; i < upgradeButton.Length; i++) {
             float currentTargetY = targetY;
 
-            // Punch Rotation animation
             upgradeButton[i].DOPunchRotation(new Vector3(0f, 90f, 0f), duration, 0, 1f)
                 .SetEase(Ease.OutBack)
                 .SetUpdate(true);
 
-            // Move animation
             upgradeButton[i].DOAnchorPosY(currentTargetY, duration)
                 .From(new Vector2(0f, initialY))
                 .SetEase(Ease.OutQuad) // change the ease type
@@ -124,12 +108,10 @@ public class UIAnimationManager : MonoBehaviour {
     public void DeathPanelAnimation() {
         float duration = 1f;
 
-        //Set first state
         deathCanvasGroup.DOFade(1f, 0f);
         vignette1.DOFade(0f, 0f);
         deathTitle.DOFade(0f, 0f);
 
-        //Do animation
         vignette2.DOFade(0f, transitionDuration)
                  .From(1f);
         leftDeathTitle.DOAnchorPosX(480f, duration)

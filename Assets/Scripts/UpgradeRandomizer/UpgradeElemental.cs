@@ -19,11 +19,8 @@ public class UpgradeElemental : MonoBehaviour
 
     private CharacterModel upgradedCharacter;
     private ElementSwitchSystem elementSwitchSystem;
-
     public List<UpgradeData> availableUpgrades = new List<UpgradeData>();
-    
 
-    // Start is called before the first frame update
     void Start()
     {
         upgradedCharacter = FindObjectOfType<CharacterModel>();
@@ -37,11 +34,8 @@ public class UpgradeElemental : MonoBehaviour
 
         availableUpgrades.AddRange(upgradeDatabase.elementalUpgrades);
         UpdateUI();
-
-        
     }
 
-    // Update is called once per frame
     public void UpdateUI()
     {
         for (int i = 0; i < 3; i++)

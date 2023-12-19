@@ -12,7 +12,6 @@ public class NewAudioManager : MonoBehaviour {
     private void Awake() {
         if (Instance == null) {
             Instance = this;
-            //DontDestroyOnLoad(gameObject);
         } else {
             Destroy(gameObject);
         }
@@ -39,8 +38,6 @@ public class NewAudioManager : MonoBehaviour {
             Debug.Log("SFX Not Found!");
         } else {
             sfxSource.PlayOneShot(sfx.clip);
-            //sfxSource.clip = sfx.clip;
-            //sfxSource.Play();
         }
     }
 

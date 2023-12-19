@@ -49,13 +49,6 @@ public class AutoCameraBoundary : MonoBehaviour
         } else {
             Debug.LogError("GameObject with name '" + boundaryName + "' not found.");
         }
-        //play audio
-        //NewAudioManager.Instance.PlayBGM("Safezone");
-    }
-
-    private void Awake()
-    {
-        
     }
 
     private void FixedUpdate() {

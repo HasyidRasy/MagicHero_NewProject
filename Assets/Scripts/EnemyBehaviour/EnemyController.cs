@@ -62,7 +62,6 @@ public class EnemyController : MonoBehaviour
         speedChase = Random.Range(minSpeed, maxSpeed);
         animator = GetComponentInChildren<Animator>();
         enemyCollider = GetComponent<Collider>();
-        //enemyModel.LoadEnemyStats();
     }
 
     private void Start()
@@ -134,9 +133,7 @@ public class EnemyController : MonoBehaviour
         animator.SetBool("isWalking", false);
         animator.SetBool("isHopping", false);
         animator.SetBool("isAttacking", true);
-        // Implement your attack logic here, e.g., dealing damage to the player
-        //Invoke(nameof(AttackPlayer), attackVfxWait);
-        //NewAudioManager.Instance.PlayEnemyAtkSFX("EnemyAtk");
+
         if (characterModel.healthPoint == 0) {
             NewAudioManager.Instance.enemyAtkSource.Stop();
         } else {
@@ -148,39 +145,6 @@ public class EnemyController : MonoBehaviour
         isAttacking = false;
         canAttack = true;
     }
-
-    //private void AttackPlayer() {
-    //    AttackVfx();
-    //    Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
-    //    foreach (Collider collider in hitColliders) {
-    //        if (collider.gameObject.CompareTag("Player")) {
-    //            NewPlayerController1 playerController = collider.gameObject.GetComponent<NewPlayerController1>();
-    //            if (playerController != null) {
-    //                playerController.TakeDamage(damageAmount);
-    //                Debug.Log("Player attacked");
-    //            }
-    //        }
-    //    }
-    //}
-
-    //private void AttackVfx() {
-    //    //vfx.AttackVFX();     
-    //    //Debug.Log("Bam");
-    //}
-
-
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Player"))
-    //    {
-    //        NewPlayerController1 playerController = collision.gameObject.GetComponent<NewPlayerController1>();
-
-    //        if (playerController != null)
-    //        {
-                //playerController.TakeDamage(damageAmount);
-    //        }
-    //    }
-    //}
 
     public void TakeDamage(float damageAmount)
     {       
@@ -209,7 +173,6 @@ public class EnemyController : MonoBehaviour
             elementStatus = elementType;
             Debug.Log("Applied Status " + elementStatus);
 
-            //PopupUI
             //Reset ReactionUI When still occured
             if (isReaction != null)
             {
@@ -249,13 +212,11 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    // Function for resetting element
     public void ResetElementalStatus()
     {
         elementStatus = ElementalType.Null;
     }
 
-    // Function to handle elemental interactions
     public void HandleElementalInteraction(ElementalType currentElement, ElementalType otherElement) {
         // Check for an elemental reaction between the player's element and the other element
         ElementalReaction reaction = ElementalReactionController.Instance.CheckElementalReaction(currentElement, otherElement);
@@ -263,8 +224,6 @@ public class EnemyController : MonoBehaviour
         reactionSprite = reaction.reactionSprite;
 
         if (reaction != null) {
-            // Handle the reaction, e.g., apply damage, change visuals, etc.
-            // You can define specific logic for each reaction in this function.
             bool isStacking = reaction.stacking;
 
             switch (isStacking) {
@@ -306,7 +265,6 @@ public class EnemyController : MonoBehaviour
             isActive = false;
         }
     }
-
     private IEnumerator ChangeSpeed(float speedValue, float duration) {
         if (speedValue != 0) {
             yield return new WaitForSeconds(duration);
@@ -315,7 +273,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    // Function to handle the reaction result
     private void HandleReaction(string resultReaction, float reactionDuration) {
 
         // Reaction Popup
@@ -325,8 +282,6 @@ public class EnemyController : MonoBehaviour
             Debug.Log("Terjadi Reaksi " + resultReaction);
             freezing = true;
             vfx.Freeze(reactionDuration);
-            //Invoke("Unfreeze", reactionDuration);
-            //Invoke("HandleFreezing", reactionDuration + 0.5f);
             StartCoroutine(VfxHandleElemental(resultReaction, reactionDuration));
             StartCoroutine(VfxHandleElementalState(resultReaction, reactionDuration + 0.5f));
         } else if (resultReaction == "Burning") {
@@ -334,7 +289,6 @@ public class EnemyController : MonoBehaviour
             vfx.Combustion(reactionDuration);
             StartCoroutine(VfxHandleElemental(resultReaction, reactionDuration));
             StartCoroutine(VfxHandleElementalState(resultReaction, reactionDuration + 0.5f));
-            //vfx.Slowness(reactionDuration);
         } else if (resultReaction == "Slowness") {
             slowness = true;
             vfx.Steam(reactionDuration);
@@ -347,25 +301,23 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         uiPopupElementHP.ResetPopupUI();
         uiPopupElementHP.ShowReactionUI(spriteReaction, reactionTime - 0.5f);
-        //yield return new WaitForSeconds(reactionTime);
-        //uiPopupElementHP.ResetReactionUI();
     }
 
         IEnumerator VfxHandleElemental(string resultReaction, float delayTime) {
         yield return new WaitForSeconds(delayTime);
 
-        if (resultReaction == "Freezing") {
-            vfx.Unfreeze();
-        } else if (resultReaction == "Burning") {
-            vfx.UnCombustion();
-        } else if (resultReaction == "Slowness") {
-            vfx.UnSteam();
-            speedChase = Random.Range(minSpeed, maxSpeed);
-            ChasePlayer();
-            Debug.Log("Steam done");
-        } 
+            if (resultReaction == "Freezing") {
+                vfx.Unfreeze();
+            } else if (resultReaction == "Burning") {
+                vfx.UnCombustion();
+            } else if (resultReaction == "Slowness") {
+                vfx.UnSteam();
+                speedChase = Random.Range(minSpeed, maxSpeed);
+                ChasePlayer();
+                Debug.Log("Steam done");
+            } 
 
-    }
+        }
 
     IEnumerator VfxHandleElementalState(string resultReaction, float delayTime) {
         yield return new WaitForSeconds(delayTime);
@@ -377,9 +329,7 @@ public class EnemyController : MonoBehaviour
         } else if (resultReaction == "Slowness") {
             slowness = false;
         }
-
     }
-
 
     private void Death()
     {
@@ -387,7 +337,6 @@ public class EnemyController : MonoBehaviour
         Destroy(this.gameObject, 3f);
         enemyPool.NotifyEnemyDied();
         enemyCollider.enabled = false;
-        //navMeshAgent.speed = speedChase/2;
         navMeshAgent.speed = 0;
         isDeath = true;
         animator.SetBool("Death", true);

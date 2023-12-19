@@ -60,14 +60,12 @@ public class UpgradeButton : MonoBehaviour
             upgradeList.chosenUpgrades.Add(upgrade);
             Debug.Log("Upgrade Name: " + upgrade.upgradeName);
             Debug.Log("Upgrade Description: " + GetUpgradeDescription(upgrade));
-            
-            //disable raycast wile animate
+
             canvasRaycast.enabled = false;
 
             Invoke(nameof(SetFalseUpgradeCanvas), 1f);
             ClickAnimation();
 
-            //enable canvas again after animation finished
             Invoke(nameof(EnableCanvasAfterDelay), 1f);
 
             Time.timeScale = 1f;
@@ -120,7 +118,6 @@ public class UpgradeButton : MonoBehaviour
     public void OnPointerEnterButton()
     {
         NewAudioManager.Instance.PlaySFX("Hover");
-        // Activate the hover image here
         hoverImage.gameObject.SetActive(true);
         rectTransform.DOAnchorPosY(-390f + hoverHighValue, .5f)
                      .SetUpdate(true);
@@ -128,7 +125,6 @@ public class UpgradeButton : MonoBehaviour
 
     public void OnPointerExitButton()
     {
-        // Deactivate the hover image here
         hoverImage.gameObject.SetActive(false);
         rectTransform.DOAnchorPosY(-390f, .5f)
                      .SetUpdate(true);

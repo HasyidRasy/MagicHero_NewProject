@@ -8,10 +8,7 @@ public class ChangeStaffColor : MonoBehaviour
     public Material waterMaterial;
     public Material windMaterial;
 
-    // The index of the second material in the materials array
     private int secondMaterialIndex = 1;
-
-    // Assuming your object has a MeshRenderer component
     private MeshRenderer meshRenderer;
 
 
@@ -28,12 +25,10 @@ public class ChangeStaffColor : MonoBehaviour
     }
 
     private void Awake() {
-        // Assuming the MeshRenderer is attached to the same GameObject
         meshRenderer = GetComponent<MeshRenderer>();
         
     }
     void Start() {
-        // Initialize the material for the second slot
         SetSecondMaterial(fireMaterial);
     }
 
@@ -49,13 +44,8 @@ public class ChangeStaffColor : MonoBehaviour
     void SetSecondMaterial(Material newMaterial) {
 
         if (newMaterial != null) {
-            // Get the current materials array
             Material[] materials = meshRenderer.materials;
-
-            // Update the material in the second slot
             materials[secondMaterialIndex] = newMaterial;
-
-            // Apply the updated materials array to the MeshRenderer
             meshRenderer.materials = materials;
         }
     }
